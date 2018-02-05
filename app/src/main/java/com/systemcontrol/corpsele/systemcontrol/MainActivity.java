@@ -147,6 +147,36 @@ public class MainActivity extends AppCompatActivity {
         current = mAudioManager.getStreamVolume( AudioManager.STREAM_MUSIC );
         Log.d("MUSIC", "max : " + max + " current : " + current);
 
+        mSeekBar4 = findViewById(R.id.seekBar4);
+        mSeekBar4.setMax(max);
+        mSeekBar4.setProgress(current);
+        mSeekBar4.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tvSeekCur4.setText(String.valueOf(progress));
+                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, AudioManager.FLAG_SHOW_UI);
+                getAudioDetail();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        tvSeekCur4 = findViewById(R.id.tvSeekCur4);
+        tvSeekCur4.setText(String.valueOf(current));
+
+        tvSeekMax4 = findViewById(R.id.tvSeekMax4);
+        tvSeekMax4.setText(String.valueOf(max));
+
+
 //提示声音音量
 
         max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_ALARM );
