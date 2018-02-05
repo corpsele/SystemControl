@@ -23,8 +23,8 @@ public class SystemControlWidgetConfigureActivity extends Activity {
             final Context context = SystemControlWidgetConfigureActivity.this;
 
             // When the button is clicked, store the string locally
-            String widgetText = mAppWidgetText.getText().toString();
-            saveTitlePref(context, mAppWidgetId, widgetText);
+//            String widgetText = mAppWidgetText.getText().toString();
+//            saveTitlePref(context, mAppWidgetId, widgetText);
 
             // It is the responsibility of the configuration activity to update the app widget
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -76,7 +76,7 @@ public class SystemControlWidgetConfigureActivity extends Activity {
         setResult(RESULT_CANCELED);
 
         setContentView(R.layout.system_control_widget_configure);
-        mAppWidgetText = (EditText) findViewById(R.id.appwidget_text);
+//        mAppWidgetText = (EditText) findViewById(R.id.appwidget_text);
         findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
 
         // Find the widget id from the intent.
@@ -93,7 +93,7 @@ public class SystemControlWidgetConfigureActivity extends Activity {
             return;
         }
 
-        mAppWidgetText.setText(loadTitlePref(SystemControlWidgetConfigureActivity.this, mAppWidgetId));
+//        mAppWidgetText.setText(loadTitlePref(SystemControlWidgetConfigureActivity.this, mAppWidgetId));
     }
 }
 

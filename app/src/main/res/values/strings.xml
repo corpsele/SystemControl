@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">SystemControl</string>
     <string name="appwidget_text">EXAMPLE</string>
-    <string name="configure">Configure</string>
+    <string name="configure">选择显示的控件</string>
     <string name="add_widget">Add widget</string>
     <string name="main_string_voip_voice">通话音量</string>
     <string name="main_string_voip_voice_cur" />
@@ -16,4 +16,13 @@
     <string name="main_string_music_voice_cur" />
     <string name="main_string_noti_voice">提示音量</string>
     <string name="main_string_music_voice_max" />
+    <string name="widget_string_checkbox1_text">系统音量</string>
+    <string name="widget_string_checkbox2_text">铃声音量</string>
+    <string name="widget_string_checkbox3_text">音乐音量</string>
+    <string name="widget_string_checkbox4_text">通话音量</string>
+    <string name="widget_string_checkbox5_text">提示音量</string>
+    <string name="main_string_noti_voice_max" />
+    <string name="main_string_noti_voice_cur" />
+    <string name="widget_string_system_voice">系统音量</string>
+    <string name="widget_string_voip_voice">通话音量</string>
 </resources>
