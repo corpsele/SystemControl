@@ -27,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvSeekCur4;
     private TextView tvSeekMax4;
 
+    private SeekBar mSeekBar5;
+    private TextView tvSeekCur5;
+    private TextView tvSeekMax5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -182,6 +186,37 @@ public class MainActivity extends AppCompatActivity {
         max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_ALARM );
         current = mAudioManager.getStreamVolume( AudioManager.STREAM_ALARM );
         Log.d("ALARM", "max : " + max + " current : " + current);
+
+        mSeekBar5 = findViewById(R.id.seekBar5);
+        mSeekBar5.setMax(max);
+        mSeekBar5.setProgress(current);
+        mSeekBar5.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tvSeekCur5.setText(String.valueOf(progress));
+                mAudioManager.setStreamVolume(AudioManager.STREAM_ALARM, progress, AudioManager.FLAG_SHOW_UI);
+                getAudioDetail();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        tvSeekCur5 = findViewById(R.id.tvSeekCur5);
+        tvSeekCur5.setText(String.valueOf(current));
+
+        tvSeekCur5 = findViewById(R.id.tvSeekMax5);
+        tvSeekCur5.setText(String.valueOf(max));
+
+
     }
 
 }
