@@ -38,4 +38,21 @@
         android:layout_alignBottom="@+id/tvWidget2"
         android:layout_alignStart="@+id/tvSystemNum" />
 
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tvSystemNum"
+        android:layout_marginStart="32dp"
+        android:layout_toEndOf="@+id/tvSystemNum" />
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvVoipNum"
+        android:layout_alignStart="@+id/progressBar1" />
+
 </RelativeLayout>

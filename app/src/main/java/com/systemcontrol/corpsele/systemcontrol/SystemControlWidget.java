@@ -1,8 +1,10 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.widget.RemoteViews;
 import android.media.AudioManager.*;
@@ -28,7 +30,16 @@ public class SystemControlWidget extends AppWidgetProvider {
 
         getAudioDetail();
 
+        Intent fullIntent = new Intent("getAudioDetail");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
+                fullIntent, 0);
+        views.setOnClickPendingIntent(R.id.progressBar1, pendingIntent);
 
+        if (SystemControlWidgetConfigureActivity.getCheckBox1State()){
+            views.setViewVisibility(R.id.tvVoipNum, 1);
+        }else{
+            views.setViewVisibility(R.id.tvVoipNum, 0);
+        }
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
 
@@ -41,13 +52,19 @@ public class SystemControlWidget extends AppWidgetProvider {
         int current = mAudioManager.getStreamVolume( AudioManager.STREAM_VOICE_CALL );
         String strVoip = String.valueOf(current) + "/" + String.valueOf(max);
         views.setTextViewText(R.id.tvVoipNum, strVoip);
+        views.setProgressBar(R.id.progressBar2, max, current, false);
         Log.d("VIOCE_CALL", "max : " + max + " current : " + current);
+
 
 
         //系统音量
 
         max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_SYSTEM );
         current = mAudioManager.getStreamVolume( AudioManager.STREAM_SYSTEM );
+        String strSystem = String.valueOf(current) + "/" + String.valueOf(max);
+        views.setTextViewText(R.id.tvSystemNum, strSystem);
+        views.setProgressBar(R.id.progressBar1, max, current, false);
+        Log.d("System", "max : " + max + " current : " + current);
 
 
 //铃声音量
@@ -78,6 +95,7 @@ public class SystemControlWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
+
     }
 
     @Override
@@ -96,6 +114,16 @@ public class SystemControlWidget extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
+        if (intent.getAction().equals("getAudioDetail")) {
+
+
+        }
     }
 }
 

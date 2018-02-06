@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 /**
@@ -18,6 +20,9 @@ public class SystemControlWidgetConfigureActivity extends Activity {
     private static final String PREF_PREFIX_KEY = "appwidget_";
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     EditText mAppWidgetText;
+
+    private static  CheckBox checkBox1;
+
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             final Context context = SystemControlWidgetConfigureActivity.this;
@@ -34,6 +39,9 @@ public class SystemControlWidgetConfigureActivity extends Activity {
             Intent resultValue = new Intent();
             resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
             setResult(RESULT_OK, resultValue);
+
+
+
             finish();
         }
     };
@@ -49,6 +57,10 @@ public class SystemControlWidgetConfigureActivity extends Activity {
         prefs.apply();
     }
 
+    static Boolean getCheckBox1State(){
+        return checkBox1.isChecked();
+    }
+
     // Read the prefix from the SharedPreferences object for this widget.
     // If there is no preference saved, get the default from a resource
     static String loadTitlePref(Context context, int appWidgetId) {
@@ -60,6 +72,7 @@ public class SystemControlWidgetConfigureActivity extends Activity {
             return context.getString(R.string.appwidget_text);
         }
     }
+
 
     static void deleteTitlePref(Context context, int appWidgetId) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
@@ -86,6 +99,14 @@ public class SystemControlWidgetConfigureActivity extends Activity {
             mAppWidgetId = extras.getInt(
                     AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
+
+        checkBox1 = findViewById(R.id.checkBox1);
+        checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            }
+        });
 
         // If this activity was started with an intent without an app widget ID, finish with an error.
         if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
