@@ -20,13 +20,13 @@ public class SystemControlWidget extends AppWidgetProvider {
                                 int appWidgetId) {
 
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        getAudioDetail();
 
 //        CharSequence widgetText = SystemControlWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
         // Construct the RemoteViews object
         views = new RemoteViews(context.getPackageName(), R.layout.system_control_widget);
-//        views.setTextViewText(R.id.textView1, "SystemControl");
+//        views.setTextViewText(R.id.tvVoipNum, "SystemControl");
 
+        getAudioDetail();
 
 
         // Instruct the widget manager to update the widget
@@ -40,7 +40,7 @@ public class SystemControlWidget extends AppWidgetProvider {
         int max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_VOICE_CALL );
         int current = mAudioManager.getStreamVolume( AudioManager.STREAM_VOICE_CALL );
         String strVoip = String.valueOf(current) + "/" + String.valueOf(max);
-//        views.setTextViewText(R.id.tvVoipNum, strVoip);
+        views.setTextViewText(R.id.tvVoipNum, strVoip);
         Log.d("VIOCE_CALL", "max : " + max + " current : " + current);
 
 

@@ -23,7 +23,7 @@
         android:layout_toEndOf="@+id/tvWidget1" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/tvWidget2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/tvWidget1"
@@ -35,7 +35,7 @@
         android:id="@+id/tvVoipNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView7"
+        android:layout_alignBottom="@+id/tvWidget2"
         android:layout_alignStart="@+id/tvSystemNum" />
 
 </RelativeLayout>

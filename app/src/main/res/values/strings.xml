@@ -2,7 +2,7 @@
     <string name="app_name">SystemControl</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="configure">选择显示的控件</string>
-    <string name="add_widget">Add widget</string>
+    <string name="add_widget">添加小部件</string>
     <string name="main_string_voip_voice">通话音量</string>
     <string name="main_string_voip_voice_cur" />
     <string name="main_string_voip_voice_max" />
