@@ -36,9 +36,13 @@ public class SystemControlWidget extends AppWidgetProvider {
         views.setOnClickPendingIntent(R.id.progressBar1, pendingIntent);
 
         if (SystemControlWidgetConfigureActivity.getCheckBox1State()){
-            views.setViewVisibility(R.id.tvVoipNum, 1);
+            views.setViewVisibility(R.id.tvWidget1, 1);
+            views.setViewVisibility(R.id.progressBar1, 1);
+            views.setViewVisibility(R.id.tvSystemNum, 1);
         }else{
-            views.setViewVisibility(R.id.tvVoipNum, 0);
+            views.setViewVisibility(R.id.tvWidget1, 0);
+            views.setViewVisibility(R.id.progressBar1, 0);
+            views.setViewVisibility(R.id.tvSystemNum, 0);
         }
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);

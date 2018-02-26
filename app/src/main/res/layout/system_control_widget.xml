@@ -12,7 +12,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="12dp"
         android:layout_marginTop="15dp"
-        android:text="@string/widget_string_system_voice" />
+        android:text="@string/widget_string_system_voice"
+        android:textColor="@color/colorPrimaryDark" />
 
     <TextView
         android:id="@+id/tvSystemNum"
@@ -29,7 +30,8 @@
         android:layout_alignStart="@+id/tvWidget1"
         android:layout_below="@+id/tvWidget1"
         android:layout_marginTop="14dp"
-        android:text="@string/widget_string_voip_voice" />
+        android:text="@string/widget_string_voip_voice"
+        android:textColor="@color/colorPrimaryDark" />
 
     <TextView
         android:id="@+id/tvVoipNum"

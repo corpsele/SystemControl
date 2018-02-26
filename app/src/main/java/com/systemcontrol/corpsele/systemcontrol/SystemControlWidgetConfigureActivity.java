@@ -6,10 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * The configuration screen for the {@link SystemControlWidget SystemControlWidget} AppWidget.
@@ -58,7 +61,12 @@ public class SystemControlWidgetConfigureActivity extends Activity {
     }
 
     static Boolean getCheckBox1State(){
-        return checkBox1.isChecked();
+        if (checkBox1 != null){
+            Log.d(TAG, "getCheckBox1State: " + checkBox1.isChecked());
+            return checkBox1.isChecked();
+        }else{
+            return false;
+        }
     }
 
     // Read the prefix from the SharedPreferences object for this widget.
@@ -100,11 +108,15 @@ public class SystemControlWidgetConfigureActivity extends Activity {
                     AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
+        final Context context = SystemControlWidgetConfigureActivity.this;
+        final AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+
+
         checkBox1 = findViewById(R.id.checkBox1);
         checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+//                SystemControlWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId);
             }
         });
 
