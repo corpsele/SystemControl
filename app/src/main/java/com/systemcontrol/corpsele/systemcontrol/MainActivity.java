@@ -1,12 +1,44 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
+import android.media.AudioManager;
 import android.os.Bundle;
-import android.media.*;
-import android.content.*;
-import android.util.*;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okio.BufferedSink;
 
 public class MainActivity extends AppCompatActivity {
     private AudioManager mAudioManager;
@@ -30,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
     private SeekBar mSeekBar5;
     private TextView tvSeekCur5;
     private TextView tvSeekMax5;
+    private TextView textView12;
+    private CheckBox checkBox1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,19 +72,115 @@ public class MainActivity extends AppCompatActivity {
 
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         this.getAudioDetail();
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                requestAPI();
+            }
+        });
+        thread.run();
+
     }
 
-    private void getAudioDetail(){
+    public static OkHttpClient getUnsafeOkHttpClient() {
+
+        try {
+            final TrustManager[] trustAllCerts = new TrustManager[]{
+                    new X509TrustManager() {
+                        @Override
+                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+                        }
+
+                        @Override
+                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+                        }
+
+                        @Override
+                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                            return new java.security.cert.X509Certificate[]{};
+                        }
+                    }
+            };
+
+            final SSLContext sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+            final javax.net.ssl.SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            builder.sslSocketFactory(sslSocketFactory);
+
+            builder.hostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            });
+
+            return builder.build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private void requestAPI() {
+        try {
+
+
+            OkHttpClient httpClient = getUnsafeOkHttpClient();
+            String url = "https://api.apiopen.top/searchMusic";
+//            RequestBody body = new FormBody.Builder().add("scope", "103").add("format", "json").add("appid", "379020").addEncoded("bk_key", "Android").add("bk_length", "600").build();
+            MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+            Map map = new HashMap();
+//            map.put("scope", "103");
+//            map.put("format", "json");
+//            map.put("appid", "379020");
+//            map.put("bk_key", "Android");
+//            map.put("bk_length", "600");
+            map.put("name", "Bye Bye Bye");
+            Gson gson = new Gson();
+            String param = gson.toJson(map);
+            RequestBody body = RequestBody.create(JSON, param);
+
+            Request request = new Request.Builder().url(url).post(body).build();
+            Call call = httpClient.newCall(request);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    textView12.setText(e.getLocalizedMessage());
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    String responseResult = response.body().string();
+                    ResponseBody responseBody = response.body();
+                    textView12.setText(response.message() + "\n" + responseResult);
+                    Gson gson1 = new Gson();
+//                    Type type = new TypeToken<Result>() {}.getType();
+                    Result result = gson1.fromJson(responseResult, Result.class);
+                    System.out.println(result.getMessage());
+                    System.out.println(response.message());
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void getAudioDetail() {
         //通话音量
 
-        int max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_VOICE_CALL );
-        int current = mAudioManager.getStreamVolume( AudioManager.STREAM_VOICE_CALL );
+        int max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL);
+        int current = mAudioManager.getStreamVolume(AudioManager.STREAM_VOICE_CALL);
         Log.d("VIOCE_CALL", "max : " + max + " current : " + current);
 
         mSeekBar1 = findViewById(R.id.seekBar1);
         mSeekBar1.setMax(max);
         mSeekBar1.setProgress(current);
-        mSeekBar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+        mSeekBar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -77,14 +207,14 @@ public class MainActivity extends AppCompatActivity {
 
         //系统音量
 
-        max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_SYSTEM );
-        current = mAudioManager.getStreamVolume( AudioManager.STREAM_SYSTEM );
+        max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM);
+        current = mAudioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
         Log.d("SYSTEM", "max : " + max + " current : " + current);
 
         mSeekBar2 = findViewById(R.id.seekBar2);
         mSeekBar2.setMax(max);
         mSeekBar2.setProgress(current);
-        mSeekBar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+        mSeekBar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -112,14 +242,14 @@ public class MainActivity extends AppCompatActivity {
 
 //铃声音量
 
-        max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_RING );
-        current = mAudioManager.getStreamVolume( AudioManager.STREAM_RING );
+        max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_RING);
+        current = mAudioManager.getStreamVolume(AudioManager.STREAM_RING);
         Log.d("RING", "max : " + max + " current : " + current);
 
         mSeekBar3 = findViewById(R.id.seekBar3);
         mSeekBar3.setMax(max);
         mSeekBar3.setProgress(current);
-        mSeekBar3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+        mSeekBar3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -147,14 +277,14 @@ public class MainActivity extends AppCompatActivity {
 
 //音乐音量
 
-        max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
-        current = mAudioManager.getStreamVolume( AudioManager.STREAM_MUSIC );
+        max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        current = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         Log.d("MUSIC", "max : " + max + " current : " + current);
 
         mSeekBar4 = findViewById(R.id.seekBar4);
         mSeekBar4.setMax(max);
         mSeekBar4.setProgress(current);
-        mSeekBar4.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+        mSeekBar4.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -183,14 +313,14 @@ public class MainActivity extends AppCompatActivity {
 
 //提示声音音量
 
-        max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_ALARM );
-        current = mAudioManager.getStreamVolume( AudioManager.STREAM_ALARM );
+        max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM);
+        current = mAudioManager.getStreamVolume(AudioManager.STREAM_ALARM);
         Log.d("ALARM", "max : " + max + " current : " + current);
 
         mSeekBar5 = findViewById(R.id.seekBar5);
         mSeekBar5.setMax(max);
         mSeekBar5.setProgress(current);
-        mSeekBar5.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+        mSeekBar5.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -216,6 +346,22 @@ public class MainActivity extends AppCompatActivity {
         tvSeekCur5 = findViewById(R.id.tvSeekMax5);
         tvSeekCur5.setText(String.valueOf(max));
 
+
+        textView12 = findViewById(R.id.textView12);
+        textView12.setVisibility(View.INVISIBLE);
+
+        checkBox1 = findViewById(R.id.checkBox1);
+        checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    textView12.setVisibility(View.VISIBLE);
+                }else{
+                    textView12.setVisibility(View.INVISIBLE);
+                }
+
+            }
+        });
 
     }
 

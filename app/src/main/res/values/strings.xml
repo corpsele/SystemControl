@@ -25,4 +25,6 @@
     <string name="main_string_noti_voice_cur" />
     <string name="widget_string_system_voice">系统音量</string>
     <string name="widget_string_voip_voice">通话音量</string>
+    <string name="textview10">TextView</string>
+    <string name="log1">开启Log</string>
 </resources>
