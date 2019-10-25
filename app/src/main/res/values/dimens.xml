@@ -8,5 +8,7 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="widget_system_height" />
     <dimen name="widget_system_width" />
+    <dimen name="row_header_width"></dimen>
+    <dimen name="column_header_height"></dimen>
 
 </resources>

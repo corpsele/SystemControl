@@ -27,4 +27,7 @@
     <string name="widget_string_voip_voice">通话音量</string>
     <string name="textview10">TextView</string>
     <string name="log1">开启Log</string>
+    <string name="push1">Push</string>
+    <string name="textview">TextView</string>
+    <string name="string_text1">测试</string>
 </resources>

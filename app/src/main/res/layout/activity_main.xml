@@ -226,4 +226,15 @@
         android:text="@string/log1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/seekBar5" />
+
+    <Button
+        android:id="@+id/btnPush5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/push1"
+        app:layout_constraintBottom_toTopOf="@id/textView12"
+        app:layout_constraintStart_toEndOf="@id/checkBox1"
+        app:layout_constraintTop_toTopOf="@id/seekBar5" />
 </android.support.constraint.ConstraintLayout>
