@@ -15,11 +15,20 @@ public class RecycleAdapterDome extends RecyclerView.Adapter<RecycleAdapterDome.
     private Context context;
     private List<String> list;
     private View inflater;
+    private ClickInterface clickInterface;
 
     //构造方法，传入数据
     public RecycleAdapterDome(Context context, List<String> list) {
         this.context = context;
         this.list = list;
+    }
+
+    public void setOnClick(ClickInterface clickInterface){
+       this.clickInterface = clickInterface;
+    }
+
+    public interface ClickInterface{
+        public void onItemClick(View view, int position);
     }
 
     @Override
@@ -34,6 +43,14 @@ public class RecycleAdapterDome extends RecyclerView.Adapter<RecycleAdapterDome.
     public void onBindViewHolder(MyViewHolder holder, int position) {
         //将数据和控件绑定
         holder.textView.setText(list.get(position));
+        holder.textView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                if (clickInterface != null){
+                    clickInterface.onItemClick(v, position);
+                }
+            }
+        });
     }
 
     @Override

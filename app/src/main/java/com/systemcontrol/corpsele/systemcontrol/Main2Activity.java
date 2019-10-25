@@ -8,6 +8,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Adapter;
 
 import com.ihongqiqu.util.JSONUtils;
@@ -65,6 +66,18 @@ public class Main2Activity extends AppCompatActivity {
         //StaggeredGridLayoutManager manager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapterDome);
+
+        recyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                adapterDome.setOnClick(new RecycleAdapterDome.ClickInterface() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        System.out.println(position);
+                    }
+                });
+            }
+        });
 
     }
 
