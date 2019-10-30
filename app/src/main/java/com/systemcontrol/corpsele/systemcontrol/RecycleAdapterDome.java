@@ -1,7 +1,8 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,25 @@ public class RecycleAdapterDome extends RecyclerView.Adapter<RecycleAdapterDome.
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+        //将数据和控件绑定
+//        myViewHolder.textView.setText(list.get(i));
+        myViewHolder.textView.setText(list.get(myViewHolder.getAdapterPosition()));
+        myViewHolder.textView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                if (clickInterface != null){
+//                    clickInterface.onItemClick(v, i);
+                    clickInterface.onItemClick(v, myViewHolder.getAdapterPosition());
+                }
+            }
+        });
+    }
+/*
+    @Override
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position, @NonNull List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
+
         //将数据和控件绑定
         holder.textView.setText(list.get(position));
         holder.textView.setOnClickListener(new View.OnClickListener(){
@@ -52,7 +71,7 @@ public class RecycleAdapterDome extends RecyclerView.Adapter<RecycleAdapterDome.
             }
         });
     }
-
+*/
     @Override
     public int getItemCount() {
         //返回Item总条数
