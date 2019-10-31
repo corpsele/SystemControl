@@ -6,4 +6,7 @@
     <color name="unselected_background_color">#FFFFFF</color>
     <color name="shadow_background_color">#000000</color>
     <color name="selected_background_color">#5CC9F5</color>
+    <color name="dkplayer_theme_color">#39C5BB</color>
+    <color name="dkplayer_theme_color_translucent">#9939C5BB</color>
+    <color name="dkplayer_background_color">#96000000</color>
 </resources>

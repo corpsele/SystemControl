@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 import android.widget.Adapter;
-
 import com.ihongqiqu.util.JSONUtils;
 
 import java.util.ArrayList;
@@ -75,6 +74,16 @@ public class Main2Activity extends AppCompatActivity {
                     @Override
                     public void onItemClick(View view, int position) {
                         System.out.println(position);
+                        switch (position) {
+                            case 0:
+                                gotoDKVideoPlayer();
+                                break;
+                            case 1:
+                                gotoKKVideoPlayer();
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 });
             }
@@ -82,13 +91,33 @@ public class Main2Activity extends AppCompatActivity {
 
     }
 
+    private void gotoKKVideoPlayer(){
+        Intent intent = new Intent(Main2Activity.this, DKPlayerActivity.class);
+        intent.putExtra("type", 1);
+//        startActivity(intent);
+        startActivityForResult(intent, 200);
+    }
+
+    private void gotoDKVideoPlayer(){
+        Intent intent = new Intent(Main2Activity.this, PlayerActivity.class);
+        intent.putExtra("type", 1);
+//        startActivity(intent);
+        startActivityForResult(intent, 200);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         System.out.println(resultCode);
         super.onActivityResult(requestCode, resultCode, data);
+        try {
+            int result = data.getIntExtra("type", 0);
 
-        System.out.println(data.getIntExtra("type", 0));
-        setResult(resultCode, data);
-        finish();
+            System.out.println(result);
+            setResult(resultCode, data);
+            finish();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }
