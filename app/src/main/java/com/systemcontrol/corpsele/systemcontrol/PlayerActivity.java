@@ -35,10 +35,10 @@ public class PlayerActivity extends AppCompatActivity {
         videoPlayer.setUp(source1, true, "测试视频");
 
         //增加封面
-        ImageView imageView = new ImageView(this);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imageView.setImageResource(R.mipmap.xxx1);
-        videoPlayer.setThumbImageView(imageView);
+//        ImageView imageView = new ImageView(this);
+//        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//        imageView.setImageResource(R.mipmap.xxx1);
+//        videoPlayer.setThumbImageView(imageView);
         //增加title
         videoPlayer.getTitleTextView().setVisibility(View.VISIBLE);
         //设置返回键

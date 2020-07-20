@@ -1,0 +1,20 @@
+Executable : /Users/eport2/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake
+arguments : 
+-H/Users/eport2/SystemControl/app
+-DCMAKE_BUILD_TYPE=Release
+-DCMAKE_TOOLCHAIN_FILE=/Users/eport2/Library/Android/sdk/ndk/20.0.5594570/build/cmake/android.toolchain.cmake
+-DANDROID_ABI=x86_64
+-DANDROID_NDK=/Users/eport2/Library/Android/sdk/ndk/20.0.5594570
+-DANDROID_PLATFORM=android-24
+-DCMAKE_ANDROID_ARCH_ABI=x86_64
+-DCMAKE_ANDROID_NDK=/Users/eport2/Library/Android/sdk/ndk/20.0.5594570
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/Users/eport2/SystemControl/app/build/intermediates/cmake/release/obj/x86_64
+-DCMAKE_MAKE_PROGRAM=/Users/eport2/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja
+-DCMAKE_SYSTEM_NAME=Android
+-DCMAKE_SYSTEM_VERSION=24
+-B/Users/eport2/SystemControl/app/.cxx/cmake/release/x86_64
+-GNinja
+jvmArgs : 
+
+Build command args:

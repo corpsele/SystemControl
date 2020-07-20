@@ -36,6 +36,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import io.reactivex.rxjava3.core.*;
 
 public class MainActivity extends AppCompatActivity {
     private AudioManager mAudioManager;
@@ -178,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
         mSeekBar1 = findViewById(R.id.seekBar1);
         mSeekBar1.setMax(max);
         mSeekBar1.setProgress(current);
+
         mSeekBar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override

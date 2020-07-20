@@ -79,7 +79,7 @@ public class Main2Activity extends AppCompatActivity {
                                 gotoDKVideoPlayer();
                                 break;
                             case 1:
-                                gotoKKVideoPlayer();
+
                                 break;
                             default:
                                 break;
@@ -91,12 +91,6 @@ public class Main2Activity extends AppCompatActivity {
 
     }
 
-    private void gotoKKVideoPlayer(){
-        Intent intent = new Intent(Main2Activity.this, DKPlayerActivity.class);
-        intent.putExtra("type", 1);
-//        startActivity(intent);
-        startActivityForResult(intent, 200);
-    }
 
     private void gotoDKVideoPlayer(){
         Intent intent = new Intent(Main2Activity.this, PlayerActivity.class);
