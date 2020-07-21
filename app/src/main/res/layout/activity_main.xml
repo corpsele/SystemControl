@@ -9,195 +9,225 @@
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
         android:text="@string/main_string_noti_voice"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/tvSeekCur5"
         android:layout_width="32dp"
-        android:layout_height="0dp"
+        android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="13dp"
         android:text="@string/main_string_noti_voice_cur"
+        android:textAlignment="center"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/tvSeekCur4" />
 
     <SeekBar
         android:id="@+id/seekBar5"
-        android:layout_width="230dp"
-        android:layout_height="17dp"
-        android:layout_marginEnd="12dp"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toStartOf="@+id/tvSeekMax5"
+        app:layout_constraintStart_toEndOf="@+id/tvSeekCur5"
         app:layout_constraintTop_toBottomOf="@+id/seekBar4" />
 
     <TextView
         android:id="@+id/tvSeekMax5"
         android:layout_width="36dp"
-        android:layout_height="19dp"
-        android:layout_marginEnd="4dp"
+        android:layout_height="30dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="4dp"
         android:text="@string/main_string_noti_voice_max"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSeekMax4" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="11dp"
         android:text="@string/main_string_music_voice"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <TextView
         android:id="@+id/tvSeekCur4"
         android:layout_width="32dp"
-        android:layout_height="16dp"
+        android:layout_height="30dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:text="@string/main_string_music_voice_cur"
+        android:textAlignment="center"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/tvSeekCur3" />
 
     <SeekBar
         android:id="@+id/seekBar4"
-        android:layout_width="230dp"
-        android:layout_height="17dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="14dp"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toStartOf="@+id/tvSeekMax4"
+        app:layout_constraintStart_toEndOf="@+id/tvSeekCur4"
         app:layout_constraintTop_toBottomOf="@+id/seekBar3" />
 
     <TextView
         android:id="@+id/tvSeekMax4"
         android:layout_width="36dp"
-        android:layout_height="19dp"
-        android:layout_marginEnd="4dp"
+        android:layout_height="30dp"
         android:layout_marginTop="11dp"
+        android:layout_marginEnd="4dp"
         android:text="@string/main_string_music_voice_max"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSeekMax3" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="10dp"
         android:text="@string/main_string_ring_voice"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
         android:id="@+id/tvSeekCur3"
         android:layout_width="32dp"
-        android:layout_height="16dp"
+        android:layout_height="30dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="10dp"
         android:text="@string/main_string_ring_voice_cur"
+        android:textAlignment="center"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/tvSeekCur2" />
 
     <SeekBar
         android:id="@+id/seekBar3"
-        android:layout_width="230dp"
-        android:layout_height="17dp"
-        android:layout_marginEnd="12dp"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="11dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toStartOf="@+id/tvSeekMax3"
+        app:layout_constraintStart_toEndOf="@+id/tvSeekCur3"
         app:layout_constraintTop_toBottomOf="@+id/seekBar2" />
 
     <TextView
         android:id="@+id/tvSeekMax3"
         android:layout_width="36dp"
-        android:layout_height="19dp"
-        android:layout_marginEnd="4dp"
+        android:layout_height="30dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="4dp"
         android:text="@string/main_string_ring_voice_max"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSeekMax2" />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="16dp"
         android:text="@string/main_string_voip_voice"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <SeekBar
         android:id="@+id/seekBar1"
-        android:layout_width="230dp"
-        android:layout_height="18dp"
-        android:layout_marginEnd="12dp"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toStartOf="@+id/tvSeekMax1"
+        app:layout_constraintStart_toEndOf="@+id/tvSeekCur1"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvSeekCur1"
         android:layout_width="32dp"
-        android:layout_height="19dp"
+        android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="@string/main_string_voip_voice_cur"
+        android:textAlignment="center"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView1"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvSeekMax1"
         android:layout_width="36dp"
-        android:layout_height="19dp"
-        android:layout_marginEnd="4dp"
+        android:layout_height="30dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="4dp"
         android:text="@string/main_string_voip_voice_max"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="11dp"
         android:text="@string/main_string_system_voice"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView1" />
 
     <TextView
         android:id="@+id/tvSeekCur2"
         android:layout_width="32dp"
-        android:layout_height="16dp"
+        android:layout_height="30dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="10dp"
         android:text="@string/main_string_system_voice_cur"
+        android:textAlignment="center"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/tvSeekCur1" />
 
     <SeekBar
         android:id="@+id/seekBar2"
-        android:layout_width="230dp"
-        android:layout_height="17dp"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="11dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toStartOf="@+id/tvSeekMax2"
+        app:layout_constraintStart_toEndOf="@+id/tvSeekCur2"
         app:layout_constraintTop_toBottomOf="@+id/seekBar1" />
 
     <TextView
         android:id="@+id/tvSeekMax2"
         android:layout_width="36dp"
-        android:layout_height="19dp"
-        android:layout_marginEnd="4dp"
+        android:layout_height="30dp"
         android:layout_marginTop="11dp"
+        android:layout_marginEnd="4dp"
         android:text="@string/main_string_system_voice_max"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSeekMax1" />
 
@@ -206,8 +236,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="150dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="horizontal|vertical"
         android:singleLine="false"
@@ -222,7 +253,7 @@
         android:id="@+id/checkBox1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="80dp"
         android:text="@string/log1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/seekBar5" />
@@ -232,7 +263,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="60dp"
         android:text="@string/push1"
         app:layout_constraintBottom_toTopOf="@id/textView12"
         app:layout_constraintStart_toEndOf="@id/checkBox1"

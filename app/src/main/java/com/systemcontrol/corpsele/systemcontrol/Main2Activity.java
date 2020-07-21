@@ -1,8 +1,11 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
 import android.content.Intent;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 import android.widget.Adapter;
+
 import com.ihongqiqu.util.JSONUtils;
 
 import java.util.ArrayList;
@@ -79,7 +83,7 @@ public class Main2Activity extends AppCompatActivity {
                                 gotoDKVideoPlayer();
                                 break;
                             case 1:
-
+                                pushOtherActivity();
                                 break;
                             default:
                                 break;
@@ -91,8 +95,15 @@ public class Main2Activity extends AppCompatActivity {
 
     }
 
+    private void pushOtherActivity() {
+        Intent intent = new Intent(Main2Activity.this, Main3Activity.class);
+        intent.putExtra("type", 1);
+//        startActivity(intent);
+        startActivityForResult(intent, 200);
+    }
 
-    private void gotoDKVideoPlayer(){
+
+    private void gotoDKVideoPlayer() {
         Intent intent = new Intent(Main2Activity.this, PlayerActivity.class);
         intent.putExtra("type", 1);
 //        startActivity(intent);
@@ -109,7 +120,7 @@ public class Main2Activity extends AppCompatActivity {
             System.out.println(result);
             setResult(resultCode, data);
             finish();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

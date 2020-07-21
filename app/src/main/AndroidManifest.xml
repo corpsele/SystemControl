@@ -32,6 +32,9 @@
             android:name=".Main2Activity"
             android:launchMode="standard" />
         <activity
+            android:name=".Main3Activity"
+            android:launchMode="standard" />
+        <activity
             android:name=".MainActivity"
             android:launchMode="standard">
             <intent-filter>
