@@ -6,6 +6,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 //import android.support.v7.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,8 @@ import com.google.gson.Gson;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -107,7 +110,23 @@ public class MainActivity extends AppCompatActivity {
             sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
             final javax.net.ssl.SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            builder.sslSocketFactory(sslSocketFactory);
+//            builder.sslSocketFactory(sslSocketFactory);
+            builder.sslSocketFactory(sslSocketFactory, new X509TrustManager() {
+                @Override
+                public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+
+                }
+
+                @Override
+                public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+
+                }
+
+                @Override
+                public X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }
+            });
 
             builder.hostnameVerifier(new HostnameVerifier() {
                 @Override
@@ -140,7 +159,8 @@ public class MainActivity extends AppCompatActivity {
             map.put("name", "Bye Bye Bye");
             Gson gson = new Gson();
             String param = gson.toJson(map);
-            RequestBody body = RequestBody.create(JSON, param);
+//            RequestBody body = RequestBody.create(JSON, param);
+            RequestBody body = RequestBody.create(param.getBytes(), JSON);
 
             Request request = new Request.Builder().url(url).post(body).build();
             Call call = httpClient.newCall(request);
@@ -354,9 +374,9 @@ public class MainActivity extends AppCompatActivity {
         checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     textView12.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     textView12.setVisibility(View.INVISIBLE);
                 }
 
@@ -373,7 +393,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void pushOtherActivity(){
+    private void pushOtherActivity() {
         Intent intent = new Intent(MainActivity.this, Main2Activity.class);
         intent.putExtra("type", 1);
 //        startActivity(intent);
