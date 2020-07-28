@@ -1,12 +1,18 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
+import android.accessibilityservice.AccessibilityService;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.os.Bundle;
 //import android.support.v7.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -66,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textView12;
     private CheckBox checkBox1;
     private Button btnPush1;
+    private Button btnPushS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +90,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         thread.run();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
     }
 
@@ -391,6 +404,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnPushS = findViewById(R.id.buttonPushS);
+        btnPushS.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                pushSActivity();
+            }
+        });
+
     }
 
     private void pushOtherActivity() {
@@ -398,6 +420,59 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("type", 1);
 //        startActivity(intent);
         startActivityForResult(intent, 200);
+
+    }
+
+    private void pushSActivity(){
+        if (DataManager.getInstance().getOnAcc()){
+            DataManager.getInstance().setPoped(false);
+            return;
+        }
+        Intent intent = new Intent(MainActivity.this, MainActivityK1.class);
+        intent.putExtra("type", 1);
+//        startActivity(intent);
+        startActivityForResult(intent, 200);
+
+//        if (isAccessibilitySettingsOn()){
+//            ComponentName component = new ComponentName(getApplicationContext(), MyService1.class);
+//            getApplicationContext().getPackageManager().setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+//                    PackageManager.DONT_KILL_APP);
+//
+//            Intent intent1 = new Intent("com.systemcontrol.corpsele.systemcontrol.ACCESSIBILITY_ACTION");
+//            intent1.putExtra("action", AccessibilityService.GLOBAL_ACTION_POWER_DIALOG);
+//            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent1);
+
+//        }
+    }
+
+    public boolean isAccessibilitySettingsOn() {
+        int accessibilityEnabled = 0;
+        final String service = "com.systemcontrol.corpsele.systemcontrol";
+        boolean accessibilityFound = false;
+        try {
+            accessibilityEnabled = Settings.Secure.getInt(getApplicationContext().getContentResolver(),
+                    Settings.Secure.ACCESSIBILITY_ENABLED);
+        } catch (Settings.SettingNotFoundException e) {
+        }
+        TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
+
+        if (accessibilityEnabled == 1) {
+
+            String settingValue = Settings.Secure.getString(getApplicationContext().getContentResolver(),
+                    Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+            if (settingValue != null) {
+                TextUtils.SimpleStringSplitter splitter = mStringColonSplitter;
+                splitter.setString(settingValue);
+                while (splitter.hasNext()) {
+                    String accessabilityService = splitter.next();
+                    if (accessabilityService.equalsIgnoreCase(service)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return accessibilityFound;
     }
 
 }

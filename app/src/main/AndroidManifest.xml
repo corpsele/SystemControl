@@ -25,11 +25,28 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:remove="android:appComponentFactory">
-<!--        android:appComponentFactory="androidx">-->
-<!--        <activity android:name=".DKPlayerActivity"></activity>-->
+        <service
+            android:name=".MyAccessibilityService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/accessibility_service_name"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
+
+        <!-- android:appComponentFactory="androidx"> -->
+        <!-- <activity android:name=".DKPlayerActivity"></activity> -->
         <activity android:name=".PlayerActivity" />
         <activity
             android:name=".Main2Activity"
+            android:launchMode="standard" />
+        <activity
+            android:name=".MainActivityK1"
             android:launchMode="standard" />
         <activity
             android:name=".Main3Activity"

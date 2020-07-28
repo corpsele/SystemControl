@@ -44,17 +44,17 @@ public class Main3Activity extends AppCompatActivity {
         RxView.clicks(btn1).throttleFirst(3, TimeUnit.SECONDS).subscribe(new Observer<Unit>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
-
+                System.out.println("btn1 ");
             }
 
             @Override
             public void onNext(@NonNull Unit unit) {
-
+                System.out.println("btn1 " + unit.toString());
             }
 
             @Override
             public void onError(@NonNull Throwable e) {
-
+                System.out.println("btn1 " + e.getMessage());
             }
 
             @Override
