@@ -9,7 +9,7 @@ public class DataManager {
 
     private HashMap<String, Object> infoMap = new HashMap<String, Object>();
 
-    private Boolean isPoped = false;
+    private Boolean isPoped = true;
 
     private Boolean isOnAcc = false;
 
