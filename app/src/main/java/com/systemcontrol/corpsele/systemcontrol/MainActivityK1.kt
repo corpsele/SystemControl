@@ -1,23 +1,38 @@
 package com.systemcontrol.corpsele.systemcontrol
 
+//import android.support.v7.app.AppCompatActivity;
 import android.content.Context
 import android.content.Intent
-//import android.support.v7.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import org.jetbrains.anko.*
+import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.sdk25.coroutines.onContextClick
+import org.jetbrains.anko.sdk25.coroutines.onLongClick
 
 class MainActivityK1 : AppCompatActivity() {
     private val TAG = MainActivityK1::class.java.simpleName
+    private lateinit var btnBack: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_k1)
-        var info = "请开启\""+getString(R.string.accessibility_service_name)+"\"服务"
+        var info = "请开启\"" + getString(R.string.accessibility_service_name) + "\"服务"
         Toast.makeText(this, info, Toast.LENGTH_LONG).show()
+        btnBack = findViewById(R.id.btnBack);
+        btnBack?.setOnClickListener {
+            onBackPressed()
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 
     override fun onResume() {
