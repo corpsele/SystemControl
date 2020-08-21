@@ -19,6 +19,7 @@ import org.jetbrains.anko.sdk25.coroutines.onLongClick
 class MainActivityK1 : AppCompatActivity() {
     private val TAG = MainActivityK1::class.java.simpleName
     private lateinit var btnBack: Button
+    private lateinit var btnAccAsk: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +30,10 @@ class MainActivityK1 : AppCompatActivity() {
         btnBack?.setOnClickListener {
             onBackPressed()
         }
+        btnAccAsk = findViewById(R.id.btnAccAsk)
+        btnAccAsk.setOnClickListener{
+            checkAccessibilityServicePermission()
+        }
     }
 
     override fun onBackPressed() {
@@ -37,7 +42,7 @@ class MainActivityK1 : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        checkAccessibilityServicePermission()
+
     }
 
     private fun checkAccessibilityServicePermission() {

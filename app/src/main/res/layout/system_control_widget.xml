@@ -2,18 +2,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:backgroundTint="#FFFFFF"
+    android:backgroundTintMode="screen"
     android:padding="@dimen/widget_margin">
 
     <TextView
         android:id="@+id/tvWidget1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tvTextView3"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
         android:text="@string/widget_string_system_voice"
-        android:textColor="@color/colorPrimaryDark" />
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tvSystemNum"
@@ -27,34 +32,71 @@
         android:id="@+id/tvWidget2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/tvWidget1"
         android:layout_below="@+id/tvWidget1"
+        android:layout_alignStart="@+id/tvWidget1"
         android:layout_marginTop="14dp"
         android:text="@string/widget_string_voip_voice"
-        android:textColor="@color/colorPrimaryDark" />
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tvVoipNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvWidget2"
-        android:layout_alignStart="@+id/tvSystemNum" />
+        android:layout_alignStart="@+id/tvSystemNum"
+        android:layout_alignBottom="@+id/tvWidget2" />
 
     <ProgressBar
         android:id="@+id/progressBar1"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="220dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/tvSystemNum"
-        android:layout_marginStart="32dp"
+        android:layout_alignBottom="@id/tvSystemNum"
+        android:layout_marginStart="22dp"
         android:layout_toEndOf="@+id/tvSystemNum" />
 
     <ProgressBar
         android:id="@+id/progressBar2"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="220dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvVoipNum"
-        android:layout_alignStart="@+id/progressBar1" />
+        android:layout_alignStart="@+id/progressBar1"
+        android:layout_alignTop="@id/tvWidget2"
+        android:layout_alignBottom="@id/tvWidget2" />
+
+    <ProgressBar
+        android:id="@+id/progressBar3"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/progressBar2"
+        android:layout_alignTop="@id/tvTextView3"
+        android:layout_alignBottom="@id/tvTextView3" />
+
+    <TextView
+        android:id="@+id/tvTextView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/tvWidget1"
+        android:layout_marginTop="10dp"
+        android:text="音乐音量"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvMusicNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/tvSystemNum"
+        android:layout_alignBottom="@id/tvTextView3" />
+
+    <Button
+        android:id="@+id/btnShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvWidget2"
+        android:layout_alignLeft="@id/tvWidget1"
+        android:text="Button" />
 
 </RelativeLayout>

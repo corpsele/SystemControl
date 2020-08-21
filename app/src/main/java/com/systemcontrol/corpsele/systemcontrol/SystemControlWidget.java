@@ -3,9 +3,11 @@ package com.systemcontrol.corpsele.systemcontrol;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.widget.RemoteViews;
 import android.media.AudioManager.*;
 import android.util.*;
@@ -19,7 +21,7 @@ public class SystemControlWidget extends AppWidgetProvider {
     private static AudioManager mAudioManager;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+                                int[] appWidgetIds) {
 
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
@@ -30,10 +32,19 @@ public class SystemControlWidget extends AppWidgetProvider {
 
         getAudioDetail();
 
-        Intent fullIntent = new Intent("getAudioDetail");
+        Intent fullIntent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
                 fullIntent, 0);
-        views.setOnClickPendingIntent(R.id.progressBar1, pendingIntent);
+        //分别绑定id
+//        views.setOnClickPendingIntent(R.id.progressBar1,getPendingIntent(context,R.id.progressBar1));//第一个按钮
+//        views.setOnClickPendingIntent(R.id.progressBar2,getPendingIntent(context,R.id.progressBar1));//第一个按钮
+//        views.setOnClickPendingIntent(R.id.progressBar3,getPendingIntent(context,R.id.progressBar1));//第一个按钮
+//        views.setOnClickPendingIntent(R.id.tvTextView3,getPendingIntent(context,R.id.progressBar1));//第一个按钮
+//        views.setOnClickPendingIntent(R.id.tvWidget1,getPendingIntent(context,R.id.progressBar1));//第一个按钮
+//        views.setOnClickPendingIntent(R.id.tvWidget2,getPendingIntent(context,R.id.progressBar1));//第一个按钮
+//        views.setOnClickPendingIntent(R.layout.system_control_widget,getPendingIntent(context,R.layout.system_control_widget));//第一个按钮
+        views.setOnClickPendingIntent(R.id.btnShow, pendingIntent);
+//        views.setOnClickPendingIntent(R.id.progressBar1, pendingIntent);
 
         if (SystemControlWidgetConfigureActivity.getCheckBox1State()){
             views.setViewVisibility(R.id.tvWidget1, 1);
@@ -45,7 +56,7 @@ public class SystemControlWidget extends AppWidgetProvider {
             views.setViewVisibility(R.id.tvSystemNum, 0);
         }
         // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+        appWidgetManager.updateAppWidget(appWidgetIds, views);
 
     }
 
@@ -81,7 +92,10 @@ public class SystemControlWidget extends AppWidgetProvider {
 
         max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
         current = mAudioManager.getStreamVolume( AudioManager.STREAM_MUSIC );
-
+        String strMusic = String.valueOf(current) + "/" + String.valueOf(max);
+        views.setTextViewText(R.id.tvMusicNum, strMusic);
+        views.setProgressBar(R.id.progressBar3, max, current, false);
+        Log.d("Music", "max : " + max + " current : " + current);
 
 
 //提示声音音量
@@ -92,14 +106,38 @@ public class SystemControlWidget extends AppWidgetProvider {
 
     }
 
+    private static PendingIntent getPendingIntent(Context context, int resID){
+        Intent intent = new Intent();
+        //intent.setClass(context, AppWidget.class);//此时这句代码去掉
+        intent.setAction("getAudioDetail");
+        //设置data域的时候，把控件id一起设置进去，
+        // 因为在绑定的时候，是将同一个id绑定在一起的，所以哪个控件点击，发送的intent中data中的id就是哪个控件的id
+        intent.setData(Uri.parse("id:" + resID));
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,intent,0);
+        return pendingIntent;
+    }
+
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
-        for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
-        }
+//        for (int appWidgetId : appWidgetIds) {
+//            updateAppWidget(context, appWidgetManager, appWidgetIds);
+//        }
+        updateAppWidget(context, appWidgetManager, appWidgetIds);
 
+        RemoteViews v = new RemoteViews(context.getPackageName(), R.layout.system_control_widget);
+        Intent fullIntent = new Intent(context, MainActivity.class);
+        fullIntent.setAction("APPWIDGET_CLICK");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
+                fullIntent, 0);
+        v.setOnClickPendingIntent(R.id.btnShow, pendingIntent);
+        appWidgetManager.updateAppWidget(appWidgetIds, v);
+
+//        super.onUpdate(context, appWidgetManager, appWidgetIds);
+
+        System.out.println("onUpdate");
     }
 
     @Override
@@ -124,8 +162,30 @@ public class SystemControlWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        if (intent.getAction().equals("getAudioDetail")) {
+        Log.i("system", "onReceive");
+        System.out.println("onReceive");
 
+        if (intent.getAction().equals("getAudioDetail")) {
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.system_control_widget);
+            Uri data = intent.getData();
+            int resId = -1;
+            if (data!=null){
+                resId = Integer.parseInt(data.getSchemeSpecificPart());
+            }
+            switch (resId){
+                case R.id.progressBar1:
+//                    remoteViews.setImageViewResource(R.id.img, R.drawable.logo);
+                    break;
+            }
+            //获得appwidget管理实例，用于管理appwidget以便进行更新操作
+            AppWidgetManager manger = AppWidgetManager.getInstance(context);
+            // 相当于获得所有本程序创建的appwidget
+            ComponentName thisName = new ComponentName(context,SystemControlWidget.class);
+            //更新widget
+            manger.updateAppWidget(thisName,remoteViews);
+
+
+        }else{
 
         }
     }
