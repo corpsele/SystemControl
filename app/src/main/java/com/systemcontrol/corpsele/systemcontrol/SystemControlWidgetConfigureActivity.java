@@ -36,7 +36,8 @@ public class SystemControlWidgetConfigureActivity extends Activity {
 
             // It is the responsibility of the configuration activity to update the app widget
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            SystemControlWidget.updateAppWidget(context, appWidgetManager, new int[]{mAppWidgetId});
+//            SystemControlWidget.updateAppWidget(context, appWidgetManager, new int[]{mAppWidgetId});
+            SystemControlWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId);
 
             // Make sure we pass back the original appWidgetId
             Intent resultValue = new Intent();

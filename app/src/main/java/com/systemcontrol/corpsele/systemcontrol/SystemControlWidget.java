@@ -21,20 +21,23 @@ public class SystemControlWidget extends AppWidgetProvider {
     private static AudioManager mAudioManager;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int[] appWidgetIds) {
+                                int appWidgetId) {
 
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
 //        CharSequence widgetText = SystemControlWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
         // Construct the RemoteViews object
         views = new RemoteViews(context.getPackageName(), R.layout.system_control_widget);
+
 //        views.setTextViewText(R.id.tvVoipNum, "SystemControl");
 
         getAudioDetail();
 
         Intent fullIntent = new Intent(context, MainActivity.class);
+        fullIntent.setAction("BTNSHOW_VIEW_ACTION");
+        fullIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
-                fullIntent, 0);
+                fullIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         //分别绑定id
 //        views.setOnClickPendingIntent(R.id.progressBar1,getPendingIntent(context,R.id.progressBar1));//第一个按钮
 //        views.setOnClickPendingIntent(R.id.progressBar2,getPendingIntent(context,R.id.progressBar1));//第一个按钮
@@ -45,6 +48,7 @@ public class SystemControlWidget extends AppWidgetProvider {
 //        views.setOnClickPendingIntent(R.layout.system_control_widget,getPendingIntent(context,R.layout.system_control_widget));//第一个按钮
         views.setOnClickPendingIntent(R.id.btnShow, pendingIntent);
 //        views.setOnClickPendingIntent(R.id.progressBar1, pendingIntent);
+        views.setPendingIntentTemplate(R.id.btnShow, pendingIntent);
 
         if (SystemControlWidgetConfigureActivity.getCheckBox1State()){
             views.setViewVisibility(R.id.tvWidget1, 1);
@@ -56,7 +60,7 @@ public class SystemControlWidget extends AppWidgetProvider {
             views.setViewVisibility(R.id.tvSystemNum, 0);
         }
         // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetIds, views);
+        appWidgetManager.updateAppWidget(appWidgetId, views);
 
     }
 
@@ -122,22 +126,31 @@ public class SystemControlWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
-//        for (int appWidgetId : appWidgetIds) {
-//            updateAppWidget(context, appWidgetManager, appWidgetIds);
-//        }
-        updateAppWidget(context, appWidgetManager, appWidgetIds);
+        for (int appWidgetId : appWidgetIds) {
+            updateAppWidget(context, appWidgetManager, appWidgetId);
 
-        RemoteViews v = new RemoteViews(context.getPackageName(), R.layout.system_control_widget);
-        Intent fullIntent = new Intent(context, MainActivity.class);
-        fullIntent.setAction("APPWIDGET_CLICK");
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
-                fullIntent, 0);
-        v.setOnClickPendingIntent(R.id.btnShow, pendingIntent);
-        appWidgetManager.updateAppWidget(appWidgetIds, v);
+            RemoteViews v = new RemoteViews(context.getPackageName(), R.layout.system_control_widget);
+            Intent fullIntent = new Intent(context, MainActivity.class);
+            fullIntent.setAction("APPWIDGET_CLICK");
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, appWidgetId,
+                    fullIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//            v.setIntent(R.id.btnShow, "setOnClickListener", fullIntent);
+//            views.setOnClickFillInIntent(R.id.btnShow, fullIntent);
+            v.setOnClickPendingIntent(R.id.btnShow, pendingIntent);
+//            v.setPendingIntentTemplate(R.id.btnShow, pendingIntent);
+            appWidgetManager.updateAppWidget(appWidgetId, v);
+        }
+//        updateAppWidget(context, appWidgetManager, appWidgetIds);
 
-//        super.onUpdate(context, appWidgetManager, appWidgetIds);
+
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
 
         System.out.println("onUpdate");
+    }
+
+    public void setOnClick()
+    {
+
     }
 
     @Override

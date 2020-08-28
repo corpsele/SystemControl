@@ -1,0 +1,218 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#09C"
+    android:orientation="vertical"
+    android:padding="@dimen/widget_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/appwidget_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/appwidget_text"/>
+
+        <Button
+            android:id="@+id/appwidget_service_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="打开服务" />
+
+        <Button
+            android:id="@+id/appwidget_brocast_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发送按钮action" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/count_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="倒计时" />
+
+        <ImageView
+            android:id="@+id/widget_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/btnVoipAdd"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@id/progressBar2"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="-5dp"
+            android:layout_toRightOf="@id/progressBar2"
+            android:paddingTop="8dp"
+            android:text="+"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btnVoipDec"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@id/progressBar2"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="-5dp"
+            android:layout_toRightOf="@id/btnVoipAdd"
+            android:paddingTop="8dp"
+            android:text="-"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btnSystemAdd"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@id/progressBar1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="-5dp"
+            android:layout_toRightOf="@id/progressBar1"
+            android:paddingTop="8dp"
+            android:text="+"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btnSystemDec"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@id/progressBar1"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="-5dp"
+            android:layout_toRightOf="@id/btnSystemAdd"
+            android:paddingTop="8dp"
+            android:text="-"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btnMusicDec"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@id/progressBar3"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="0dp"
+            android:layout_toRightOf="@id/btnMusicAdd"
+            android:paddingTop="8dp"
+            android:text="-"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tvWidget1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/tvTextView3"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:text="@string/widget_string_system_voice"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvSystemNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tvWidget1"
+            android:layout_marginStart="14dp"
+            android:layout_toEndOf="@+id/tvWidget1" />
+
+        <TextView
+            android:id="@+id/tvWidget2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvWidget1"
+            android:layout_alignStart="@+id/tvWidget1"
+            android:layout_marginTop="14dp"
+            android:text="@string/widget_string_voip_voice"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvVoipNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tvSystemNum"
+            android:layout_alignBottom="@+id/tvWidget2" />
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tvSystemNum"
+            android:layout_alignBottom="@id/tvSystemNum"
+            android:layout_marginStart="22dp"
+            android:layout_toEndOf="@+id/tvSystemNum" />
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/progressBar1"
+            android:layout_alignTop="@id/tvWidget2"
+            android:layout_alignBottom="@id/tvWidget2" />
+
+        <ProgressBar
+            android:id="@+id/progressBar3"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/progressBar2"
+            android:layout_alignTop="@id/tvTextView3"
+            android:layout_alignBottom="@id/tvTextView3" />
+
+        <TextView
+            android:id="@+id/tvTextView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/tvWidget1"
+            android:layout_marginTop="10dp"
+            android:text="音乐音量"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvMusicNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/tvSystemNum"
+            android:layout_alignBottom="@id/tvTextView3" />
+
+        <Button
+            android:id="@+id/btnMusicAdd"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@id/progressBar3"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/progressBar3"
+            android:paddingTop="8dp"
+            android:text="+"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+
+</LinearLayout>
