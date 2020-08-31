@@ -14,7 +14,8 @@ android {
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         multiDexEnabled true
         ndk{
-            abiFilters "arm64-v8a", "armeabi", "armeabi-v7a","mips","mips64", "x86", "x86_64"
+//            abiFilters "arm64-v8a", "armeabi", "armeabi-v7a","mips","mips64", "x86", "x86_64"
+            abiFilters "x86_64"
 //            abiFilters "armeabi", "armeabi-v7a", "x86", "x86_64"
         }
     }
@@ -46,21 +47,21 @@ android {
         exclude 'META-INF/androidx.vectordrawable_vectordrawable.version'
         exclude 'META-INF/androidx.core_core.version'
         exclude 'META-INF/androidx.vectordrawable_vectordrawable-animated.version'
-//        exclude "lib/x86/libijksdl.so"
-//        exclude "lib/armeabi-v7a/libijkplayer.so"
-//        exclude "lib/x86/libijkplayer.so"
-//        exclude "lib/x86/libijkffmpeg.so"
-//        exclude "lib/arm64-v8a/libijkplayer.so"
-//        exclude "lib/armeabi/libijkplayer.so"
-//        exclude "lib/armeabi/libijksdl.so"
-//        exclude "lib/armeabi/libijkffmpeg.so"
-//        exclude "lib/armeabi-v7a/libijksdl.so"
+        exclude "lib/armeabi-v7a/libijkplayer.so"
+        exclude "lib/armeabi-v7a/libijkffmpeg.so"
+        exclude "lib/x86/libijkplayer.so"
+        exclude "lib/x86/libijkffmpeg.so"
+        exclude "lib/x86/libijksdl.so"
+        exclude "lib/armeabi/libijkplayer.so"
+        exclude "lib/armeabi/libijksdl.so"
+        exclude "lib/armeabi/libijkffmpeg.so"
+        exclude "lib/armeabi-v7a/libijksdl.so"
 //        exclude "lib/x86_64/libijksdl.so"
 //        exclude "lib/x86_64/libijkplayer.so"
-//        exclude "lib/arm64-v8a/libijkffmpeg.so"
 //        exclude "lib/x86_64/libijkffmpeg.so"
-//        exclude "lib/armeabi-v7a/libijkffmpeg.so"
-//        exclude "lib/arm64-v8a/libijksdl.so"
+        exclude "lib/arm64-v8a/libijksdl.so"
+                exclude "lib/arm64-v8a/libijkffmpeg.so"
+                exclude "lib/arm64-v8a/libijkplayer.so"
     }
     lintOptions {
         abortOnError false
