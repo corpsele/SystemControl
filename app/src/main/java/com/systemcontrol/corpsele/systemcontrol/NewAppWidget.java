@@ -135,6 +135,7 @@ public class NewAppWidget extends AppWidgetProvider {
         if (Objects.equals(intent.getAction(), "com.action.haha")) {
             Toast.makeText(context, "收到了 哥", Toast.LENGTH_SHORT).show();
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
+            views1 = remoteViews;
             if (isTurning) {
 //                remoteViews.setImageViewResource(R.id.widget_iv, R.mipmap.b2);
                 isTurning = false;
@@ -142,6 +143,7 @@ public class NewAppWidget extends AppWidgetProvider {
 //                remoteViews.setImageViewResource(R.id.widget_iv, R.mipmap.b1);
                 isTurning = true;
             }
+            getAudioDetail(context);
             //获得appwidget管理实例，用于管理appwidget以便进行更新操作
             AppWidgetManager manger = AppWidgetManager.getInstance(context);
             // 相当于获得所有本程序创建的appwidget
@@ -151,6 +153,7 @@ public class NewAppWidget extends AppWidgetProvider {
         }else if (Objects.equals(intent.getAction(), "com.action.musicAddAction")){
             Toast.makeText(context, "音乐音量加", Toast.LENGTH_SHORT).show();
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
+            views1 = remoteViews;
             if (musicCurrent < musicMax){
                 musicCurrent++;
                 mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, musicCurrent, AudioManager.FLAG_SHOW_UI);
@@ -161,10 +164,11 @@ getAudioDetail(context);
             // 相当于获得所有本程序创建的appwidget
             ComponentName thisName = new ComponentName(context, NewAppWidget.class);
             //更新widget
-            manger.updateAppWidget(thisName, views1);
+            manger.updateAppWidget(thisName, remoteViews);
         }else if (Objects.equals(intent.getAction(), "com.action.musicDecAction")){
             Toast.makeText(context, "音乐音量减", Toast.LENGTH_SHORT).show();
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
+            views1 = remoteViews;
             if (musicCurrent > 0){
                 musicCurrent--;
                 mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, musicCurrent, AudioManager.FLAG_SHOW_UI);
@@ -175,10 +179,11 @@ getAudioDetail(context);
             // 相当于获得所有本程序创建的appwidget
             ComponentName thisName = new ComponentName(context, NewAppWidget.class);
             //更新widget
-            manger.updateAppWidget(thisName, views1);
+            manger.updateAppWidget(thisName, remoteViews);
         }else if (Objects.equals(intent.getAction(), "com.action.systemAddAction")){
             Toast.makeText(context, "系统音量加", Toast.LENGTH_SHORT).show();
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
+            views1 = remoteViews;
             if (systemCurrent < systemMax){
                 systemCurrent++;
                 mAudioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, systemCurrent, AudioManager.FLAG_SHOW_UI);
@@ -189,10 +194,11 @@ getAudioDetail(context);
             // 相当于获得所有本程序创建的appwidget
             ComponentName thisName = new ComponentName(context, NewAppWidget.class);
             //更新widget
-            manger.updateAppWidget(thisName, views1);
+            manger.updateAppWidget(thisName, remoteViews);
         }else if (Objects.equals(intent.getAction(), "com.action.systemDecAction")){
             Toast.makeText(context, "系统音量减", Toast.LENGTH_SHORT).show();
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
+            views1 = remoteViews;
             if (systemCurrent > 0){
                 systemCurrent--;
                 mAudioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, systemCurrent, AudioManager.FLAG_SHOW_UI);
@@ -203,10 +209,11 @@ getAudioDetail(context);
             // 相当于获得所有本程序创建的appwidget
             ComponentName thisName = new ComponentName(context, NewAppWidget.class);
             //更新widget
-            manger.updateAppWidget(thisName, views1);
+            manger.updateAppWidget(thisName, remoteViews);
         }else if (Objects.equals(intent.getAction(), "com.action.voipAddAction")){
             Toast.makeText(context, "通话音量加", Toast.LENGTH_SHORT).show();
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
+            views1 = remoteViews;
             if (voipCurrent < voipMax){
                 voipCurrent++;
                 mAudioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, voipCurrent, AudioManager.FLAG_SHOW_UI);
@@ -217,10 +224,11 @@ getAudioDetail(context);
             // 相当于获得所有本程序创建的appwidget
             ComponentName thisName = new ComponentName(context, NewAppWidget.class);
             //更新widget
-            manger.updateAppWidget(thisName, views1);
+            manger.updateAppWidget(thisName, remoteViews);
         }else if (Objects.equals(intent.getAction(), "com.action.voipDecAction")){
             Toast.makeText(context, "通话音量减", Toast.LENGTH_SHORT).show();
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
+            views1 = remoteViews;
             if (voipCurrent > 0){
                 voipCurrent--;
                 mAudioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, voipCurrent, AudioManager.FLAG_SHOW_UI);
@@ -231,7 +239,7 @@ getAudioDetail(context);
             // 相当于获得所有本程序创建的appwidget
             ComponentName thisName = new ComponentName(context, NewAppWidget.class);
             //更新widget
-            manger.updateAppWidget(thisName, views1);
+            manger.updateAppWidget(thisName, remoteViews);
         }
 
 
@@ -241,6 +249,7 @@ getAudioDetail(context);
         if (mAudioManager == null){
             mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         }
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
         //通话音量
 
         int max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_VOICE_CALL );
