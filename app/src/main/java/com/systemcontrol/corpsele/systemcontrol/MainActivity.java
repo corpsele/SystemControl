@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             OkHttpClient httpClient = getUnsafeOkHttpClient();
-            String url = "https://api.apiopen.top/searchMusic";
+            String url = "https://api.apiopen.top/getAllUrl";
 //            RequestBody body = new FormBody.Builder().add("scope", "103").add("format", "json").add("appid", "379020").addEncoded("bk_key", "Android").add("bk_length", "600").build();
             MediaType JSON = MediaType.parse("application/json; charset=utf-8");
             Map map = new HashMap();
@@ -173,10 +173,10 @@ public class MainActivity extends AppCompatActivity {
             map.put("name", "Bye Bye Bye");
             Gson gson = new Gson();
             String param = gson.toJson(map);
-//            RequestBody body = RequestBody.create(JSON, param);
+//            RequestBody body = RequestBody.crea
             RequestBody body = RequestBody.create(param.getBytes(), JSON);
 
-            Request request = new Request.Builder().url(url).post(body).build();
+            Request request = new Request.Builder().url(url).get().build();
             Call call = httpClient.newCall(request);
             call.enqueue(new Callback() {
                 @Override
@@ -189,11 +189,12 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     String responseResult = response.body().string();
                     ResponseBody responseBody = response.body();
+
                     textView12.setText(response.message() + "\n" + responseResult);
                     Gson gson1 = new Gson();
 //                    Type type = new TypeToken<Result>() {}.getType();
-                    Result result = gson1.fromJson(responseResult, Result.class);
-                    System.out.println(result.getMessage());
+//                    Result result = gson1.fromJson(responseResult, Result.class);
+//                    System.out.println(result.getMessage());
                     System.out.println(response.message());
                 }
             });
