@@ -42,4 +42,5 @@
     <string name="button">Button</string>
     <string name="accessibility_service_name">---测试无障碍服务---</string>
     <string name="accessibility_service_description">开启测试无障碍服务,体验更快捷的操作方式。</string>
+    <string name="widget_string_sms_voice">信息音量</string>
 </resources>

@@ -27,6 +27,8 @@ public class NewAppWidget extends AppWidgetProvider {
     private static int systemMax = 0;
     private static int voipCurrent = 0;
     private static int voipMax = 0;
+    private static int smsCurrent = 0;
+    private static int smsMax = 0;
 
     static void updateAppWidget(final Context context, final AppWidgetManager appWidgetManager,
                                 final int appWidgetId) {
@@ -87,6 +89,14 @@ public class NewAppWidget extends AppWidgetProvider {
         Intent voipDecIntent = new Intent("com.action.voipDecAction",null,context,NewAppWidget.class);
         PendingIntent voipDecPendingIntent = PendingIntent.getBroadcast(context, 0, voipDecIntent, 0);
         views.setOnClickPendingIntent(R.id.btnVoipDec, voipDecPendingIntent);
+
+        Intent smsAddIntent = new Intent("com.action.smsAddAction",null,context,NewAppWidget.class);
+        PendingIntent smsAddPendingIntent = PendingIntent.getBroadcast(context, 0, smsAddIntent, 0);
+        views.setOnClickPendingIntent(R.id.btnVoipAdd2, voipAddPendingIntent);
+
+        Intent smsDecIntent = new Intent("com.action.smsDecAction",null,context,NewAppWidget.class);
+        PendingIntent smsDecPendingIntent = PendingIntent.getBroadcast(context, 0, smsDecIntent, 0);
+        views.setOnClickPendingIntent(R.id.btnVoipDec2, voipDecPendingIntent);
 
 //        CountDownTimer countDownTimer = new CountDownTimer(40000, 1000) {
 //            @Override
@@ -240,6 +250,36 @@ getAudioDetail(context);
             ComponentName thisName = new ComponentName(context, NewAppWidget.class);
             //更新widget
             manger.updateAppWidget(thisName, remoteViews);
+        }else if (Objects.equals(intent.getAction(), "com.action.smsAddAction")){
+            Toast.makeText(context, "提示音量加", Toast.LENGTH_SHORT).show();
+            remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
+            views1 = remoteViews;
+            if (smsCurrent < smsMax){
+                smsCurrent++;
+                mAudioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, smsCurrent, AudioManager.FLAG_SHOW_UI);
+            }
+            getAudioDetail(context);
+            //获得appwidget管理实例，用于管理appwidget以便进行更新操作
+            AppWidgetManager manger = AppWidgetManager.getInstance(context);
+            // 相当于获得所有本程序创建的appwidget
+            ComponentName thisName = new ComponentName(context, NewAppWidget.class);
+            //更新widget
+            manger.updateAppWidget(thisName, remoteViews);
+        }else if (Objects.equals(intent.getAction(), "com.action.smsDecAction")){
+            Toast.makeText(context, "提示音量减", Toast.LENGTH_SHORT).show();
+            remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
+            views1 = remoteViews;
+            if (smsCurrent > 0){
+                smsCurrent--;
+                mAudioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, smsCurrent, AudioManager.FLAG_SHOW_UI);
+            }
+            getAudioDetail(context);
+            //获得appwidget管理实例，用于管理appwidget以便进行更新操作
+            AppWidgetManager manger = AppWidgetManager.getInstance(context);
+            // 相当于获得所有本程序创建的appwidget
+            ComponentName thisName = new ComponentName(context, NewAppWidget.class);
+            //更新widget
+            manger.updateAppWidget(thisName, remoteViews);
         }
 
 
@@ -293,10 +333,16 @@ getAudioDetail(context);
         Log.d("Music", "max : " + max + " current : " + current);
 
 
+
 //提示声音音量
 
         max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_ALARM );
         current = mAudioManager.getStreamVolume( AudioManager.STREAM_ALARM );
+        String strSMS = String.valueOf(current) + "/" + String.valueOf(max);
+        views1.setTextViewText(R.id.tvVoipNum2, strSMS);
+        views1.setProgressBar(R.id.progressBar5, max, current, false);
+        smsCurrent = current;
+        smsMax = max;
 
 
     }
