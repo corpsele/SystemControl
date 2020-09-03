@@ -13,6 +13,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox checkBox1;
     private Button btnPush1;
     private Button btnPushS;
+    private boolean hasChecked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +100,13 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         getAudioDetail();
+
+
+        if (hasChecked) {
+            textView12.setVisibility(View.VISIBLE);
+        } else {
+            textView12.setVisibility(View.INVISIBLE);
+        }
     }
 
     public static OkHttpClient getUnsafeOkHttpClient() {
@@ -384,11 +393,13 @@ public class MainActivity extends AppCompatActivity {
 
         textView12 = findViewById(R.id.textView12);
         textView12.setVisibility(View.INVISIBLE);
+        textView12.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         checkBox1 = findViewById(R.id.checkBox1);
         checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                hasChecked = isChecked;
                 if (isChecked) {
                     textView12.setVisibility(View.VISIBLE);
                 } else {
@@ -425,8 +436,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void pushSActivity(){
-        if (DataManager.getInstance().getOnAcc()){
+    private void pushSActivity() {
+        if (DataManager.getInstance().getOnAcc()) {
             DataManager.getInstance().setPoped(false);
             return;
         }
