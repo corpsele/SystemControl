@@ -92,11 +92,11 @@ public class NewAppWidget extends AppWidgetProvider {
 
         Intent smsAddIntent = new Intent("com.action.smsAddAction",null,context,NewAppWidget.class);
         PendingIntent smsAddPendingIntent = PendingIntent.getBroadcast(context, 0, smsAddIntent, 0);
-        views.setOnClickPendingIntent(R.id.btnVoipAdd2, voipAddPendingIntent);
+        views.setOnClickPendingIntent(R.id.btnVoipAdd2, smsAddPendingIntent);
 
         Intent smsDecIntent = new Intent("com.action.smsDecAction",null,context,NewAppWidget.class);
         PendingIntent smsDecPendingIntent = PendingIntent.getBroadcast(context, 0, smsDecIntent, 0);
-        views.setOnClickPendingIntent(R.id.btnVoipDec2, voipDecPendingIntent);
+        views.setOnClickPendingIntent(R.id.btnVoipDec2, smsDecPendingIntent);
 
 //        CountDownTimer countDownTimer = new CountDownTimer(40000, 1000) {
 //            @Override
