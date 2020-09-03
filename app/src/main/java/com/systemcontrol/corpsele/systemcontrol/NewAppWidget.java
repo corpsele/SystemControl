@@ -256,7 +256,7 @@ getAudioDetail(context);
             views1 = remoteViews;
             if (smsCurrent < smsMax){
                 smsCurrent++;
-                mAudioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, smsCurrent, AudioManager.FLAG_SHOW_UI);
+                mAudioManager.setStreamVolume(AudioManager.STREAM_ALARM, smsCurrent, AudioManager.FLAG_SHOW_UI);
             }
             getAudioDetail(context);
             //获得appwidget管理实例，用于管理appwidget以便进行更新操作
@@ -271,7 +271,7 @@ getAudioDetail(context);
             views1 = remoteViews;
             if (smsCurrent > 0){
                 smsCurrent--;
-                mAudioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, smsCurrent, AudioManager.FLAG_SHOW_UI);
+                mAudioManager.setStreamVolume(AudioManager.STREAM_ALARM, smsCurrent, AudioManager.FLAG_SHOW_UI);
             }
             getAudioDetail(context);
             //获得appwidget管理实例，用于管理appwidget以便进行更新操作
