@@ -64,6 +64,15 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.action.haha" />
+                <action android:name="com.systemcontrol.restart"/>
+                <action android:name="com.action.systemAddAction"/>
+                <action android:name="com.action.systemDecAction"/>
+                <action android:name="com.action.smsAddAction"/>
+                <action android:name="com.action.smsDecAction"/>
+                <action android:name="com.action.voipAddAction"/>
+                <action android:name="com.action.voipDecAction"/>
+                <action android:name="com.action.musicAddAction"/>
+                <action android:name="com.action.musicDecAction"/>
             </intent-filter>
 
             <meta-data

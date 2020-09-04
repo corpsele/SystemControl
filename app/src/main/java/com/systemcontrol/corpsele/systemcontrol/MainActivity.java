@@ -1,6 +1,7 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
 import android.accessibilityservice.AccessibilityService;
+import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RemoteViews;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -107,6 +109,20 @@ public class MainActivity extends AppCompatActivity {
         } else {
             textView12.setVisibility(View.INVISIBLE);
         }
+
+//        RemoteViews views = new RemoteViews(getPackageName(), R.layout.new_app_widget);
+//        //获得appwidget管理实例，用于管理appwidget以便进行更新操作
+        Context tmp = NewAppWidget.mainContext;
+        if (NewAppWidget.mainContext == null){
+            tmp = this;
+        }
+        Intent intent = new Intent(tmp, NewAppWidget.class);
+        tmp.startService(intent);
+//        AppWidgetManager manger = AppWidgetManager.getInstance(tmp);
+//        // 相当于获得所有本程序创建的appwidget
+//        ComponentName thisName = new ComponentName(this, NewAppWidget.class);
+//        //更新widget
+//        manger.updateAppWidget(thisName, views);
     }
 
     public static OkHttpClient getUnsafeOkHttpClient() {

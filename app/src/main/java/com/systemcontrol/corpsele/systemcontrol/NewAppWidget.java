@@ -29,9 +29,12 @@ public class NewAppWidget extends AppWidgetProvider {
     private static int voipMax = 0;
     private static int smsCurrent = 0;
     private static int smsMax = 0;
+    public static Context mainContext = null;
+
 
     static void updateAppWidget(final Context context, final AppWidgetManager appWidgetManager,
                                 final int appWidgetId) {
+        mainContext = context;
         CharSequence widgetText = "打开activity";
         // Construct the RemoteViews object
         final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
@@ -40,7 +43,7 @@ public class NewAppWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.appwidget_text, widgetText);
         Intent fullIntent = new Intent(context, MainActivity.class);
 //        fullIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        fullIntent.putExtra("pending_", "过年了 哥");
+        fullIntent.putExtra("pending_", "过了");
         PendingIntent Pfullintent = PendingIntent.getActivity(context, 0, fullIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         views.setOnClickPendingIntent(R.id.appwidget_text, Pfullintent);
         /*
@@ -122,6 +125,7 @@ public class NewAppWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
+        mainContext = context;
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
@@ -129,12 +133,16 @@ public class NewAppWidget extends AppWidgetProvider {
 
     @Override
     public void onEnabled(Context context) {
+        mainContext = context;
         // Enter relevant functionality for when the first widget is created
     }
 
     @Override
     public void onDisabled(Context context) {
+        mainContext = context;
         // Enter relevant functionality for when the last widget is disabled
+        Intent intent=new Intent(context, NewAppWidget.class);
+        context.stopService(intent);
     }
 
     @Override
@@ -143,7 +151,7 @@ public class NewAppWidget extends AppWidgetProvider {
         RemoteViews remoteViews = null;
 
         if (Objects.equals(intent.getAction(), "com.action.haha")) {
-            Toast.makeText(context, "收到了 哥", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "收到了", Toast.LENGTH_SHORT).show();
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
             views1 = remoteViews;
             if (isTurning) {
@@ -280,6 +288,9 @@ getAudioDetail(context);
             ComponentName thisName = new ComponentName(context, NewAppWidget.class);
             //更新widget
             manger.updateAppWidget(thisName, remoteViews);
+        }else if (Objects.equals(intent.getAction(), "com.systemcontrol.restart")){
+            Intent intent2=new Intent(context,NewAppWidget.class);
+            context.startService(intent2);
         }
 
 

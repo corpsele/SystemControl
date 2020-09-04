@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
  */
 
 public class MyService extends Service {
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -20,17 +21,27 @@ public class MyService extends Service {
 
     @Override
     public void onCreate() {
-        super.onCreate();
+
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Toast.makeText(this, "服务启动了 ", Toast.LENGTH_SHORT).show();
-        return super.onStartCommand(intent, flags, startId);
+//        return super.onStartCommand(intent, flags, startId);
+        return START_STICKY_COMPATIBILITY;
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+
+//        super.onDestroy();
+        Intent localIntent = new Intent();
+        localIntent.setClass(this, MyService.class); // 销毁时重新启动Service
+        this.startService(localIntent);
+
+        Intent localIntent1 = new Intent();
+        localIntent1.setAction("com.systemcontrol.restart");
+        sendBroadcast(localIntent);
     }
 }
