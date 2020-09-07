@@ -112,12 +112,18 @@ public class MainActivity extends AppCompatActivity {
 
 //        RemoteViews views = new RemoteViews(getPackageName(), R.layout.new_app_widget);
 //        //获得appwidget管理实例，用于管理appwidget以便进行更新操作
-        Context tmp = NewAppWidget.mainContext;
-        if (NewAppWidget.mainContext == null){
-            tmp = this;
-        }
-        Intent intent = new Intent(tmp, NewAppWidget.class);
-        tmp.startService(intent);
+//        Context tmp = NewAppWidget.mainContext;
+//        if (NewAppWidget.mainContext == null){
+//            tmp = this;
+//        }
+//        Intent intent = new Intent(tmp, NewAppWidget.class);
+//        tmp.startService(intent);
+
+        AppWidgetManager manager = AppWidgetManager.getInstance(getApplicationContext());//获得appwidget管理实例，用于管理appwidget以便进行更新操作
+        ComponentName componentName = new ComponentName(getApplicationContext(),NewAppWidget.class);//获得所有本程序创建的appwidget
+        RemoteViews remoteViews = new RemoteViews(getPackageName(),R.layout.new_app_widget);//获取远程视图
+        manager.updateAppWidget(componentName,remoteViews);
+
 //        AppWidgetManager manger = AppWidgetManager.getInstance(tmp);
 //        // 相当于获得所有本程序创建的appwidget
 //        ComponentName thisName = new ComponentName(this, NewAppWidget.class);

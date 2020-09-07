@@ -1,5 +1,6 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -57,14 +58,18 @@ public class NewAppWidget extends AppWidgetProvider {
        /*
        打开service
          */
-        Intent serviceIntent = new Intent(context, MyService.class);
-        PendingIntent servicePendingIntent = PendingIntent.getService(context, 0, serviceIntent, 0);
-        views.setOnClickPendingIntent(R.id.appwidget_service_btn, servicePendingIntent);
+//        Intent serviceIntent = new Intent(context, MyService.class);
+//        PendingIntent servicePendingIntent = PendingIntent.getService(context, 0, serviceIntent, 0);
+//        views.setOnClickPendingIntent(R.id.appwidget_service_btn, servicePendingIntent);
+
+        Intent sIntent = new Intent("com.action.service", null,context,NewAppWidget.class);
+        PendingIntent sPendingIntent = PendingIntent.getBroadcast(context,0,sIntent,0);
+        views.setOnClickPendingIntent(R.id.appwidget_service_btn, sPendingIntent);
 
         /*
        发送action
          */
-        Intent anIntent = new Intent("com.action.haha");
+//        Intent anIntent = new Intent("com.action.haha");
         Intent iIntent = new Intent("com.action.haha",null,context,NewAppWidget.class);
         PendingIntent anPendingIntent = PendingIntent.getBroadcast(context, 0, iIntent, 0);
         views.setOnClickPendingIntent(R.id.appwidget_brocast_btn, anPendingIntent);
@@ -168,7 +173,14 @@ public class NewAppWidget extends AppWidgetProvider {
             ComponentName thisName = new ComponentName(context, NewAppWidget.class);
             //更新widget
             manger.updateAppWidget(thisName, remoteViews);
-        }else if (Objects.equals(intent.getAction(), "com.action.musicAddAction")){
+        }else if(Objects.equals(intent.getAction(), "com.action.service")){
+            Intent intent1=new Intent(context ,MyService.class );
+            PendingIntent refreshIntent=PendingIntent.getService(context, 0 , intent1,  0 );
+            AlarmManager alarm=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+            alarm.setRepeating(AlarmManager.RTC, 0 ,  1000 , refreshIntent);
+            context.startService(intent);
+        }
+        else if (Objects.equals(intent.getAction(), "com.action.musicAddAction")){
             Toast.makeText(context, "音乐音量加", Toast.LENGTH_SHORT).show();
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
             views1 = remoteViews;
