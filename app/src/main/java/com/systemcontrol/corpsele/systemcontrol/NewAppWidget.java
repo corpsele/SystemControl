@@ -58,13 +58,13 @@ public class NewAppWidget extends AppWidgetProvider {
        /*
        打开service
          */
-//        Intent serviceIntent = new Intent(context, MyService.class);
-//        PendingIntent servicePendingIntent = PendingIntent.getService(context, 0, serviceIntent, 0);
-//        views.setOnClickPendingIntent(R.id.appwidget_service_btn, servicePendingIntent);
+        Intent serviceIntent = new Intent(context, MyService.class);
+        PendingIntent servicePendingIntent = PendingIntent.getService(context, 0, serviceIntent, 0);
+        views.setOnClickPendingIntent(R.id.appwidget_service_btn, servicePendingIntent);
 
         Intent sIntent = new Intent("com.action.service", null,context,NewAppWidget.class);
         PendingIntent sPendingIntent = PendingIntent.getBroadcast(context,0,sIntent,0);
-        views.setOnClickPendingIntent(R.id.appwidget_service_btn, sPendingIntent);
+        views.setOnClickPendingIntent(R.id.count_down, sPendingIntent);
 
         /*
        发送action

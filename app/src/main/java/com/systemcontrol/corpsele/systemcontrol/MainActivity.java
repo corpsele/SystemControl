@@ -1,6 +1,7 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
 import android.accessibilityservice.AccessibilityService;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -119,10 +120,26 @@ public class MainActivity extends AppCompatActivity {
 //        Intent intent = new Intent(tmp, NewAppWidget.class);
 //        tmp.startService(intent);
 
-        AppWidgetManager manager = AppWidgetManager.getInstance(getApplicationContext());//获得appwidget管理实例，用于管理appwidget以便进行更新操作
-        ComponentName componentName = new ComponentName(getApplicationContext(),NewAppWidget.class);//获得所有本程序创建的appwidget
-        RemoteViews remoteViews = new RemoteViews(getPackageName(),R.layout.new_app_widget);//获取远程视图
-        manager.updateAppWidget(componentName,remoteViews);
+//        AppWidgetManager manager = AppWidgetManager.getInstance(getApplicationContext());//获得appwidget管理实例，用于管理appwidget以便进行更新操作
+//        ComponentName componentName = new ComponentName(getApplicationContext(),NewAppWidget.class);//获得所有本程序创建的appwidget
+//        RemoteViews remoteViews = new RemoteViews(getPackageName(),R.layout.new_app_widget);//获取远程视图
+//        manager.updateAppWidget(componentName,remoteViews);
+
+//        Intent intent = new Intent(this, Settings.class);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+//        RemoteViews remoteViews = new RemoteViews(getPackageName(),R.layout.new_app_widget);//获取远程视图
+//        remoteViews.setOnClickPendingIntent(R.id.appwidget_brocast_btn, pendingIntent);
+
+//        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+//        appWidgetManager.updateAppWidget(new ComponentName(this.getPackageName(), NewAppWidget.class.getName()), remoteViews);
+
+        Intent intent = new Intent(this, NewAppWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+// since it seems the onUpdate() is only fired on that:
+        int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), NewAppWidget.class));
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        sendBroadcast(intent);
 
 //        AppWidgetManager manger = AppWidgetManager.getInstance(tmp);
 //        // 相当于获得所有本程序创建的appwidget
