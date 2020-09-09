@@ -75,6 +75,7 @@
                 <action android:name="com.action.voipDecAction"/>
                 <action android:name="com.action.musicAddAction"/>
                 <action android:name="com.action.musicDecAction"/>
+                <action android:name="com.action.cancelservice"/>
             </intent-filter>
 
             <meta-data

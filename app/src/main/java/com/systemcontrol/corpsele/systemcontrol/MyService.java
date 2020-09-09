@@ -1,5 +1,6 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
@@ -18,6 +19,8 @@ import androidx.annotation.Nullable;
 
 public class MyService extends Service {
 
+    private static final int ID = 0;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -27,7 +30,9 @@ public class MyService extends Service {
     @Override
     public void onCreate() {
 
-
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) { // 注意notification也要适配Android 8 哦
+            startForeground(ID, new Notification());// 通知栏标识符 前台进程对象唯一ID
+        }
     }
 
     @Override

@@ -179,8 +179,25 @@ public class NewAppWidget extends AppWidgetProvider {
             PendingIntent refreshIntent=PendingIntent.getService(context, 0 , intent1,  0 );
             AlarmManager alarm=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             alarm.setRepeating(AlarmManager.RTC, 0 ,  1000 , refreshIntent);
-            context.startService(intent1);
+//            context.startService(intent1);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                //适配8.0机制
+                context.startForegroundService(intent1);
+            } else {
+                context.startService(intent1);
+            }
             alarmService = alarm;
+        }
+        else if (Objects.equals(intent.getAction(), "com.action.cancelservice")){
+            try{
+                Intent intent1=new Intent(context ,MyService.class );
+                PendingIntent refreshIntent=PendingIntent.getService(context, 0 , intent1,  0 );
+                AlarmManager alarm=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+                alarm.cancel(refreshIntent);
+            }catch(Exception e){
+                System.out.println(e);
+                Log.e("error", e.getLocalizedMessage());
+            }
         }
         else if (Objects.equals(intent.getAction(), "com.action.musicAddAction")){
             Toast.makeText(context, "音乐音量加", Toast.LENGTH_SHORT).show();

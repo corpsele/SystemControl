@@ -498,13 +498,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void stopService(){
         try {
-            Intent stopIntent = new Intent(this, MyService.class);
-            this.stopService(stopIntent);
+//            Intent stopIntent = new Intent(this, MyService.class);
+//            this.stopService(stopIntent);
 
-            AlarmManager service = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-            PendingIntent pending = PendingIntent.getBroadcast(this, 0, stopIntent,
-                    PendingIntent.FLAG_CANCEL_CURRENT);
-            service.cancel(pending);
+//            AlarmManager service = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+//            PendingIntent pending = PendingIntent.getBroadcast(this, 0, stopIntent,
+//                    PendingIntent.FLAG_CANCEL_CURRENT);
+//            service.cancel(pending);
+//            Intent intent = new Intent(this, NewAppWidget.class);
+            Intent intent = new Intent("com.action.cancelservice",null,this,NewAppWidget.class);
+//            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+// since it seems the onUpdate() is only fired on that:
+//            int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), NewAppWidget.class));
+//            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+            sendBroadcast(intent);
 
         }catch (Exception e){
             System.out.println(e);
