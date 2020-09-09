@@ -283,9 +283,11 @@
         android:id="@+id/btnKillService"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="16dp"
         android:text="杀服务"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonPushS"
         app:layout_constraintTop_toBottomOf="@+id/seekBar5" />
 </androidx.constraintlayout.widget.ConstraintLayout>

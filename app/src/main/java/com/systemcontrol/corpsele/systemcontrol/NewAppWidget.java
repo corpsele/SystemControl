@@ -31,6 +31,7 @@ public class NewAppWidget extends AppWidgetProvider {
     private static int smsCurrent = 0;
     private static int smsMax = 0;
     public static Context mainContext = null;
+    private AlarmManager alarmService = null;
 
 
     static void updateAppWidget(final Context context, final AppWidgetManager appWidgetManager,
@@ -178,7 +179,8 @@ public class NewAppWidget extends AppWidgetProvider {
             PendingIntent refreshIntent=PendingIntent.getService(context, 0 , intent1,  0 );
             AlarmManager alarm=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             alarm.setRepeating(AlarmManager.RTC, 0 ,  1000 , refreshIntent);
-            context.startService(intent);
+            context.startService(intent1);
+            alarmService = alarm;
         }
         else if (Objects.equals(intent.getAction(), "com.action.musicAddAction")){
             Toast.makeText(context, "音乐音量加", Toast.LENGTH_SHORT).show();

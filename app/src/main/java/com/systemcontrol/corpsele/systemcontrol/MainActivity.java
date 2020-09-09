@@ -499,13 +499,16 @@ public class MainActivity extends AppCompatActivity {
     private void stopService(){
         try {
             Intent stopIntent = new Intent(this, MyService.class);
-            stopService(stopIntent);
+            this.stopService(stopIntent);
 
-            PendingIntent refreshIntent=PendingIntent.getService(this, 0 , stopIntent,  0 );
-            AlarmManager alarm=(AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
-            alarm.cancel(refreshIntent);
+            AlarmManager service = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+            PendingIntent pending = PendingIntent.getBroadcast(this, 0, stopIntent,
+                    PendingIntent.FLAG_CANCEL_CURRENT);
+            service.cancel(pending);
+
         }catch (Exception e){
-
+            System.out.println(e);
+            Log.e("error", e.getLocalizedMessage());
         }
     }
 
