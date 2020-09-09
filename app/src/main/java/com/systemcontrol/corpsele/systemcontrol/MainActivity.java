@@ -1,6 +1,7 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
 import android.accessibilityservice.AccessibilityService;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -26,6 +27,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.jakewharton.rxbinding4.view.RxView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -41,6 +43,9 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.disposables.Disposable;
+import kotlin.Unit;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -465,6 +470,43 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button btnKill = findViewById(R.id.btnKillService);
+        RxView.clicks(btnKill).subscribe(new Observer<Unit>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull Unit unit) {
+                stopService();
+                System.out.println("btnKill click ");
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+    }
+
+    private void stopService(){
+        try {
+            Intent stopIntent = new Intent(this, MyService.class);
+            stopService(stopIntent);
+
+            PendingIntent refreshIntent=PendingIntent.getService(this, 0 , stopIntent,  0 );
+            AlarmManager alarm=(AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+            alarm.cancel(refreshIntent);
+        }catch (Exception e){
+
+        }
     }
 
     private void pushOtherActivity() {
