@@ -66,6 +66,7 @@ class MainActivityK1 : AppCompatActivity() {
                     android.provider.Settings.Secure.ACCESSIBILITY_ENABLED)
         } catch (e: Settings.SettingNotFoundException) {
             Log.e("", "Error finding setting, default accessibility to not found: " + e.message)
+            Toast.makeText(mContext, "Error finding setting, default accessibility to not found: " + e.message, Toast.LENGTH_SHORT).show()
         }
 
         val mStringColonSplitter = TextUtils.SimpleStringSplitter(':')

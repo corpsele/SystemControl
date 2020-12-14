@@ -7,6 +7,8 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -35,6 +37,7 @@ import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
@@ -97,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
 
                 requestAPI();
+                requestAllAppPackage();
             }
         });
         thread.run();
@@ -223,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
 //            map.put("appid", "379020");
 //            map.put("bk_key", "Android");
 //            map.put("bk_length", "600");
-            map.put("name", "Bye Bye Bye");
+//            map.put("name", "Bye Bye Bye");
             Gson gson = new Gson();
             String param = gson.toJson(map);
 //            RequestBody body = RequestBody.crea
@@ -255,6 +259,25 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    private void requestAllAppPackage() {
+        PackageManager pm = getPackageManager();
+        List<PackageInfo> pis = pm.getInstalledPackages(PackageManager.GET_ACTIVITIES);
+        for (PackageInfo pi : pis){
+            System.out.println("pi = " + pi.applicationInfo.packageName);
+            if (isSystemApp(pi)){
+                System.out.println(pi.packageName + " is " + "系统应用");
+            }else{
+                System.out.println(pi.packageName + " is " + "非系统应用");
+            }
+        }
+    }
+
+    private boolean isSystemApp(PackageInfo pi) {
+        boolean isSysApp = (pi.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1;
+        boolean isSysUpd = (pi.applicationInfo.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == 1;
+        return isSysApp || isSysUpd;
     }
 
     private void getAudioDetail() {
@@ -496,7 +519,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void stopService(){
+    private void stopService() {
         try {
 //            Intent stopIntent = new Intent(this, MyService.class);
 //            this.stopService(stopIntent);
@@ -506,7 +529,7 @@ public class MainActivity extends AppCompatActivity {
 //                    PendingIntent.FLAG_CANCEL_CURRENT);
 //            service.cancel(pending);
 //            Intent intent = new Intent(this, NewAppWidget.class);
-            Intent intent = new Intent("com.action.cancelservice",null,this,NewAppWidget.class);
+            Intent intent = new Intent("com.action.cancelservice", null, this, NewAppWidget.class);
 //            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
 // since it seems the onUpdate() is only fired on that:
@@ -514,7 +537,7 @@ public class MainActivity extends AppCompatActivity {
 //            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
             sendBroadcast(intent);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
             Log.e("error", e.getLocalizedMessage());
         }
