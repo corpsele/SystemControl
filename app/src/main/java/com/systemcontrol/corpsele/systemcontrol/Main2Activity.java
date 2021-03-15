@@ -85,6 +85,12 @@ public class Main2Activity extends AppCompatActivity {
                             case 1:
                                 pushOtherActivity();
                                 break;
+                            case 2:
+                                pushMainActivity2();
+                                break;
+                            case 3:
+                                pushMainActivity3();
+                                break;
                             default:
                                 break;
                         }
@@ -100,6 +106,16 @@ public class Main2Activity extends AppCompatActivity {
         intent.putExtra("type", 1);
 //        startActivity(intent);
         startActivityForResult(intent, 200);
+    }
+
+    private void pushMainActivity2() {
+        Intent intent = new Intent(Main2Activity.this, MainActivity2.class);
+        startActivity(intent);
+    }
+
+    private void pushMainActivity3() {
+        Intent intent = new Intent(Main2Activity.this, MainActivity3.class);
+        startActivity(intent);
     }
 
 

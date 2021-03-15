@@ -43,4 +43,11 @@
     <string name="accessibility_service_name">---测试无障碍服务---</string>
     <string name="accessibility_service_description">开启测试无障碍服务,体验更快捷的操作方式。</string>
     <string name="widget_string_sms_voice">信息音量</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="title_activity_main3">MainActivity3</string>
 </resources>

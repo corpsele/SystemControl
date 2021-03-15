@@ -4,6 +4,10 @@
     package="com.systemcontrol.corpsele.systemcontrol"
     android:installLocation="preferExternal">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature android:name="android.hardware.type.watch" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -25,7 +29,40 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning"
         tools:remove="android:appComponentFactory">
+<!--        <uses-library-->
+<!--            android:name="com.google.android.wearable"-->
+<!--            android:required="false" />-->
+
+        <!--
+               Set to true if your app is Standalone, that is, it does not require the handheld
+               app to run.
+        -->
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
+
+        <activity
+            android:name=".MainActivity3"
+            android:label="@string/title_activity_main3"
+            android:launchMode="standard">
+
+        </activity>
+        <activity
+            android:name=".MainActivity2"
+            android:label="@string/title_activity_main2"
+            android:launchMode="standard">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+
         <service
             android:name=".MyAccessibilityService"
             android:enabled="true"
@@ -35,12 +72,11 @@
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_config" />
-        </service>
-
-        <!-- android:appComponentFactory="androidx"> -->
+        </service> <!-- android:appComponentFactory="androidx"> -->
         <!-- <activity android:name=".DKPlayerActivity"></activity> -->
         <activity android:name=".PlayerActivity" />
         <activity
@@ -61,46 +97,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <receiver android:name=".NewAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.action.haha" />
                 <action android:name="com.action.service" />
-                <action android:name="com.systemcontrol.restart"/>
-                <action android:name="com.action.systemAddAction"/>
-                <action android:name="com.action.systemDecAction"/>
-                <action android:name="com.action.smsAddAction"/>
-                <action android:name="com.action.smsDecAction"/>
-                <action android:name="com.action.voipAddAction"/>
-                <action android:name="com.action.voipDecAction"/>
-                <action android:name="com.action.musicAddAction"/>
-                <action android:name="com.action.musicDecAction"/>
-                <action android:name="com.action.cancelservice"/>
-                <action android:name="android.intent.action.MANAGE_PACKAGE_STORAGE"/>
+                <action android:name="com.systemcontrol.restart" />
+                <action android:name="com.action.systemAddAction" />
+                <action android:name="com.action.systemDecAction" />
+                <action android:name="com.action.smsAddAction" />
+                <action android:name="com.action.smsDecAction" />
+                <action android:name="com.action.voipAddAction" />
+                <action android:name="com.action.voipDecAction" />
+                <action android:name="com.action.musicAddAction" />
+                <action android:name="com.action.musicDecAction" />
+                <action android:name="com.action.cancelservice" />
+                <action android:name="android.intent.action.MANAGE_PACKAGE_STORAGE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/new_app_widget_info" />
         </receiver>
+
         <service android:name=".MyService" />
-
-<!--        <receiver android:name=".SystemControlWidget">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />-->
-<!--                <action android:name="android.appwidget.action.APPWIDGET_CLICK" />-->
-<!--            </intent-filter>-->
-
-<!--            <meta-data-->
-<!--                android:name="android.appwidget.provider"-->
-<!--                android:resource="@xml/system_control_widget_info" />-->
-<!--        </receiver>-->
-
-<!--        <activity android:name=".SystemControlWidgetConfigureActivity">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
     </application>
 
 </manifest>

@@ -46,7 +46,7 @@ public class NewAppWidget extends AppWidgetProvider {
         Intent fullIntent = new Intent(context, MainActivity.class);
 //        fullIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         fullIntent.putExtra("pending_", "过了");
-        PendingIntent Pfullintent = PendingIntent.getActivity(context, 0, fullIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent Pfullintent = PendingIntent.getActivity(context, 0, fullIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.appwidget_text, Pfullintent);
         /*
        打开activity
