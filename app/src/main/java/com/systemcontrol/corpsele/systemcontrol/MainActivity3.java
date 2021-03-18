@@ -1,15 +1,46 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.ActionProvider;
+import android.view.ContextMenu;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.SubMenu;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class MainActivity3 extends AppCompatActivity {
 
     private WebView mWebView;
+    private EditText editText;
+    private Button button;
+    private Menu menu1;
+    private Set<String> set;
+    private RecyclerView recyclerView;
+    private RecycleAdapterDome recycleAdapterDome;
+    private PopupMenu popupMenu;
+    private List<String> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +83,89 @@ public class MainActivity3 extends AppCompatActivity {
         // LOCAL RESOURCE
         // mWebView.loadUrl("file:///android_asset/index.html");
 
+        editText = findViewById(R.id.editView);
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                return true;
+            }
+        });
+        editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        editText.setOnContextClickListener(new View.OnContextClickListener() {
+            @Override
+            public boolean onContextClick(View v) {
+                return true;
+            }
+        });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    popupMenu(v).show();
+                }else{
+                    popupMenu(v).dismiss();
+                }
+            }
+        });
+
+
+        button = findViewById(R.id.btnSearch);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (set == null){
+                    set = new HashSet<String>();
+                }
+
+                set.add(editText.getText().toString());
+                mWebView.loadUrl(editText.getText().toString());
+                SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putStringSet("url", set);
+                editor.commit();
+
+
+            }
+        });
+
+        SharedPreferences sharedPreferences1 = getSharedPreferences("user", Context.MODE_PRIVATE);
+        set = sharedPreferences1.getStringSet("url", new HashSet<String>());
+
+        list.addAll(set);
+        recyclerView = new RecyclerView(this);
+        recycleAdapterDome = new RecycleAdapterDome(this, list);
+//        registerForContextMenu(recyclerView);
+//        unregisterForContextMenu(recyclerView);
+    }
+
+    private PopupMenu popupMenu(View view) {
+        if (popupMenu == null) {
+            popupMenu = new PopupMenu(view.getContext(), view);
+            menu1 = popupMenu.getMenu();
+            for (int i = 0; i < set.size(); i++) {
+                menu1.add(android.view.Menu.NONE, android.view.Menu.FIRST + i, i, list.get(i));
+            }
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    editText.setText(item.getTitle().toString());
+                    mWebView.loadUrl(item.getTitle().toString());
+                    return true;
+                }
+            });
+
+        }
+
+        return popupMenu;
     }
 
     @Override
@@ -62,4 +176,5 @@ public class MainActivity3 extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 }

@@ -43,7 +43,7 @@ public class RecycleAdapterDome extends RecyclerView.Adapter<RecycleAdapterDome.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         //将数据和控件绑定
-//        myViewHolder.textView.setText(list.get(i));
+//        myViewHolder.tvUrl.setText(list.get(i));
         myViewHolder.textView.setText(list.get(myViewHolder.getAdapterPosition()));
         myViewHolder.textView.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -61,8 +61,8 @@ public class RecycleAdapterDome extends RecyclerView.Adapter<RecycleAdapterDome.
         super.onBindViewHolder(holder, position, payloads);
 
         //将数据和控件绑定
-        holder.textView.setText(list.get(position));
-        holder.textView.setOnClickListener(new View.OnClickListener(){
+        holder.tvUrl.setText(list.get(position));
+        holder.tvUrl.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 if (clickInterface != null){
