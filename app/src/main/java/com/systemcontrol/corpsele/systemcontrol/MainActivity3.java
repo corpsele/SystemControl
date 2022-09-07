@@ -41,6 +41,8 @@ public class MainActivity3 extends AppCompatActivity {
     private RecycleAdapterDome recycleAdapterDome;
     private PopupMenu popupMenu;
     private List<String> list = new ArrayList<>();
+    private Button btnUA;
+    private PopupMenu menuUA;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +139,17 @@ public class MainActivity3 extends AppCompatActivity {
             }
         });
 
+        btnUA = findViewById(R.id.btnUA);
+        btnUA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Android/iphone/ipod/ipad/PC
+//                mWebView.getSettings().setUserAgentString("PC");
+//                mWebView.reload();
+                menuUA(v).show();
+            }
+        });
+
         SharedPreferences sharedPreferences1 = getSharedPreferences("user", Context.MODE_PRIVATE);
         set = sharedPreferences1.getStringSet("url", new HashSet<String>());
 
@@ -166,6 +179,26 @@ public class MainActivity3 extends AppCompatActivity {
         }
 
         return popupMenu;
+    }
+
+    private PopupMenu menuUA(View view) {
+        if (menuUA == null) {
+            menuUA = new PopupMenu(view.getContext(), view);
+            Menu menu = menuUA.getMenu();
+            menu.add(Menu.NONE, Menu.FIRST + 1, 1, "PC");
+            menu.add(Menu.NONE, Menu.FIRST + 2, 2, "Android");
+            menu.add(Menu.NONE, Menu.FIRST + 3, 3, "iphone");
+            menu.add(Menu.NONE, Menu.FIRST + 4, 4, "ipad");
+            menuUA.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    mWebView.getSettings().setUserAgentString(item.getTitle().toString());
+                    mWebView.reload();
+                    return true;
+                }
+            });
+        }
+        return menuUA;
     }
 
     @Override

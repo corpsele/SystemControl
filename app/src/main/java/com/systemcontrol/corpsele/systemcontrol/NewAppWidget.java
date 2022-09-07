@@ -1,17 +1,33 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlarmManager;
+import android.app.Application;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -30,6 +46,7 @@ public class NewAppWidget extends AppWidgetProvider {
     private static int voipMax = 0;
     private static int smsCurrent = 0;
     private static int smsMax = 0;
+    private static int currentLight = 0;
     public static Context mainContext = null;
     private AlarmManager alarmService = null;
 
@@ -42,6 +59,7 @@ public class NewAppWidget extends AppWidgetProvider {
         final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
         views1 = views;
         getAudioDetail(context);
+        getSystemLight(context);
         views.setTextViewText(R.id.appwidget_text, widgetText);
         Intent fullIntent = new Intent(context, MainActivity.class);
 //        fullIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -107,6 +125,14 @@ public class NewAppWidget extends AppWidgetProvider {
         PendingIntent smsDecPendingIntent = PendingIntent.getBroadcast(context, 0, smsDecIntent, 0);
         views.setOnClickPendingIntent(R.id.btnVoipDec2, smsDecPendingIntent);
 
+        Intent lightAddAction = new Intent("com.action.lightAddAction",null,context,NewAppWidget.class);
+        PendingIntent lightAddPendingIntent = PendingIntent.getBroadcast(context, 0, lightAddAction, 0);
+        views.setOnClickPendingIntent(R.id.btnVoipAdd3, lightAddPendingIntent);
+
+        Intent lightDecAction = new Intent("com.action.lightDecAction",null,context,NewAppWidget.class);
+        PendingIntent lightDecPendingIntent = PendingIntent.getBroadcast(context, 0, lightDecAction, 0);
+        views.setOnClickPendingIntent(R.id.btnVoipDec3, lightDecPendingIntent);
+
 //        CountDownTimer countDownTimer = new CountDownTimer(40000, 1000) {
 //            @Override
 //            public void onTick(long l) {
@@ -168,6 +194,7 @@ public class NewAppWidget extends AppWidgetProvider {
                 isTurning = true;
             }
             getAudioDetail(context);
+            getSystemLight(context);
             //获得appwidget管理实例，用于管理appwidget以便进行更新操作
             AppWidgetManager manger = AppWidgetManager.getInstance(context);
             // 相当于获得所有本程序创建的appwidget
@@ -180,7 +207,7 @@ public class NewAppWidget extends AppWidgetProvider {
             AlarmManager alarm=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             alarm.setRepeating(AlarmManager.RTC, 0 ,  1000 , refreshIntent);
 //            context.startService(intent1);
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 //适配8.0机制
                 context.startForegroundService(intent1);
             } else {
@@ -322,9 +349,150 @@ getAudioDetail(context);
         }else if (Objects.equals(intent.getAction(), "com.systemcontrol.restart")){
             Intent intent2=new Intent(context,NewAppWidget.class);
             context.startService(intent2);
+        }else if (Objects.equals(intent.getAction(), "com.action.lightAddAction")){
+            Toast.makeText(context, "系统亮度加", Toast.LENGTH_SHORT).show();
+            remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
+            views1 = remoteViews;
+            if (currentLight < 200 ){
+                currentLight+=10;
+            }else{
+                currentLight = 200;
+            }
+            ContentResolver contentResolver = context.getContentResolver();
+            Settings.System.putInt(contentResolver,
+                    Settings.System.SCREEN_BRIGHTNESS, currentLight);
+            getSystemLight(context);
+            //获得appwidget管理实例，用于管理appwidget以便进行更新操作
+            AppWidgetManager manger = AppWidgetManager.getInstance(context);
+            // 相当于获得所有本程序创建的appwidget
+            ComponentName thisName = new ComponentName(context, NewAppWidget.class);
+            //更新widget
+            manger.updateAppWidget(thisName, remoteViews);
+        }else if (Objects.equals(intent.getAction(), "com.action.lightDecAction")){
+            Toast.makeText(context, "系统亮度减", Toast.LENGTH_SHORT).show();
+            remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
+            views1 = remoteViews;
+            if (currentLight > 0 ){
+                currentLight-=10;
+            }else{
+                currentLight = 0;
+            }
+            ContentResolver contentResolver = context.getContentResolver();
+            Settings.System.putInt(contentResolver,
+                    Settings.System.SCREEN_BRIGHTNESS, currentLight);
+            getSystemLight(context);
+            //获得appwidget管理实例，用于管理appwidget以便进行更新操作
+            AppWidgetManager manger = AppWidgetManager.getInstance(context);
+            // 相当于获得所有本程序创建的appwidget
+            ComponentName thisName = new ComponentName(context, NewAppWidget.class);
+            //更新widget
+            manger.updateAppWidget(thisName, remoteViews);
         }
 
 
+    }
+
+    public void getAllActivity(Context context) {
+        PackageManager packageManager = context.getPackageManager();
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = packageManager.getPackageInfo(context.
+                    getPackageName(), PackageManager.GET_ACTIVITIES);
+            //所有的Activity
+            ActivityInfo[] activities = packageInfo.activities;
+            for (ActivityInfo activity :activities ) {
+                Class<?> aClass = Class.forName(activity.name);
+            }
+
+        } catch (PackageManager.NameNotFoundException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static List<Activity> getActivitiesByApplication(Application application) {
+        List<Activity> list = new ArrayList<>();
+        try {
+            Class<Application> applicationClass = Application.class;
+            Field mLoadedApkField = applicationClass.getDeclaredField("mLoadedApk");
+            mLoadedApkField.setAccessible(true);
+            Object mLoadedApk = mLoadedApkField.get(application);
+            Class<?> mLoadedApkClass = mLoadedApk.getClass();
+            Field mActivityThreadField = mLoadedApkClass.getDeclaredField("mActivityThread");
+            mActivityThreadField.setAccessible(true);
+            Object mActivityThread = mActivityThreadField.get(mLoadedApk);
+            Class<?> mActivityThreadClass = mActivityThread.getClass();
+            Field mActivitiesField = mActivityThreadClass.getDeclaredField("mActivities");
+            mActivitiesField.setAccessible(true);
+            Object mActivities = mActivitiesField.get(mActivityThread);
+            // 注意这里一定写成Map，低版本这里用的是HashMap，高版本用的是ArrayMap
+            if (mActivities instanceof Map) {
+                @SuppressWarnings("unchecked")
+                Map<Object, Object> arrayMap = (Map<Object, Object>) mActivities;
+                for (Map.Entry<Object, Object> entry : arrayMap.entrySet()) {
+                    Object value = entry.getValue();
+                    Class<?> activityClientRecordClass = value.getClass();
+                    Field activityField = activityClientRecordClass.getDeclaredField("activity");
+                    activityField.setAccessible(true);
+                    Object o = activityField.get(value);
+                    list.add((Activity) o);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            list = null;
+        }
+        return list;
+    }
+
+    public static String getCurrentActivityName(Context context) {
+        ActivityManager am = (ActivityManager) context.getSystemService(Activity.ACTIVITY_SERVICE);
+
+        List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+
+        ComponentName componentInfo = taskInfo.get(0).topActivity;
+        return componentInfo.getClassName();
+    }
+
+    /**
+     *调节当前屏幕亮度
+     */
+    public static void SetSystemLight(int lightnumber, Activity activity){
+        Window window = activity.getWindow();//对当前窗口进行设置
+        WindowManager.LayoutParams layoutparams = window.getAttributes();//获取窗口属性为后面亮度做铺垫作用
+        layoutparams.screenBrightness =lightnumber / 255.0f;//用窗口管理（自定义的）layoutparams获取亮度值，android亮度值处于在0-255之间的整形数值
+        window.setAttributes(layoutparams);//设置当前窗口屏幕亮度
+    }
+
+    private static void getSystemLight(Context context){
+        if (!Settings.System.canWrite(context)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+            intent.setData(Uri.parse("package:" + context.getPackageName()));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } else {
+            // 申请权限后做的操作
+
+
+        }
+
+        ContentResolver contentResolver = context.getContentResolver();
+        int defVal = 125;//没有拿到值时返回的默认值
+        int systemLight = Settings.System.getInt(contentResolver,
+                Settings.System.SCREEN_BRIGHTNESS, defVal);
+        //获得亮度最大值
+        int maxSystemLight = 0;
+        try {
+            maxSystemLight = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+        int brightnessSettingMaximumId = context.getResources().getIdentifier("config_screenBrightnessSettingMaximum", "integer", "android");
+        int brightnessSettingMaximum = context.getResources().getInteger(brightnessSettingMaximumId);
+        int brightnessSettingMinimumId = context.getResources().getIdentifier("config_screenBrightnessSettingMinimum", "integer", "android");
+        int brightnessSettingMinimum = context.getResources().getInteger(brightnessSettingMinimumId);
+
+        currentLight = systemLight;
+        views1.setProgressBar(R.id.progressBar, brightnessSettingMaximum, systemLight, false);
     }
 
     private static void getAudioDetail(Context context){

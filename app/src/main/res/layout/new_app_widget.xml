@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#09C"
@@ -53,12 +54,60 @@
         android:layout_height="match_parent">
 
         <Button
+            android:id="@+id/btnVoipAdd3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@id/progressBar5"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="35dp"
+            android:layout_toRightOf="@id/progressBar5"
+            android:paddingTop="8dp"
+            android:text="+"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/tvWidget"
+            android:layout_alignTop="@id/progressBar5"
+            android:layout_alignBottom="@id/progressBar5"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="80dp" />
+
+        <TextView
+            android:id="@+id/tvWidget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvWidget3"
+            android:layout_alignStart="@id/tvWidget3"
+            android:layout_marginTop="14dp"
+            android:text="@string/widget_string_system_light"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp" />
+
+        <Button
             android:id="@+id/btnVoipDec2"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignTop="@id/progressBar5"
             android:layout_marginLeft="2dp"
             android:layout_marginTop="-5dp"
+            android:layout_toRightOf="@id/btnVoipAdd2"
+            android:paddingTop="8dp"
+            android:text="-"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btnVoipDec3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@id/progressBar5"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="35dp"
             android:layout_toRightOf="@id/btnVoipAdd2"
             android:paddingTop="8dp"
             android:text="-"

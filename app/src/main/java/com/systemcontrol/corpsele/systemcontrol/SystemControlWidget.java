@@ -4,10 +4,12 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.provider.Settings;
 import android.widget.RemoteViews;
 import android.media.AudioManager.*;
 import android.util.*;
@@ -32,6 +34,7 @@ public class SystemControlWidget extends AppWidgetProvider {
 //        views.setTextViewText(R.id.tvVoipNum, "SystemControl");
 
         getAudioDetail();
+        getSystemLight(context);
 
         Intent fullIntent = new Intent(context, MainActivity.class);
         fullIntent.setAction("BTNSHOW_VIEW_ACTION");
@@ -62,6 +65,21 @@ public class SystemControlWidget extends AppWidgetProvider {
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
 
+    }
+
+    private static void getSystemLight(Context context){
+        ContentResolver contentResolver = context.getContentResolver();
+        int defVal = 125;//没有拿到值时返回的默认值
+        int systemLight = Settings.System.getInt(contentResolver,
+                Settings.System.SCREEN_BRIGHTNESS, defVal);
+        //获得亮度最大值
+        int maxSystemLight = 0;
+        try {
+            maxSystemLight = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+        views.setProgressBar(R.id.progressBar, maxSystemLight, systemLight, false);
     }
 
     private static void getAudioDetail(){

@@ -50,4 +50,5 @@
     -->
     <string name="hello_world">Hello Square World!</string>
     <string name="title_activity_main3">MainActivity3</string>
+    <string name="widget_string_system_light">亮度</string>
 </resources>

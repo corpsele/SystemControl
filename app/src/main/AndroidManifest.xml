@@ -21,6 +21,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:allowBackup="true"
@@ -113,6 +115,8 @@
                 <action android:name="com.action.musicAddAction" />
                 <action android:name="com.action.musicDecAction" />
                 <action android:name="com.action.cancelservice" />
+                <action android:name="com.action.lightAddAction" />
+                <action android:name="com.action.lightDecAction" />
                 <action android:name="android.intent.action.MANAGE_PACKAGE_STORAGE" />
             </intent-filter>
 
