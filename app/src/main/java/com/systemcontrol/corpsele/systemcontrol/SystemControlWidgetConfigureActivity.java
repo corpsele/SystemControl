@@ -1,23 +1,23 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
-import android.app.Activity;
+import static android.content.ContentValues.TAG;
+
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
-import static android.content.ContentValues.TAG;
-
 /**
  * The configuration screen for the {@link SystemControlWidget SystemControlWidget} AppWidget.
  */
-public class SystemControlWidgetConfigureActivity extends Activity {
+public class SystemControlWidgetConfigureActivity extends AppCompatActivity {
 
     private static final String PREFS_NAME = "com.systemcontrol.corpsele.systemcontrol.SystemControlWidget";
     private static final String PREF_PREFIX_KEY = "appwidget_";
