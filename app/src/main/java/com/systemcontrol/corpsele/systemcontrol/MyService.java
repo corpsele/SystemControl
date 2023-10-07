@@ -1,5 +1,6 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -8,6 +9,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -33,6 +35,8 @@ public class MyService extends Service {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) { // 注意notification也要适配Android 8 哦
             startForeground(ID, new Notification());// 通知栏标识符 前台进程对象唯一ID
         }
+
+
     }
 
     @Override
@@ -73,5 +77,22 @@ public class MyService extends Service {
         } else {
             this.startService(intent1);
         }
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        Intent restartServiceIntent = new Intent(getApplicationContext(), MyService.class);
+        restartServiceIntent.setPackage(getPackageName());
+        PendingIntent restartServicePendingIntent = PendingIntent.getService(
+                getApplicationContext(),
+                1,
+                restartServiceIntent,
+                PendingIntent.FLAG_ONE_SHOT & PendingIntent.FLAG_IMMUTABLE
+        );
+        AlarmManager alarmService = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+        alarmService.setExact(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, restartServicePendingIntent);
+
+        super.onTaskRemoved(rootIntent);
+
     }
 }

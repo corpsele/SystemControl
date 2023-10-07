@@ -49,6 +49,7 @@ public class NewAppWidget extends AppWidgetProvider {
     private static int currentLight = 0;
     public static Context mainContext = null;
     private AlarmManager alarmService = null;
+    private RecordThread rec = null;
 
 
     static void updateAppWidget(final Context context, final AppWidgetManager appWidgetManager,
@@ -183,6 +184,10 @@ public class NewAppWidget extends AppWidgetProvider {
         RemoteViews remoteViews = null;
 
         if (Objects.equals(intent.getAction(), "com.action.haha")) {
+//            if (rec == null){
+//                rec =  new RecordThread();
+//                rec.start();
+//            }
             Toast.makeText(context, "收到了", Toast.LENGTH_SHORT).show();
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
             views1 = remoteViews;

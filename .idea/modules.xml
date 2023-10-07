@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SystemControl.iml" filepath="$PROJECT_DIR$/.idea/modules/SystemControl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SystemControl.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SystemControl.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SystemControl.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SystemControl.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SystemControl.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SystemControl.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SystemControl.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SystemControl.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dsbridge/SystemControl.dsbridge.iml" filepath="$PROJECT_DIR$/.idea/modules/dsbridge/SystemControl.dsbridge.iml" />
+    </modules>
+  </component>
+</project>
