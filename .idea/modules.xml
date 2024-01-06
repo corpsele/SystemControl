@@ -8,6 +8,12 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SystemControl.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SystemControl.app.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SystemControl.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SystemControl.app.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/dsbridge/SystemControl.dsbridge.iml" filepath="$PROJECT_DIR$/.idea/modules/dsbridge/SystemControl.dsbridge.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/project.SystemControl.iml" filepath="$PROJECT_DIR$/.idea/modules/project.SystemControl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/project.SystemControl.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/project.SystemControl.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/project.SystemControl.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/project.SystemControl.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/project.SystemControl.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/project.SystemControl.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/project.SystemControl.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/project.SystemControl.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dsbridge/project.SystemControl.dsbridge.iml" filepath="$PROJECT_DIR$/.idea/modules/dsbridge/project.SystemControl.dsbridge.iml" />
     </modules>
   </component>
 </project>
