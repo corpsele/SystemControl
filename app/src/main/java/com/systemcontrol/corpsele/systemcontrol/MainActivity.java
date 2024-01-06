@@ -29,6 +29,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.hjq.toast.Toaster;
 import com.jakewharton.rxbinding4.view.RxView;
 
 import org.jetbrains.annotations.NotNull;
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Toaster.init(this.getApplication());
         setContentView(R.layout.activity_main);
 
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);

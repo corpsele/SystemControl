@@ -70,7 +70,8 @@ public class MainActivity3 extends AppCompatActivity {
         //和setUseWideViewPort(true)一起解决网页自适应问题
         webSettings.setLoadWithOverviewMode(true);
         //是否使用缓存
-        webSettings.setAppCacheEnabled(true);
+//        webSettings.setAppCacheEnabled(true);
+        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
         //开启本地DOM存储
         webSettings.setDomStorageEnabled(true);
         // 加载图片

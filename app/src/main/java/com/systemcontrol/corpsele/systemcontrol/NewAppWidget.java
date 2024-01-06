@@ -19,10 +19,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+
+import com.hjq.toast.Toaster;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -53,6 +58,7 @@ public class NewAppWidget extends AppWidgetProvider {
 
     static void updateAppWidget(final Context context, final AppWidgetManager appWidgetManager,
                                 final int appWidgetId) {
+
         mainContext = context;
         CharSequence widgetText = "打开activity";
         // Construct the RemoteViews object
@@ -177,13 +183,53 @@ public class NewAppWidget extends AppWidgetProvider {
         context.stopService(intent);
     }
 
+//    public static void showMessage(View view, String str, int length) {
+//        Snackbar snackbar = Snackbar.make(view, str, length);
+//
+//        View snackbarView = snackbar.getView();
+//        //设置布局居中
+//        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(snackbarView.getLayoutParams().width, snackbarView.getLayoutParams().height);
+//        params.gravity = Gravity.CENTER;
+//        snackbarView.setLayoutParams(params);
+//        //文字居中
+//        TextView message = (TextView) snackbarView.findViewById(R.id.snackbar_text);
+//        //View.setTextAlignment需要SDK>=17
+//        message.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
+//        message.setGravity(Gravity.CENTER);
+//        message.setMaxLines(1);
+//        snackbar.addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
+//            @Override
+//            public void onDismissed(Snackbar transientBottomBar, int event) {
+//                super.onDismissed(transientBottomBar, event);
+//                //Snackbar关闭
+//            }
+//
+//            @Override
+//            public void onShown(Snackbar transientBottomBar) {
+//                super.onShown(transientBottomBar);
+//                //Snackbar显示
+//            }
+//        });
+//        snackbar.setAction("取消", new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //显示一个默认的Snackbar。
+//                Snackbar.make(view, "我先走", BaseTransientBottomBar.LENGTH_LONG).show();
+//            }
+//        });
+//        snackbar.show();
+//    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         RemoteViews remoteViews = null;
 
         if (Objects.equals(intent.getAction(), "com.action.haha")) {
-            Toast.makeText(context, "收到了", Toast.LENGTH_SHORT).show();
+            Toast toast = Toast.makeText(context, "收到了", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.TOP|Gravity.CENTER, -50, 100);
+            toast.show();
+            Toaster.show("收到了");
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
             views1 = remoteViews;
             if (isTurning) {

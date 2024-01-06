@@ -49,13 +49,13 @@
         <activity
             android:name=".MainActivity3"
             android:label="@string/title_activity_main3"
-            android:launchMode="standard">
+            android:launchMode="standard" android:exported="true">
 
         </activity>
         <activity
             android:name=".MainActivity2"
             android:label="@string/title_activity_main2"
-            android:launchMode="standard">
+            android:launchMode="standard" android:exported="true">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -80,19 +80,19 @@
                 android:resource="@xml/accessibility_service_config" />
         </service> <!-- android:appComponentFactory="androidx"> -->
         <!-- <activity android:name=".DKPlayerActivity"></activity> -->
-        <activity android:name=".PlayerActivity" />
+        <activity android:name=".PlayerActivity"  android:exported="true"/>
         <activity
             android:name=".Main2Activity"
-            android:launchMode="standard" />
+            android:launchMode="standard" android:exported="true"/>
         <activity
             android:name=".MainActivityK1"
-            android:launchMode="standard" />
+            android:launchMode="standard" android:exported="true"/>
         <activity
             android:name=".Main3Activity"
-            android:launchMode="standard" />
+            android:launchMode="standard" android:exported="true"/>
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -100,7 +100,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".NewAppWidget">
+        <receiver android:name=".NewAppWidget" android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.action.haha" />

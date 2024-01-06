@@ -30,7 +30,8 @@ class MainActivity2 : AppCompatActivity() {
         mWebSettings.builtInZoomControls = true;//是否显示缩放按钮，默认false
         mWebSettings.useWideViewPort = true;//设置此属性，可任意比例缩放。大视图模式
         mWebSettings.loadWithOverviewMode = true;//和setUseWideViewPort(true)一起解决网页自适应问题
-        mWebSettings.setAppCacheEnabled(true);//是否使用缓存
+//        mWebSettings.setAppCacheEnabled(true);//是否使用缓存
+        mWebSettings.cacheMode = WebSettings.LOAD_DEFAULT
         mWebSettings.domStorageEnabled = true;//开启本地DOM存储
         mWebSettings.loadsImagesAutomatically = true; // 加载图片
         mWebSettings.mediaPlaybackRequiresUserGesture = false;//播放音频，多媒体需要用户手动？设置为false为可自动播放

@@ -14,6 +14,8 @@ import android.widget.RemoteViews;
 import android.media.AudioManager.*;
 import android.util.*;
 
+import com.hjq.toast.Toaster;
+
 /**
  * Implementation of App Widget functionality.
  * App Widget Configuration implemented in {@link SystemControlWidgetConfigureActivity SystemControlWidgetConfigureActivity}

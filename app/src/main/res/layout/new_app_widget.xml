@@ -16,7 +16,8 @@
             android:id="@+id/appwidget_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/appwidget_text"/>
+            android:text="@string/appwidget_text"
+            android:textColor="@color/dkplayer_background_color" />
 
         <Button
             android:id="@+id/appwidget_service_btn"
@@ -55,8 +56,8 @@
 
         <Button
             android:id="@+id/btnVoipAdd3"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignTop="@id/progressBar5"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="35dp"
@@ -64,7 +65,7 @@
             android:paddingTop="8dp"
             android:text="+"
             android:textAlignment="center"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -85,13 +86,13 @@
             android:layout_alignStart="@id/tvWidget3"
             android:layout_marginTop="14dp"
             android:text="@string/widget_string_system_light"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/shadow_background_color"
             android:textSize="18sp" />
 
         <Button
             android:id="@+id/btnVoipDec2"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignTop="@id/progressBar5"
             android:layout_marginLeft="2dp"
             android:layout_marginTop="-5dp"
@@ -99,12 +100,12 @@
             android:paddingTop="8dp"
             android:text="-"
             android:textAlignment="center"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/btnVoipDec3"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignTop="@id/progressBar5"
             android:layout_marginLeft="1dp"
             android:layout_marginTop="35dp"
@@ -112,7 +113,7 @@
             android:paddingTop="8dp"
             android:text="-"
             android:textAlignment="center"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
         <ProgressBar
             android:id="@+id/progressBar5"
@@ -131,13 +132,13 @@
             android:layout_alignStart="@id/tvWidget2"
             android:layout_marginTop="14dp"
             android:text="@string/widget_string_sms_voice"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/shadow_background_color"
             android:textSize="18sp" />
 
         <Button
             android:id="@+id/btnVoipAdd"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignTop="@id/progressBar2"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="-5dp"
@@ -145,12 +146,12 @@
             android:paddingTop="8dp"
             android:text="+"
             android:textAlignment="center"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/btnVoipAdd2"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignTop="@id/progressBar5"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="-5dp"
@@ -158,12 +159,12 @@
             android:paddingTop="8dp"
             android:text="+"
             android:textAlignment="center"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/btnVoipDec"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignTop="@id/progressBar2"
             android:layout_marginLeft="2dp"
             android:layout_marginTop="-5dp"
@@ -171,12 +172,12 @@
             android:paddingTop="8dp"
             android:text="-"
             android:textAlignment="center"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/btnSystemAdd"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignTop="@id/progressBar1"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="-5dp"
@@ -184,12 +185,12 @@
             android:paddingTop="8dp"
             android:text="+"
             android:textAlignment="center"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/btnSystemDec"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignTop="@id/progressBar1"
             android:layout_marginLeft="2dp"
             android:layout_marginTop="-5dp"
@@ -197,12 +198,12 @@
             android:paddingTop="8dp"
             android:text="-"
             android:textAlignment="center"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/btnMusicDec"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignTop="@id/progressBar3"
             android:layout_marginLeft="2dp"
             android:layout_marginTop="0dp"
@@ -210,7 +211,7 @@
             android:paddingTop="8dp"
             android:text="-"
             android:textAlignment="center"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tvWidget1"
@@ -222,7 +223,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="50dp"
             android:text="@string/widget_string_system_voice"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/shadow_background_color"
             android:textSize="18sp" />
 
         <TextView
@@ -231,7 +232,9 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/tvWidget1"
             android:layout_marginStart="14dp"
-            android:layout_toEndOf="@+id/tvWidget1" />
+            android:layout_toEndOf="@+id/tvWidget1"
+            android:textColor="@color/dkplayer_background_color"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tvWidget2"
@@ -241,7 +244,7 @@
             android:layout_alignStart="@+id/tvWidget1"
             android:layout_marginTop="14dp"
             android:text="@string/widget_string_voip_voice"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/shadow_background_color"
             android:textSize="18sp" />
 
         <TextView
@@ -249,14 +252,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/tvSystemNum"
-            android:layout_alignBottom="@+id/tvWidget2" />
+            android:layout_alignBottom="@+id/tvWidget2"
+            android:textColor="@color/dkplayer_background_color"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tvVoipNum2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/tvSystemNum"
-            android:layout_alignBottom="@id/tvWidget3" />
+            android:layout_alignBottom="@id/tvWidget3"
+            android:textColor="@color/dkplayer_background_color"
+            android:textSize="18sp" />
 
         <ProgressBar
             android:id="@+id/progressBar1"
@@ -293,7 +300,7 @@
             android:layout_alignStart="@id/tvWidget1"
             android:layout_marginTop="10dp"
             android:text="音乐音量"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/shadow_background_color"
             android:textSize="18sp" />
 
         <TextView
@@ -301,19 +308,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@id/tvSystemNum"
-            android:layout_alignBottom="@id/tvTextView3" />
+            android:layout_alignBottom="@id/tvTextView3"
+            android:textColor="@color/dkplayer_background_color"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/btnMusicAdd"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignTop="@id/progressBar3"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/progressBar3"
             android:paddingTop="8dp"
             android:text="+"
             android:textAlignment="center"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
     </RelativeLayout>
 

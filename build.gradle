@@ -8,6 +8,10 @@ buildscript {
     repositories {
         maven {
             allowInsecureProtocol = true
+            url 'https://jitpack.io'
+        }
+        maven {
+            allowInsecureProtocol = true
             url 'http://maven.aliyun.com/nexus/content/groups/public/'
         }
         maven {
@@ -48,6 +52,10 @@ buildscript {
 
 allprojects {
     repositories {
+        maven {
+            allowInsecureProtocol = true
+            url 'https://jitpack.io'
+        }
         maven {
             allowInsecureProtocol = true
             url 'http://maven.aliyun.com/nexus/content/groups/public/'
