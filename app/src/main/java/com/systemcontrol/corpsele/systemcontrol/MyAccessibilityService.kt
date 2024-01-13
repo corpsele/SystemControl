@@ -2,9 +2,12 @@ package com.systemcontrol.corpsele.systemcontrol
 
 import android.accessibilityservice.AccessibilityService
 import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
@@ -13,12 +16,40 @@ import android.view.accessibility.AccessibilityNodeInfo
 class MyAccessibilityService : AccessibilityService() {
     private val TAG = MyAccessibilityService::class.java.simpleName
     private var mContext: Context? = null
+    private val notificationId = "serviceid"
+    private val notificationName = "servicename"
 
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "onCreate")
         mContext = applicationContext
         AccessibilityOperator.instance.init(this)
+//        showNotification()
+    }
+
+    private fun showNotification() {
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        //创建NotificationChannel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                notificationId,
+                notificationName,
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+        startForeground(1, getNotification())
+    }
+
+    private fun getNotification(): Notification? {
+        val builder = Notification.Builder(this)
+            .setSmallIcon(R.drawable.ic_launcher_foreground) //通知的图片
+            .setContentTitle("通知的标题")
+            .setContentText("通知的内容")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder.setChannelId(notificationId)
+        }
+        return builder.build()
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {

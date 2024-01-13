@@ -684,5 +684,6 @@ getAudioDetail(context);
         }
         return fileSizeString;
     }
+
 }
 

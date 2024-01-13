@@ -1,10 +1,14 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
@@ -21,14 +25,43 @@ public class MyService extends Service {
 
     private static final int ID = 0;
 
+    private String notificationId = "serviceid";
+    private String notificationName = "servicename";
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
+
+    private void showNotification(){
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        //创建NotificationChannel
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel(notificationId, notificationName, NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(channel);
+        }
+        startForeground(1,getNotification());
+    }
+
+    private Notification getNotification() {
+        Notification.Builder builder = new Notification.Builder(this)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)//通知的图片
+                .setContentTitle("通知的标题")
+                .setContentText("通知的内容");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder.setChannelId(notificationId);
+        }
+        Notification notification = builder.build();
+        return notification;
+    }
+
+    @SuppressLint("NotificationId0")
     @Override
     public void onCreate() {
+
+        showNotification();
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) { // 注意notification也要适配Android 8 哦
             startForeground(ID, new Notification());// 通知栏标识符 前台进程对象唯一ID
