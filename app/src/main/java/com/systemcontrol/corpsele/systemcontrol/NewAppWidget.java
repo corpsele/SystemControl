@@ -17,6 +17,8 @@ import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.os.StatFs;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
@@ -29,7 +31,9 @@ import android.widget.Toast;
 
 import com.hjq.toast.Toaster;
 
+import java.io.File;
 import java.lang.reflect.Field;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +70,7 @@ public class NewAppWidget extends AppWidgetProvider {
         views1 = views;
         getAudioDetail(context);
         getSystemLight(context);
+        getSysMemorySize();
         views.setTextViewText(R.id.appwidget_text, widgetText);
         Intent fullIntent = new Intent(context, MainActivity.class);
 //        fullIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -241,6 +246,7 @@ public class NewAppWidget extends AppWidgetProvider {
             }
             getAudioDetail(context);
             getSystemLight(context);
+            getSysMemorySize();
             //获得appwidget管理实例，用于管理appwidget以便进行更新操作
             AppWidgetManager manger = AppWidgetManager.getInstance(context);
             // 相当于获得所有本程序创建的appwidget
@@ -274,6 +280,7 @@ public class NewAppWidget extends AppWidgetProvider {
         }
         else if (Objects.equals(intent.getAction(), "com.action.musicAddAction")){
             Toast.makeText(context, "音乐音量加", Toast.LENGTH_SHORT).show();
+            Toaster.show("音乐音量加");
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
             views1 = remoteViews;
             if (musicCurrent < musicMax){
@@ -281,6 +288,7 @@ public class NewAppWidget extends AppWidgetProvider {
                 mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, musicCurrent, AudioManager.FLAG_SHOW_UI);
             }
 getAudioDetail(context);
+            getSysMemorySize();
             //获得appwidget管理实例，用于管理appwidget以便进行更新操作
             AppWidgetManager manger = AppWidgetManager.getInstance(context);
             // 相当于获得所有本程序创建的appwidget
@@ -289,6 +297,7 @@ getAudioDetail(context);
             manger.updateAppWidget(thisName, remoteViews);
         }else if (Objects.equals(intent.getAction(), "com.action.musicDecAction")){
             Toast.makeText(context, "音乐音量减", Toast.LENGTH_SHORT).show();
+            Toaster.show("音乐音量减");
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
             views1 = remoteViews;
             if (musicCurrent > 0){
@@ -296,6 +305,7 @@ getAudioDetail(context);
                 mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, musicCurrent, AudioManager.FLAG_SHOW_UI);
             }
             getAudioDetail(context);
+            getSysMemorySize();
             //获得appwidget管理实例，用于管理appwidget以便进行更新操作
             AppWidgetManager manger = AppWidgetManager.getInstance(context);
             // 相当于获得所有本程序创建的appwidget
@@ -304,6 +314,7 @@ getAudioDetail(context);
             manger.updateAppWidget(thisName, remoteViews);
         }else if (Objects.equals(intent.getAction(), "com.action.systemAddAction")){
             Toast.makeText(context, "系统音量加", Toast.LENGTH_SHORT).show();
+            Toaster.show("系统音量加");
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
             views1 = remoteViews;
             if (systemCurrent < systemMax){
@@ -311,6 +322,7 @@ getAudioDetail(context);
                 mAudioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, systemCurrent, AudioManager.FLAG_SHOW_UI);
             }
             getAudioDetail(context);
+            getSysMemorySize();
             //获得appwidget管理实例，用于管理appwidget以便进行更新操作
             AppWidgetManager manger = AppWidgetManager.getInstance(context);
             // 相当于获得所有本程序创建的appwidget
@@ -319,6 +331,7 @@ getAudioDetail(context);
             manger.updateAppWidget(thisName, remoteViews);
         }else if (Objects.equals(intent.getAction(), "com.action.systemDecAction")){
             Toast.makeText(context, "系统音量减", Toast.LENGTH_SHORT).show();
+            Toaster.show("系统音量减");
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
             views1 = remoteViews;
             if (systemCurrent > 0){
@@ -326,6 +339,7 @@ getAudioDetail(context);
                 mAudioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, systemCurrent, AudioManager.FLAG_SHOW_UI);
             }
             getAudioDetail(context);
+            getSysMemorySize();
             //获得appwidget管理实例，用于管理appwidget以便进行更新操作
             AppWidgetManager manger = AppWidgetManager.getInstance(context);
             // 相当于获得所有本程序创建的appwidget
@@ -334,6 +348,7 @@ getAudioDetail(context);
             manger.updateAppWidget(thisName, remoteViews);
         }else if (Objects.equals(intent.getAction(), "com.action.voipAddAction")){
             Toast.makeText(context, "通话音量加", Toast.LENGTH_SHORT).show();
+            Toaster.show("通话音量加");
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
             views1 = remoteViews;
             if (voipCurrent < voipMax){
@@ -341,6 +356,7 @@ getAudioDetail(context);
                 mAudioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, voipCurrent, AudioManager.FLAG_SHOW_UI);
             }
             getAudioDetail(context);
+            getSysMemorySize();
             //获得appwidget管理实例，用于管理appwidget以便进行更新操作
             AppWidgetManager manger = AppWidgetManager.getInstance(context);
             // 相当于获得所有本程序创建的appwidget
@@ -349,6 +365,7 @@ getAudioDetail(context);
             manger.updateAppWidget(thisName, remoteViews);
         }else if (Objects.equals(intent.getAction(), "com.action.voipDecAction")){
             Toast.makeText(context, "通话音量减", Toast.LENGTH_SHORT).show();
+            Toaster.show("通话音量减");
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
             views1 = remoteViews;
             if (voipCurrent > 0){
@@ -356,6 +373,7 @@ getAudioDetail(context);
                 mAudioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, voipCurrent, AudioManager.FLAG_SHOW_UI);
             }
             getAudioDetail(context);
+            getSysMemorySize();
             //获得appwidget管理实例，用于管理appwidget以便进行更新操作
             AppWidgetManager manger = AppWidgetManager.getInstance(context);
             // 相当于获得所有本程序创建的appwidget
@@ -364,6 +382,7 @@ getAudioDetail(context);
             manger.updateAppWidget(thisName, remoteViews);
         }else if (Objects.equals(intent.getAction(), "com.action.smsAddAction")){
             Toast.makeText(context, "提示音量加", Toast.LENGTH_SHORT).show();
+            Toaster.show("提示音量加");
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
             views1 = remoteViews;
             if (smsCurrent < smsMax){
@@ -371,6 +390,7 @@ getAudioDetail(context);
                 mAudioManager.setStreamVolume(AudioManager.STREAM_ALARM, smsCurrent, AudioManager.FLAG_SHOW_UI);
             }
             getAudioDetail(context);
+            getSysMemorySize();
             //获得appwidget管理实例，用于管理appwidget以便进行更新操作
             AppWidgetManager manger = AppWidgetManager.getInstance(context);
             // 相当于获得所有本程序创建的appwidget
@@ -379,6 +399,7 @@ getAudioDetail(context);
             manger.updateAppWidget(thisName, remoteViews);
         }else if (Objects.equals(intent.getAction(), "com.action.smsDecAction")){
             Toast.makeText(context, "提示音量减", Toast.LENGTH_SHORT).show();
+            Toaster.show("提示音量减");
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
             views1 = remoteViews;
             if (smsCurrent > 0){
@@ -386,6 +407,7 @@ getAudioDetail(context);
                 mAudioManager.setStreamVolume(AudioManager.STREAM_ALARM, smsCurrent, AudioManager.FLAG_SHOW_UI);
             }
             getAudioDetail(context);
+            getSysMemorySize();
             //获得appwidget管理实例，用于管理appwidget以便进行更新操作
             AppWidgetManager manger = AppWidgetManager.getInstance(context);
             // 相当于获得所有本程序创建的appwidget
@@ -397,6 +419,7 @@ getAudioDetail(context);
             context.startService(intent2);
         }else if (Objects.equals(intent.getAction(), "com.action.lightAddAction")){
             Toast.makeText(context, "系统亮度加", Toast.LENGTH_SHORT).show();
+            Toaster.show("系统亮度加");
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
             views1 = remoteViews;
             if (currentLight < 200 ){
@@ -416,6 +439,7 @@ getAudioDetail(context);
             manger.updateAppWidget(thisName, remoteViews);
         }else if (Objects.equals(intent.getAction(), "com.action.lightDecAction")){
             Toast.makeText(context, "系统亮度减", Toast.LENGTH_SHORT).show();
+            Toaster.show("系统亮度减");
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
             views1 = remoteViews;
             if (currentLight > 0 ){
@@ -601,6 +625,64 @@ getAudioDetail(context);
         smsMax = max;
 
 
+    }
+
+    private static void getSysMemorySize(){
+        String total = formatFileSize(getTotalInternalMemorySize(), false);
+        views1.setTextViewText(R.id.textView7, total);
+        String available = formatFileSize(getAvailableInternalMemorySize(), false);
+        views1.setTextViewText(R.id.textView9, available);
+    }
+
+    /**
+     * 获取手机内部总的存储空间
+     *
+     * @return
+     */
+    public static long getTotalInternalMemorySize() {
+        File path = Environment.getDataDirectory();
+        StatFs stat = new StatFs(path.getPath());
+        long blockSize = stat.getBlockSize();
+        long totalBlocks = stat.getBlockCount();
+        return totalBlocks * blockSize;
+    }
+
+    /**
+     * 获取手机内部剩余存储空间
+     *
+     * @return
+     */
+    public static long getAvailableInternalMemorySize() {
+        File path = Environment.getDataDirectory();
+        StatFs stat = new StatFs(path.getPath());
+        long blockSize = stat.getBlockSize();
+        long availableBlocks = stat.getAvailableBlocks();
+        return availableBlocks * blockSize;
+    }
+
+    private static DecimalFormat fileIntegerFormat = new DecimalFormat("#0");
+    private static DecimalFormat fileDecimalFormat = new DecimalFormat("#0.#");
+
+    /**
+     * 单位换算
+     *
+     * @param size 单位为B
+     * @param isInteger 是否返回取整的单位
+     * @return 转换后的单位
+     */
+    public static String formatFileSize(long size, boolean isInteger) {
+        DecimalFormat df = isInteger ? fileIntegerFormat : fileDecimalFormat;
+        String fileSizeString = "0M";
+        if (size < 1024 && size > 0) {
+            fileSizeString = df.format((double) size) + "B";
+        } else if (size < 1024 * 1024) {
+            fileSizeString = df.format((double) size / 1024) + "K";
+        } else if (size < 1024 * 1024 * 1024) {
+            fileSizeString = df.format((double) size / (1024 * 1024)) + "M";
+        } else {
+            fileSizeString = df.format((double) size / (1024 * 1024 * 1024)) + "G";
+        }
+        return fileSizeString;
     }
 }
 
