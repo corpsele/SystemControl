@@ -48,8 +48,8 @@ public class MyService extends Service {
     private Notification getNotification() {
         Notification.Builder builder = new Notification.Builder(this)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)//通知的图片
-                .setContentTitle("通知的标题")
-                .setContentText("通知的内容");
+                .setContentTitle("SystemControl运行中")
+                .setContentText("开启通知刷新音量存储");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setChannelId(notificationId);
         }

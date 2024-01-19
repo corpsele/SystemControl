@@ -94,7 +94,7 @@ public class NewAppWidget extends AppWidgetProvider {
 
         Intent sIntent = new Intent("com.action.service", null,context,NewAppWidget.class);
         PendingIntent sPendingIntent = PendingIntent.getBroadcast(context,0,sIntent,0);
-        views.setOnClickPendingIntent(R.id.count_down, sPendingIntent);
+//        views.setOnClickPendingIntent(R.id.count_down, sPendingIntent);
 
         /*
        发送action
