@@ -128,7 +128,12 @@
                 android:resource="@xml/new_app_widget_info" />
         </receiver>
 
-        <service android:name=".MyService" />
+        <!--            android:foregroundServiceType="phoneCall|mediaPlayback|dataSync|mediaProjection|connectedDevice|location" -->
+        <service
+            android:name=".MyService"
+            android:enabled="true"
+            android:exported="true"
+        />
     </application>
 
 </manifest>

@@ -66,6 +66,9 @@ public class MyService extends Service {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) { // 注意notification也要适配Android 8 哦
             startForeground(ID, new Notification());// 通知栏标识符 前台进程对象唯一ID
         }
+
+        Notification notification = OpenNotificationsUtil.createNotification(this, "服务常驻通知", "APP正在运行中...", 0);
+        startForeground(OpenNotificationsUtil.OPEN_SERVICE_NOTIFICATION_ID, notification);//显示常驻通知
     }
 
     @Override

@@ -11,8 +11,10 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 //import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -97,6 +99,10 @@ public class MainActivity extends AppCompatActivity {
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         this.getAudioDetail();
 
+        if (!OpenNotificationsUtil.isNotificationEnabledForApp(this)) {//未开启通知，去开启
+            OpenNotificationsUtil.openNotificationSettingsForApp(this);
+        }
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -157,6 +163,22 @@ public class MainActivity extends AppCompatActivity {
 //        ComponentName thisName = new ComponentName(this, NewAppWidget.class);
 //        //更新widget
 //        manger.updateAppWidget(thisName, views);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == OpenNotificationsUtil.OPEN_APP_NOTIFICATION) {
+            //1.创建普通消息通知
+            //OpenNotificationsUtil.createNotification(this, "普通消息通知", "欢迎来到APP！", 0);
+
+            //2.启动前台服务，创建服务常驻通知
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                startForegroundService(new Intent(this, MyService.class));
+            } else {
+                startService(new Intent(this, MyService.class));
+            }
+        }
     }
 
     public static OkHttpClient getUnsafeOkHttpClient() {
