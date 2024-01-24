@@ -28,6 +28,9 @@ public class MyService extends Service {
     private String notificationId = "serviceid";
     private String notificationName = "servicename";
 
+    private String notificationId1 = "serviceid1";
+    private String notificationName1 = "servicename1";
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -45,6 +48,16 @@ public class MyService extends Service {
         startForeground(1,getNotification());
     }
 
+    private void showNotification(String title, String content){
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        //创建NotificationChannel
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel(notificationId1, notificationName1, NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(channel);
+        }
+        startForeground(2,getNotification(title, content));
+    }
+
     private Notification getNotification() {
         Notification.Builder builder = new Notification.Builder(this)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)//通知的图片
@@ -52,6 +65,18 @@ public class MyService extends Service {
                 .setContentText("开启通知刷新音量存储");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setChannelId(notificationId);
+        }
+        Notification notification = builder.build();
+        return notification;
+    }
+
+    private Notification getNotification(String title, String content) {
+        Notification.Builder builder = new Notification.Builder(this)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)//通知的图片
+                .setContentTitle(title)
+                .setContentText(content);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder.setChannelId(notificationId1);
         }
         Notification notification = builder.build();
         return notification;
