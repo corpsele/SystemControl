@@ -12,7 +12,29 @@
         android:layout_height="50dp"
         android:layout_marginStart="86dp"
         android:layout_marginTop="79dp"
-        android:text="@string/button"
+        android:text="@string/btnPushNotification"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextText"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="54dp"
+        android:layout_marginEnd="29dp"
+        android:ems="10"
+        android:maxLines="99"
+        android:singleLine="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main3_btn1"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:enabled="true"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:minLines="8"
+        android:scrollbars="vertical"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

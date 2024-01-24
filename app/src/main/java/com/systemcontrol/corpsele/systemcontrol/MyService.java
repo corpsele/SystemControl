@@ -98,6 +98,19 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        String identify = intent.getStringExtra("identify");
+        if (identify != null && identify.length() > 0){
+            if(identify.contains("showNotification")){
+                Toast.makeText(this, "推送成功", Toast.LENGTH_LONG).show();
+                String title = intent.getStringExtra("notificationTitle");
+                String content = intent.getStringExtra("notificationContent");
+                showNotification(title,content);
+            }else if(identify.contains("alwaysNotification")){
+                Notification notification = OpenNotificationsUtil.createNotification(this, "服务常驻通知", "APP正在运行中...", 0);
+                startForeground(OpenNotificationsUtil.OPEN_SERVICE_NOTIFICATION_ID, notification);//显示常驻通知
+            }
+            return super.onStartCommand(intent, flags, startId);
+        }
         Toast.makeText(this, "服务启动了 ", Toast.LENGTH_SHORT).show();
         RemoteViews rv = new  RemoteViews( this.getPackageName(), R.layout.new_app_widget);
         ComponentName cn = new ComponentName( this , NewAppWidget.class );
