@@ -8,9 +8,9 @@
 
     <Button
         android:id="@+id/main3_btn1"
-        android:layout_width="150dp"
+        android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_marginStart="86dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="79dp"
         android:text="@string/btnPushNotification"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,5 +36,15 @@
         android:inputType="textMultiLine"
         android:minLines="8"
         android:scrollbars="vertical"/>
+
+    <Button
+        android:id="@+id/btnAlwaysNoti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="80dp"
+        android:text="开启常驻推送"
+        app:layout_constraintStart_toEndOf="@+id/main3_btn1"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

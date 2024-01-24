@@ -2,6 +2,7 @@ package com.systemcontrol.corpsele.systemcontrol;
 
 import android.accessibilityservice.AccessibilityService;
 import android.app.AlarmManager;
+import android.app.AppOpsManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -11,6 +12,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
+import android.net.Uri;
+import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 //import android.support.v7.app.AppCompatActivity;
@@ -37,6 +40,8 @@ import com.jakewharton.rxbinding4.view.RxView;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
@@ -90,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
     private Button btnPushS;
     private boolean hasChecked = false;
 
+    public static final int OPEN_DRAW_OVERLAYS = 188;
+    public static final int OP_BACKGROUND_START_ACTIVITY = 10021;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +109,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (!OpenNotificationsUtil.isNotificationEnabledForApp(this)) {//未开启通知，去开启
             OpenNotificationsUtil.openNotificationSettingsForApp(this);
+        }
+
+        if (!checkFloatPermission(this)){
+            requestSettingCanDrawOverlays();
         }
 
         Thread thread = new Thread(new Runnable() {
@@ -625,6 +637,58 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return accessibilityFound;
+    }
+
+    private boolean checkFloatPermission(Context context) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+            return true;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            try {
+                Class cls = Class.forName("android.content.Context");
+                Field declaredField = cls.getDeclaredField("APP_OPS_SERVICE");
+                declaredField.setAccessible(true);
+                Object obj = declaredField.get(cls);
+                if (!(obj instanceof String)) {
+                    return false;
+                }
+                String str2 = (String) obj;
+                obj = cls.getMethod("getSystemService", String.class).invoke(context, str2);
+                cls = Class.forName("android.app.AppOpsManager");
+                Field declaredField2 = cls.getDeclaredField("MODE_ALLOWED");
+                declaredField2.setAccessible(true);
+                Method checkOp = cls.getMethod("checkOp", Integer.TYPE, Integer.TYPE, String.class);
+                int result = (Integer) checkOp.invoke(obj, 24, Binder.getCallingUid(), context.getPackageName());
+                return result == declaredField2.getInt(cls);
+            } catch (Exception e) {
+                return false;
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                AppOpsManager appOpsMgr = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+                if (appOpsMgr == null)
+                    return false;
+                int mode = appOpsMgr.checkOpNoThrow("android:system_alert_window", android.os.Process.myUid(), context
+                        .getPackageName());
+                return mode == AppOpsManager.MODE_ALLOWED || mode == AppOpsManager.MODE_IGNORED;
+            } else {
+                return Settings.canDrawOverlays(context);
+            }
+        }
+    }
+
+    //权限打开
+    private void requestSettingCanDrawOverlays() {
+        int sdkInt = Build.VERSION.SDK_INT;
+        if (sdkInt >= Build.VERSION_CODES.O) {//8.0以上
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+            startActivityForResult(intent, OPEN_DRAW_OVERLAYS);
+        } else if (sdkInt >= Build.VERSION_CODES.M) {//6.0-8.0
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            startActivityForResult(intent, OPEN_DRAW_OVERLAYS);
+        } else {//4.4-6.0以下
+            //无需处理了
+        }
     }
 
 }
