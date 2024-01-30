@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/noti_big_tvMusicTitle"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="音乐音量" />
+
+        <TextView
+            android:id="@+id/noti_big_tvMusicCurrent"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="15" />
+
+        <TextView
+            android:id="@+id/noti_big_tvMusicMax"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="15" />
+
+        <Button
+            android:id="@+id/noti_big_btnMusicAdd"
+            android:layout_width="60dp"
+            android:layout_height="32dp"
+            android:background="@mipmap/musicadd"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/noti_big_btnMusicDec"
+            android:layout_width="60dp"
+            android:layout_height="32dp"
+            android:background="@mipmap/musicdec"
+            android:text="减"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/noti_big_btnGetAudio"
+            android:layout_width="60dp"
+            android:layout_height="34dp"
+            android:layout_weight="1"
+            android:text="Get Audio" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/noti_big_tvRingTitle"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="铃声音量" />
+
+        <TextView
+            android:id="@+id/noti_big_tvRingCurrent"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="15" />
+
+        <TextView
+            android:id="@+id/noti_big_tvRingMax"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="15" />
+
+        <Button
+            android:id="@+id/noti_big_btnRingAdd"
+            android:layout_width="60dp"
+            android:layout_height="32dp"
+            android:background="@mipmap/musicadd"
+            android:text="加"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/noti_big_btnRingDec"
+            android:layout_width="60dp"
+            android:layout_height="32dp"
+            android:background="@mipmap/musicdec"
+            android:text="减"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/noti_big_tvVoiceTitle"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="通话音量" />
+
+        <TextView
+            android:id="@+id/noti_big_tvVoiceCurrent"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="15" />
+
+        <TextView
+            android:id="@+id/noti_big_tvVoiceMax"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="15" />
+
+        <Button
+            android:id="@+id/noti_big_btnVoiceAdd"
+            android:layout_width="60dp"
+            android:layout_height="32dp"
+            android:background="@mipmap/musicadd"
+            android:text="加"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/noti_big_btnVoiceDec"
+            android:layout_width="60dp"
+            android:layout_height="32dp"
+            android:background="@mipmap/musicdec"
+            android:text="减"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/noti_big_tvAlarmTitle"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="闹钟音量" />
+
+        <TextView
+            android:id="@+id/noti_big_tvAlarmCurrent"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="15" />
+
+        <TextView
+            android:id="@+id/noti_big_tvAlarmMax"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="15" />
+
+        <Button
+            android:id="@+id/noti_big_btnAlarmAdd"
+            android:layout_width="60dp"
+            android:layout_height="32dp"
+            android:background="@mipmap/musicadd"
+            android:text="加"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/noti_big_btnAlarmDec"
+            android:layout_width="60dp"
+            android:layout_height="32dp"
+            android:background="@mipmap/musicdec"
+            android:text="减"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/noti_big_tvSystemTitle"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="系统音量" />
+
+        <TextView
+            android:id="@+id/noti_big_tvSystemCurrent"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="15" />
+
+        <TextView
+            android:id="@+id/noti_big_tvSystemMax"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="15" />
+
+        <Button
+            android:id="@+id/noti_big_btnSystemAdd"
+            android:layout_width="60dp"
+            android:layout_height="32dp"
+            android:background="@mipmap/musicadd"
+            android:text="加"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/noti_big_btnSystemDec"
+            android:layout_width="60dp"
+            android:layout_height="32dp"
+            android:background="@mipmap/musicdec"
+            android:text="减"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

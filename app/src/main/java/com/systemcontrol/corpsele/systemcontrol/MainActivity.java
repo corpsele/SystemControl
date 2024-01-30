@@ -1,13 +1,19 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
+import android.app.Service;
+
 import android.accessibilityservice.AccessibilityService;
 import android.app.AlarmManager;
 import android.app.AppOpsManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -19,6 +25,7 @@ import android.os.Bundle;
 //import android.support.v7.app.AppCompatActivity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.provider.Settings;
@@ -95,8 +102,16 @@ public class MainActivity extends AppCompatActivity {
     private Button btnPushS;
     private boolean hasChecked = false;
 
+    private NotificationManager notificationManager;
+    private NotiBroadcastReceiver notiBroadcastReceiver;
+
     public static final int OPEN_DRAW_OVERLAYS = 188;
     public static final int OP_BACKGROUND_START_ACTIVITY = 10021;
+    private static final String NOTIFICATION_CHANNEL_ID = "Notification_Normal_Channel_ID";
+    private static final String NOTIFICATION_CHANNEL_NAME = "Notification_Normal_Channel_Name";
+    private static final String NOTIFICATION_CHANNEL_DESCRIPTION = "通知控制中心";
+
+    private static final int NOTIFICATION_CODE = 20078;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +140,61 @@ public class MainActivity extends AppCompatActivity {
         });
         thread.run();
 
+//        initNotiManager();
+
+//        initReceiver();
+    }
+
+    private void initNotiManager(){
+        notificationManager = (NotificationManager)
+                getSystemService(Context.NOTIFICATION_SERVICE);
+        RemoteViews remoteViewsNormal = new RemoteViews(this.getPackageName(), R.layout.notification_normal);
+        RemoteViews remoteViewsBig = new RemoteViews(this.getPackageName(), R.layout.notification_big);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setWhen(System.currentTimeMillis())
+                .setShowWhen(true)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setAutoCancel(true)
+                .setOngoing(true)
+                .setCustomBigContentView(remoteViewsBig)
+                .setCustomContentView(remoteViewsNormal);
+        //设置优先级
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            builder.setPriority(NotificationManager.IMPORTANCE_HIGH);
+        } else {
+//            builder.setPriority(Notification.PRIORITY_HIGH);
+        }
+
+        //设置点击通知栏要跳转的Activity
+        Intent intent = new Intent(this, MainActivity.class);
+//        intent.putExtra(Constants.EXTRA.NOTIFICATION_FROM, Constants.NotificationType.FROM_NOTIFICATION);
+//        intent.putExtra(Constants.EXTRA.NOTIFICATION_TYPE, NOTIFICATION_CODE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, NOTIFICATION_CODE, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        builder.setContentIntent(pendingIntent);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setVisibility(NotificationCompat.VISIBILITY_PRIVATE);
+        }
+        //Android8以上需要设置通知渠道
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel mNotificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+            mNotificationChannel.setDescription(NOTIFICATION_CHANNEL_DESCRIPTION);
+            mNotificationChannel.setSound(null, null);
+            notificationManager.createNotificationChannel(mNotificationChannel);
+            builder.setChannelId(NOTIFICATION_CHANNEL_ID);
+        }
+        //推送通知
+        notificationManager.notify(NOTIFICATION_CODE, builder.build());
+        Notification notification = OpenNotificationsUtil.createNotification(this, "服务常驻通知", "APP正在运行中...", 0);
+
+    }
+
+    private void initReceiver(){
+        notiBroadcastReceiver = new NotiBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter(NotiBroadcastReceiver.actionOpenMain);
+//        intentFilter.addAction(MyBroadcastReceiver.ACTION_2);
+        registerReceiver(notiBroadcastReceiver, intentFilter);
     }
 
     @Override

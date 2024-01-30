@@ -10,12 +10,16 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 /**
  * Created by Administrator on 2017/12/11.
@@ -30,6 +34,18 @@ public class MyService extends Service {
 
     private String notificationId1 = "serviceid1";
     private String notificationName1 = "servicename1";
+
+    private NotificationManager notificationManager;
+    private NotiBroadcastReceiver notiBroadcastReceiver;
+    private Notification notificationControl;
+
+    private static AudioManager mAudioManager;
+
+    private static final String NOTIFICATION_CHANNEL_ID = "Notification_Normal_Channel_ID";
+    private static final String NOTIFICATION_CHANNEL_NAME = "Notification_Normal_Channel_Name";
+    private static final String NOTIFICATION_CHANNEL_DESCRIPTION = "通知控制中心";
+
+    private static final int NOTIFICATION_CODE = 20078;
 
     @Nullable
     @Override
@@ -94,6 +110,11 @@ public class MyService extends Service {
 
         Notification notification = OpenNotificationsUtil.createNotification(this, "服务常驻通知", "APP正在运行中...", 0);
         startForeground(OpenNotificationsUtil.OPEN_SERVICE_NOTIFICATION_ID, notification);//显示常驻通知
+
+        initNotiManager();
+        initReceiver();
+
+        startForeground(NOTIFICATION_CODE, notificationControl);
     }
 
     @Override
@@ -106,8 +127,11 @@ public class MyService extends Service {
                 String content = intent.getStringExtra("notificationContent");
                 showNotification(title,content);
             }else if(identify.contains("alwaysNotification")){
-                Notification notification = OpenNotificationsUtil.createNotification(this, "服务常驻通知", "APP正在运行中...", 0);
-                startForeground(OpenNotificationsUtil.OPEN_SERVICE_NOTIFICATION_ID, notification);//显示常驻通知
+//                Notification notification = OpenNotificationsUtil.createNotification(this, "服务常驻通知", "APP正在运行中...", 0);
+//                startForeground(OpenNotificationsUtil.OPEN_SERVICE_NOTIFICATION_ID, notification);//显示常驻通知
+
+                initNotiManager();
+                initReceiver();
             }
             return super.onStartCommand(intent, flags, startId);
         }
@@ -126,6 +150,159 @@ public class MyService extends Service {
         sendBroadcast(intent1);
         return super.onStartCommand(intent, flags, startId);
 //        return START_STICKY_COMPATIBILITY;
+    }
+
+    private void initNotiManager(){
+        notificationManager = (NotificationManager)
+                getSystemService(Context.NOTIFICATION_SERVICE);
+        RemoteViews remoteViewsNormal = new RemoteViews(this.getPackageName(), R.layout.notification_normal);
+        RemoteViews remoteViewsBig = new RemoteViews(this.getPackageName(), R.layout.notification_big);
+
+        //get Audio
+        Intent iBtnGetAudio = new Intent(NotiBroadcastReceiver.actionGetSystemAudio);
+        PendingIntent piBtnGetAudio = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnGetAudio, 0);
+        /*
+         * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
+         */
+        remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnGetAudio, piBtnGetAudio);
+
+        //music
+        Intent iBtnMusicAdd = new Intent(NotiBroadcastReceiver.actionMusicAdd);
+        PendingIntent piBtnMusicAdd = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnMusicAdd, 0);
+        /*
+         * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
+         */
+        remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnMusicAdd, piBtnMusicAdd);
+
+        Intent iBtnMusicDec = new Intent(NotiBroadcastReceiver.actionMusicDec);
+        PendingIntent piBtnMusicDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnMusicDec, 0);
+        /*
+         * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
+         */
+        remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnMusicDec, piBtnMusicDec);
+
+        //system
+        Intent iBtnSystemAdd = new Intent(NotiBroadcastReceiver.actionSystemAdd);
+        PendingIntent piBtnSystemAdd = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnSystemAdd, 0);
+        /*
+         * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
+         */
+        remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnSystemAdd, piBtnSystemAdd);
+
+        Intent iBtnSystemDec = new Intent(NotiBroadcastReceiver.actionSystemDec);
+        PendingIntent piBtnSystemDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnSystemDec, 0);
+        /*
+         * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
+         */
+        remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnSystemDec, piBtnSystemDec);
+
+        //ring
+        Intent iBtnRingAdd = new Intent(NotiBroadcastReceiver.actionRingAdd);
+        PendingIntent piBtnRingAdd = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnRingAdd, 0);
+        /*
+         * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
+         */
+        remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnRingAdd, piBtnRingAdd);
+
+        Intent iBtnRingDec = new Intent(NotiBroadcastReceiver.actionRingDec);
+        PendingIntent piBtnRingDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnRingDec, 0);
+        /*
+         * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
+         */
+        remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnRingDec, piBtnRingDec);
+
+        //voice
+        Intent iBtnVoiceAdd = new Intent(NotiBroadcastReceiver.actionVoiceAdd);
+        PendingIntent piBtnVoiceAdd = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnVoiceAdd, 0);
+        /*
+         * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
+         */
+        remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnVoiceAdd, piBtnVoiceAdd);
+
+        Intent iBtnVoiceDec = new Intent(NotiBroadcastReceiver.actionVoiceDec);
+        PendingIntent piBtnVoiceDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnVoiceDec, 0);
+        /*
+         * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
+         */
+        remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnVoiceDec, piBtnVoiceDec);
+
+        //alarm
+        Intent iBtnAlarmAdd = new Intent(NotiBroadcastReceiver.actionAlarmAdd);
+        PendingIntent piBtnAlarmAdd = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnAlarmAdd, 0);
+        /*
+         * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
+         */
+        remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnAlarmAdd, piBtnAlarmAdd);
+
+        Intent iBtnAlarmDec = new Intent(NotiBroadcastReceiver.actionAlarmDec);
+        PendingIntent piBtnAlarmDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnAlarmDec, 0);
+        /*
+         * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
+         */
+        remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnAlarmDec, piBtnAlarmDec);
+
+
+        getAudioDetail(remoteViewsBig);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setWhen(System.currentTimeMillis())
+                .setShowWhen(true)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setAutoCancel(true)
+                .setOngoing(true)
+                .setCustomBigContentView(remoteViewsBig)
+                .setCustomContentView(remoteViewsNormal);
+        //设置优先级
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            builder.setPriority(NotificationManager.IMPORTANCE_HIGH);
+        } else {
+//            builder.setPriority(Notification.PRIORITY_HIGH);
+        }
+
+        //设置点击通知栏要跳转的Activity
+        Intent intent = new Intent(this, MainActivity.class);
+//        intent.putExtra(Constants.EXTRA.NOTIFICATION_FROM, Constants.NotificationType.FROM_NOTIFICATION);
+//        intent.putExtra(Constants.EXTRA.NOTIFICATION_TYPE, NOTIFICATION_CODE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, NOTIFICATION_CODE, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        builder.setContentIntent(pendingIntent);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setVisibility(NotificationCompat.VISIBILITY_PRIVATE);
+        }
+        //Android8以上需要设置通知渠道
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel mNotificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+            mNotificationChannel.setDescription(NOTIFICATION_CHANNEL_DESCRIPTION);
+            mNotificationChannel.setSound(null, null);
+            notificationManager.createNotificationChannel(mNotificationChannel);
+            builder.setChannelId(NOTIFICATION_CHANNEL_ID);
+        }
+        //推送通知
+        notificationManager.notify(NOTIFICATION_CODE, builder.build());
+        Notification notification = builder.build();
+        notificationControl = notification;
+    }
+
+    public void updateNotiControl(){
+        initNotiManager();
+    }
+
+    private void initReceiver(){
+        notiBroadcastReceiver = new NotiBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter(NotiBroadcastReceiver.actionOpenMain);
+        intentFilter.addAction(NotiBroadcastReceiver.actionGetSystemAudio);
+        intentFilter.addAction(NotiBroadcastReceiver.actionMusicAdd);
+        intentFilter.addAction(NotiBroadcastReceiver.actionMusicDec);
+        intentFilter.addAction(NotiBroadcastReceiver.actionSystemAdd);
+        intentFilter.addAction(NotiBroadcastReceiver.actionSystemDec);
+        intentFilter.addAction(NotiBroadcastReceiver.actionRingAdd);
+        intentFilter.addAction(NotiBroadcastReceiver.actionRingDec);
+        intentFilter.addAction(NotiBroadcastReceiver.actionAlarmAdd);
+        intentFilter.addAction(NotiBroadcastReceiver.actionAlarmDec);
+        intentFilter.addAction(NotiBroadcastReceiver.actionVoiceAdd);
+        intentFilter.addAction(NotiBroadcastReceiver.actionVoiceDec);
+        registerReceiver(notiBroadcastReceiver, intentFilter);
     }
 
     @Override
@@ -147,5 +324,69 @@ public class MyService extends Service {
         } else {
             this.startService(intent1);
         }
+
+//        unregisterReceiver(notiBroadcastReceiver);
+    }
+
+    private void getAudioDetail(RemoteViews remoteViews){
+        if (mAudioManager == null){
+            mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        }
+
+        //通话音量
+
+        int max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_VOICE_CALL );
+        int current = mAudioManager.getStreamVolume( AudioManager.STREAM_VOICE_CALL );
+        String currentVoice = String.valueOf(current);
+        String maxVoice = String.valueOf(max);
+        remoteViews.setTextViewText(R.id.noti_big_tvVoiceMax, maxVoice);
+        remoteViews.setTextViewText(R.id.noti_big_tvVoiceCurrent, currentVoice);
+        Log.d("VIOCE_CALL", "max : " + max + " current : " + current);
+
+
+
+        //系统音量
+
+        max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_SYSTEM );
+        current = mAudioManager.getStreamVolume( AudioManager.STREAM_SYSTEM );
+        String currentSystem = String.valueOf(current);
+        String maxSystem = String.valueOf(max);
+        remoteViews.setTextViewText(R.id.noti_big_tvSystemCurrent, currentSystem);
+        remoteViews.setTextViewText(R.id.noti_big_tvSystemMax, maxSystem);
+
+        Log.d("System", "max : " + max + " current : " + current);
+
+
+//铃声音量
+
+        max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_RING );
+        current = mAudioManager.getStreamVolume( AudioManager.STREAM_RING );
+        String currentRing = String.valueOf(current);
+        String maxRing = String.valueOf(max);
+        remoteViews.setTextViewText(R.id.noti_big_tvRingCurrent, currentRing);
+        remoteViews.setTextViewText(R.id.noti_big_tvRingMax, maxRing);
+
+//音乐音量
+
+        max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
+        current = mAudioManager.getStreamVolume( AudioManager.STREAM_MUSIC );
+        String currentMusic = String.valueOf(current);
+        String maxMusic = String.valueOf(max);
+        remoteViews.setTextViewText(R.id.noti_big_tvMusicCurrent, currentMusic);
+        remoteViews.setTextViewText(R.id.noti_big_tvMusicMax, maxMusic);
+        Log.d("Music", "max : " + max + " current : " + current);
+
+
+
+//提示声音音量
+
+        max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_ALARM );
+        current = mAudioManager.getStreamVolume( AudioManager.STREAM_ALARM );
+        String currentAlarm = String.valueOf(current);
+        String maxAlarm = String.valueOf(max);
+        remoteViews.setTextViewText(R.id.noti_big_tvAlarmCurrent, currentAlarm);
+        remoteViews.setTextViewText(R.id.noti_big_tvAlarmMax, maxAlarm);
+
+
     }
 }
