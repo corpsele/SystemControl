@@ -111,7 +111,7 @@ public class MyService extends Service {
         Notification notification = OpenNotificationsUtil.createNotification(this, "服务常驻通知", "APP正在运行中...", 0);
         startForeground(OpenNotificationsUtil.OPEN_SERVICE_NOTIFICATION_ID, notification);//显示常驻通知
 
-        initNotiManager();
+        initNotiManager(false);
         initReceiver();
 
         startForeground(NOTIFICATION_CODE, notificationControl);
@@ -127,10 +127,11 @@ public class MyService extends Service {
                 String content = intent.getStringExtra("notificationContent");
                 showNotification(title,content);
             }else if(identify.contains("alwaysNotification")){
+                boolean isNotiBigContent = intent.getBooleanExtra("isNotiBigCotent", false);
 //                Notification notification = OpenNotificationsUtil.createNotification(this, "服务常驻通知", "APP正在运行中...", 0);
 //                startForeground(OpenNotificationsUtil.OPEN_SERVICE_NOTIFICATION_ID, notification);//显示常驻通知
 
-                initNotiManager();
+                initNotiManager(isNotiBigContent);
                 initReceiver();
             }
             return super.onStartCommand(intent, flags, startId);
@@ -152,7 +153,7 @@ public class MyService extends Service {
 //        return START_STICKY_COMPATIBILITY;
     }
 
-    private void initNotiManager(){
+    private void initNotiManager(boolean isBig){
         notificationManager = (NotificationManager)
                 getSystemService(Context.NOTIFICATION_SERVICE);
         RemoteViews remoteViewsNormal = new RemoteViews(this.getPackageName(), R.layout.notification_normal);
@@ -244,15 +245,32 @@ public class MyService extends Service {
 
         getAudioDetail(remoteViewsBig);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-                .setOnlyAlertOnce(true)
-                .setWhen(System.currentTimeMillis())
-                .setShowWhen(true)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setAutoCancel(true)
-                .setOngoing(true)
-                .setCustomBigContentView(remoteViewsBig)
-                .setCustomContentView(remoteViewsNormal);
+        NotificationCompat.Builder builder = null;
+        if (isBig){
+            builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                    .setOnlyAlertOnce(true)
+                    .setWhen(System.currentTimeMillis())
+                    .setShowWhen(true)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setAutoCancel(true)
+                    .setOngoing(true)
+                    .setCustomBigContentView(remoteViewsBig)
+                    .setStyle(new NotificationCompat.BigTextStyle())
+//                .setCustomHeadsUpContentView(remoteViewsBig)
+                    .setCustomContentView(remoteViewsBig);
+        }else{
+            builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                    .setOnlyAlertOnce(true)
+                    .setWhen(System.currentTimeMillis())
+                    .setShowWhen(true)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setAutoCancel(true)
+                    .setOngoing(true)
+                    .setCustomBigContentView(remoteViewsBig)
+                    .setStyle(new NotificationCompat.BigTextStyle())
+//                .setCustomHeadsUpContentView(remoteViewsBig)
+                    .setCustomContentView(remoteViewsNormal);
+        }
         //设置优先级
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             builder.setPriority(NotificationManager.IMPORTANCE_HIGH);
@@ -278,14 +296,16 @@ public class MyService extends Service {
             notificationManager.createNotificationChannel(mNotificationChannel);
             builder.setChannelId(NOTIFICATION_CHANNEL_ID);
         }
-        //推送通知
-        notificationManager.notify(NOTIFICATION_CODE, builder.build());
+
         Notification notification = builder.build();
         notificationControl = notification;
+        //推送通知
+        notificationManager.notify(NOTIFICATION_CODE, builder.build());
+
     }
 
     public void updateNotiControl(){
-        initNotiManager();
+        initNotiManager(false);
     }
 
     private void initReceiver(){

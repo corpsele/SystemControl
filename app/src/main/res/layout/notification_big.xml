@@ -11,21 +11,21 @@
 
         <TextView
             android:id="@+id/noti_big_tvMusicTitle"
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="音乐音量" />
 
         <TextView
             android:id="@+id/noti_big_tvMusicCurrent"
-            android:layout_width="60dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="15" />
 
         <TextView
             android:id="@+id/noti_big_tvMusicMax"
-            android:layout_width="60dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="15" />
@@ -35,6 +35,7 @@
             android:layout_width="60dp"
             android:layout_height="32dp"
             android:background="@mipmap/musicadd"
+            android:text="加"
             android:textSize="10sp" />
 
         <Button
@@ -50,7 +51,8 @@
             android:layout_width="60dp"
             android:layout_height="34dp"
             android:layout_weight="1"
-            android:text="Get Audio" />
+            android:text="Get Audio"
+            android:textSize="10sp" />
 
     </LinearLayout>
 
@@ -61,21 +63,21 @@
 
         <TextView
             android:id="@+id/noti_big_tvRingTitle"
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="铃声音量" />
 
         <TextView
             android:id="@+id/noti_big_tvRingCurrent"
-            android:layout_width="60dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="15" />
 
         <TextView
             android:id="@+id/noti_big_tvRingMax"
-            android:layout_width="60dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="15" />
@@ -105,21 +107,21 @@
 
         <TextView
             android:id="@+id/noti_big_tvVoiceTitle"
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="通话音量" />
 
         <TextView
             android:id="@+id/noti_big_tvVoiceCurrent"
-            android:layout_width="60dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="15" />
 
         <TextView
             android:id="@+id/noti_big_tvVoiceMax"
-            android:layout_width="60dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="15" />
@@ -149,21 +151,21 @@
 
         <TextView
             android:id="@+id/noti_big_tvAlarmTitle"
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="闹钟音量" />
 
         <TextView
             android:id="@+id/noti_big_tvAlarmCurrent"
-            android:layout_width="60dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="15" />
 
         <TextView
             android:id="@+id/noti_big_tvAlarmMax"
-            android:layout_width="60dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="15" />
@@ -193,21 +195,21 @@
 
         <TextView
             android:id="@+id/noti_big_tvSystemTitle"
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="系统音量" />
 
         <TextView
             android:id="@+id/noti_big_tvSystemCurrent"
-            android:layout_width="60dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="15" />
 
         <TextView
             android:id="@+id/noti_big_tvSystemMax"
-            android:layout_width="60dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="15" />

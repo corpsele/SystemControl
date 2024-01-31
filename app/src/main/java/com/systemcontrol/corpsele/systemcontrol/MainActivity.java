@@ -102,6 +102,10 @@ public class MainActivity extends AppCompatActivity {
     private Button btnPushS;
     private boolean hasChecked = false;
 
+    private Button btnOpenService;
+    private boolean isNotiBigContent = false;
+    private CheckBox checkBoxIsNotiBig;
+
     private NotificationManager notificationManager;
     private NotiBroadcastReceiver notiBroadcastReceiver;
 
@@ -130,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
             requestSettingCanDrawOverlays();
         }
 
+        initUI();
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -143,6 +149,58 @@ public class MainActivity extends AppCompatActivity {
 //        initNotiManager();
 
 //        initReceiver();
+    }
+
+    private void initUI(){
+        btnOpenService = findViewById(R.id.main_btnOpenService);
+        checkBoxIsNotiBig = findViewById(R.id.main_checkboxIsBigNoti);
+        RxView.clicks(btnOpenService).subscribe(new Observer<Unit>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull Unit unit) {
+                System.out.println("btnOpenService click ");
+                Intent intent1=new Intent(getBaseContext() ,MyService.class );
+                intent1.putExtra("identify","alwaysNotification");
+                intent1.putExtra("isNotiBigCotent",isNotiBigContent);
+                startService(intent1);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+        RxView.clicks(checkBoxIsNotiBig).subscribe(new Observer<Unit>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull Unit unit) {
+                isNotiBigContent = !isNotiBigContent;
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     private void initNotiManager(){
