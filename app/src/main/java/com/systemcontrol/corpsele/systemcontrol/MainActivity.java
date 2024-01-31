@@ -189,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNext(@NonNull Unit unit) {
                 isNotiBigContent = !isNotiBigContent;
+                DataManager.getInstance().setNotiBigContent(isNotiBigContent);
             }
 
             @Override

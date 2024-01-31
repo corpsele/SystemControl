@@ -13,6 +13,16 @@ public class DataManager {
 
     private Boolean isOnAcc = false;
 
+    public Boolean getNotiBigContent() {
+        return isNotiBigContent;
+    }
+
+    public void setNotiBigContent(Boolean notiBigContent) {
+        isNotiBigContent = notiBigContent;
+    }
+
+    private Boolean isNotiBigContent = false;
+
     public Boolean getOnAcc() {
         return isOnAcc;
     }

@@ -131,7 +131,7 @@ public class MyService extends Service {
 //                Notification notification = OpenNotificationsUtil.createNotification(this, "服务常驻通知", "APP正在运行中...", 0);
 //                startForeground(OpenNotificationsUtil.OPEN_SERVICE_NOTIFICATION_ID, notification);//显示常驻通知
 
-                initNotiManager(isNotiBigContent);
+                initNotiManager(DataManager.getInstance().getNotiBigContent());
                 initReceiver();
             }
             return super.onStartCommand(intent, flags, startId);
@@ -246,7 +246,8 @@ public class MyService extends Service {
         getAudioDetail(remoteViewsBig);
 
         NotificationCompat.Builder builder = null;
-        if (isBig){
+        boolean isNotiBigContent = DataManager.getInstance().getNotiBigContent();
+        if (isNotiBigContent){
             builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                     .setOnlyAlertOnce(true)
                     .setWhen(System.currentTimeMillis())
