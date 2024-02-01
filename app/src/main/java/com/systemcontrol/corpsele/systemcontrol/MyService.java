@@ -310,20 +310,23 @@ public class MyService extends Service {
     }
 
     private void initReceiver(){
-        notiBroadcastReceiver = new NotiBroadcastReceiver();
-        IntentFilter intentFilter = new IntentFilter(NotiBroadcastReceiver.actionOpenMain);
-        intentFilter.addAction(NotiBroadcastReceiver.actionGetSystemAudio);
-        intentFilter.addAction(NotiBroadcastReceiver.actionMusicAdd);
-        intentFilter.addAction(NotiBroadcastReceiver.actionMusicDec);
-        intentFilter.addAction(NotiBroadcastReceiver.actionSystemAdd);
-        intentFilter.addAction(NotiBroadcastReceiver.actionSystemDec);
-        intentFilter.addAction(NotiBroadcastReceiver.actionRingAdd);
-        intentFilter.addAction(NotiBroadcastReceiver.actionRingDec);
-        intentFilter.addAction(NotiBroadcastReceiver.actionAlarmAdd);
-        intentFilter.addAction(NotiBroadcastReceiver.actionAlarmDec);
-        intentFilter.addAction(NotiBroadcastReceiver.actionVoiceAdd);
-        intentFilter.addAction(NotiBroadcastReceiver.actionVoiceDec);
-        registerReceiver(notiBroadcastReceiver, intentFilter);
+        if(notiBroadcastReceiver == null){
+            notiBroadcastReceiver = new NotiBroadcastReceiver();
+            IntentFilter intentFilter = new IntentFilter(NotiBroadcastReceiver.actionOpenMain);
+            intentFilter.addAction(NotiBroadcastReceiver.actionGetSystemAudio);
+            intentFilter.addAction(NotiBroadcastReceiver.actionMusicAdd);
+            intentFilter.addAction(NotiBroadcastReceiver.actionMusicDec);
+            intentFilter.addAction(NotiBroadcastReceiver.actionSystemAdd);
+            intentFilter.addAction(NotiBroadcastReceiver.actionSystemDec);
+            intentFilter.addAction(NotiBroadcastReceiver.actionRingAdd);
+            intentFilter.addAction(NotiBroadcastReceiver.actionRingDec);
+            intentFilter.addAction(NotiBroadcastReceiver.actionAlarmAdd);
+            intentFilter.addAction(NotiBroadcastReceiver.actionAlarmDec);
+            intentFilter.addAction(NotiBroadcastReceiver.actionVoiceAdd);
+            intentFilter.addAction(NotiBroadcastReceiver.actionVoiceDec);
+            registerReceiver(notiBroadcastReceiver, intentFilter);
+        }
+
     }
 
     @Override
