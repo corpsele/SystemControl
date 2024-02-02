@@ -234,7 +234,10 @@ public class NewAppWidget extends AppWidgetProvider {
             Toast toast = Toast.makeText(context, "收到了", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.TOP|Gravity.CENTER, -50, 100);
             toast.show();
-            Toaster.show("收到了");
+            if(Toaster.isInit()){
+                Toaster.show("收到了");
+            }else{
+            }
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
             views1 = remoteViews;
             if (isTurning) {

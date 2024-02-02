@@ -1,6 +1,7 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -23,6 +24,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+
+import com.hjq.toast.Toaster;
 
 /**
  * Created by Administrator on 2017/12/11.
@@ -127,28 +130,36 @@ public class MyService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         try{
+            Log.e("onStartCommand", "intent = " + intent);
             String identify = "";
-            if(intent == null && intent.getStringExtra("identify") == null){
-                identify = "showNotification";
-            }else{
-                identify = intent.getStringExtra("identify");
-            }
-            if (identify != null && identify.length() > 0){
-                if(identify.contains("showNotification")){
-                    Toast.makeText(this, "推送成功", Toast.LENGTH_LONG).show();
-                    String title = intent.getStringExtra("notificationTitle");
-                    String content = intent.getStringExtra("notificationContent");
-                    showNotification(title,content);
-                }else if(identify.contains("alwaysNotification")){
-                    boolean isNotiBigContent = intent.getBooleanExtra("isNotiBigCotent", false);
+            if(intent == null){
+                if(intent.getStringExtra("identify") == null){
+                    identify = "showNotification";
+                }else{
+                    identify = intent.getStringExtra("identify");
+                }
+                if (identify != null && identify.length() > 0){
+                    if(identify.contains("showNotification")){
+                        Toast.makeText(this, "推送成功", Toast.LENGTH_LONG).show();
+                        String title = intent.getStringExtra("notificationTitle");
+                        String content = intent.getStringExtra("notificationContent");
+                        showNotification(title,content);
+                    }else if(identify.contains("alwaysNotification")){
+                        boolean isNotiBigContent = intent.getBooleanExtra("isNotiBigCotent", false);
 //                Notification notification = OpenNotificationsUtil.createNotification(this, "服务常驻通知", "APP正在运行中...", 0);
 //                startForeground(OpenNotificationsUtil.OPEN_SERVICE_NOTIFICATION_ID, notification);//显示常驻通知
 
-                    initNotiManager(DataManager.getInstance().getNotiBigContent());
-                    initReceiver();
-                }
+                        initNotiManager(DataManager.getInstance().getNotiBigContent());
+                        initReceiver();
+                    }
 //                return super.onStartCommand(intent, flags, startId);
+                }
+
+            }else{
+                initNotiManager(DataManager.getInstance().getNotiBigContent());
+                initReceiver();
             }
+
         }catch (Exception e){
             Log.e("crash error", e.getLocalizedMessage());
             Toast.makeText(this, "服务异常 " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
@@ -156,6 +167,18 @@ public class MyService extends Service {
 //            initReceiver();
 //            return super.onStartCommand(intent, flags, startId);
 
+//            Intent intent1=new Intent(getBaseContext() ,MyService.class );
+//            PendingIntent refreshIntent=PendingIntent.getService(getBaseContext(), 0 , intent1,  0 );
+//            AlarmManager alarm=(AlarmManager)getBaseContext().getSystemService(Context.ALARM_SERVICE);
+//            alarm.setRepeating(AlarmManager.RTC, 0 ,  1000 , refreshIntent);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                //适配8.0机制
+//                startForegroundService(intent1);
+//            } else {
+//                startService(intent1);
+//            }
+            android.os.Process.killProcess(android.os.Process.myPid());
+            return super.onStartCommand(intent, flags, startId);
         }finally {
 
         }
@@ -179,6 +202,19 @@ public class MyService extends Service {
         sendBroadcast(intent1);
         return super.onStartCommand(intent, flags, startId);
 //        return START_STICKY_COMPATIBILITY;
+    }
+
+    private void restartApp(){
+        // 重启app
+        Intent intentMain = new Intent(getApplicationContext(), MainActivity.class);
+        //PendingIntent restartIntent = PendingIntent.getActivity(application.getApplicationContext(), 0, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent restartIntent = PendingIntent.getActivity(getBaseContext(), 0, intentMain, PendingIntent.FLAG_UPDATE_CURRENT);
+        // 退出程序
+        AlarmManager mgr = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        // 3秒后重启
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 3000, restartIntent);
+        //结束进程之前可以把你程序的注销或者退出代码放在这段代码之前
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     private void initNotiManager(boolean isBig){
