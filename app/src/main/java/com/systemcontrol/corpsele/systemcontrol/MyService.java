@@ -8,12 +8,15 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
@@ -102,42 +105,67 @@ public class MyService extends Service {
     @Override
     public void onCreate() {
 
-        showNotification();
+//        showNotification();
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) { // 注意notification也要适配Android 8 哦
-            startForeground(ID, new Notification());// 通知栏标识符 前台进程对象唯一ID
-        }
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) { // 注意notification也要适配Android 8 哦
+//            startForeground(ID, new Notification());// 通知栏标识符 前台进程对象唯一ID
+//        }
+//
+//        Notification notification = OpenNotificationsUtil.createNotification(this, "服务常驻通知", "APP正在运行中...", 0);
+//        startForeground(OpenNotificationsUtil.OPEN_SERVICE_NOTIFICATION_ID, notification);//显示常驻通知
 
-        Notification notification = OpenNotificationsUtil.createNotification(this, "服务常驻通知", "APP正在运行中...", 0);
-        startForeground(OpenNotificationsUtil.OPEN_SERVICE_NOTIFICATION_ID, notification);//显示常驻通知
-
-        initNotiManager(false);
+        initNotiManager(DataManager.getInstance().getNotiBigContent());
         initReceiver();
 
-        startForeground(NOTIFICATION_CODE, notificationControl);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) { // 注意notification也要适配Android 8 哦
+            startForeground(NOTIFICATION_CODE, notificationControl);
+        }
+
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String identify = intent.getStringExtra("identify");
-        if (identify != null && identify.length() > 0){
-            if(identify.contains("showNotification")){
-                Toast.makeText(this, "推送成功", Toast.LENGTH_LONG).show();
-                String title = intent.getStringExtra("notificationTitle");
-                String content = intent.getStringExtra("notificationContent");
-                showNotification(title,content);
-            }else if(identify.contains("alwaysNotification")){
-                boolean isNotiBigContent = intent.getBooleanExtra("isNotiBigCotent", false);
+        try{
+            String identify = "";
+            if(intent == null && intent.getStringExtra("identify") == null){
+                identify = "showNotification";
+            }else{
+                identify = intent.getStringExtra("identify");
+            }
+            if (identify != null && identify.length() > 0){
+                if(identify.contains("showNotification")){
+                    Toast.makeText(this, "推送成功", Toast.LENGTH_LONG).show();
+                    String title = intent.getStringExtra("notificationTitle");
+                    String content = intent.getStringExtra("notificationContent");
+                    showNotification(title,content);
+                }else if(identify.contains("alwaysNotification")){
+                    boolean isNotiBigContent = intent.getBooleanExtra("isNotiBigCotent", false);
 //                Notification notification = OpenNotificationsUtil.createNotification(this, "服务常驻通知", "APP正在运行中...", 0);
 //                startForeground(OpenNotificationsUtil.OPEN_SERVICE_NOTIFICATION_ID, notification);//显示常驻通知
 
-                initNotiManager(DataManager.getInstance().getNotiBigContent());
-                initReceiver();
+                    initNotiManager(DataManager.getInstance().getNotiBigContent());
+                    initReceiver();
+                }
+//                return super.onStartCommand(intent, flags, startId);
             }
-            return super.onStartCommand(intent, flags, startId);
+        }catch (Exception e){
+            Log.e("crash error", e.getLocalizedMessage());
+            Toast.makeText(this, "服务异常 " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+//            initNotiManager(DataManager.getInstance().getNotiBigContent());
+//            initReceiver();
+//            return super.onStartCommand(intent, flags, startId);
+
+        }finally {
+
         }
+
+
         Toast.makeText(this, "服务启动了 ", Toast.LENGTH_SHORT).show();
-        RemoteViews rv = new  RemoteViews( this.getPackageName(), R.layout.new_app_widget);
+        RemoteViews rv = new RemoteViews( this.getPackageName(), R.layout.new_app_widget);
+
+        getAudioDetail(rv);
+
         ComponentName cn = new ComponentName( this , NewAppWidget.class );
         AppWidgetManager am = AppWidgetManager.getInstance(this );
         am.updateAppWidget(cn, rv);
@@ -306,7 +334,7 @@ public class MyService extends Service {
     }
 
     public void updateNotiControl(){
-        initNotiManager(false);
+        initNotiManager(DataManager.getInstance().getNotiBigContent());
     }
 
     private void initReceiver(){
@@ -340,14 +368,14 @@ public class MyService extends Service {
 //        Intent localIntent1 = new Intent();
 //        localIntent1.setAction("com.systemcontrol.restart");
 //        sendBroadcast(localIntent);
-        Intent intent1=new Intent(this ,MyService.class );
-        PendingIntent refreshIntent=PendingIntent.getService(this, 0 , intent1,  0 );
+//        Intent intent1=new Intent(this ,MyService.class );
+//        PendingIntent refreshIntent=PendingIntent.getService(this, 0 , intent1,  0 );
 //        this.startService(intent1);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.startForegroundService(intent1);
-        } else {
-            this.startService(intent1);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            this.startForegroundService(intent1);
+//        } else {
+//            this.startService(intent1);
+//        }
 
 //        unregisterReceiver(notiBroadcastReceiver);
     }
