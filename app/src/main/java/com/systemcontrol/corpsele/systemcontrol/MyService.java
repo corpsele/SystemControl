@@ -306,6 +306,13 @@ public class MyService extends Service {
          */
         remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnAlarmDec, piBtnAlarmDec);
 
+        Intent iBtnLockScreen = new Intent(NotiBroadcastReceiver.actionLockScreen);
+        PendingIntent piBtnLockScreen = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnLockScreen, 0);
+        /*
+         * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
+         */
+        remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnLockScreen, piBtnLockScreen);
+
 
         getAudioDetail(remoteViewsBig);
 
@@ -388,6 +395,7 @@ public class MyService extends Service {
             intentFilter.addAction(NotiBroadcastReceiver.actionAlarmDec);
             intentFilter.addAction(NotiBroadcastReceiver.actionVoiceAdd);
             intentFilter.addAction(NotiBroadcastReceiver.actionVoiceDec);
+            intentFilter.addAction(NotiBroadcastReceiver.actionLockScreen);
             registerReceiver(notiBroadcastReceiver, intentFilter);
         }
 

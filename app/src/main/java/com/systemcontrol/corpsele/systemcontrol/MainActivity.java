@@ -106,8 +106,12 @@ public class MainActivity extends AppCompatActivity {
     private boolean isNotiBigContent = false;
     private CheckBox checkBoxIsNotiBig;
 
+    private Button btnAdminPermission;
+
     private NotificationManager notificationManager;
     private NotiBroadcastReceiver notiBroadcastReceiver;
+
+    private LockScreenUtil lockScreenUtil;
 
     public static final int OPEN_DRAW_OVERLAYS = 188;
     public static final int OP_BACKGROUND_START_ACTIVITY = 10021;
@@ -669,6 +673,33 @@ public class MainActivity extends AppCompatActivity {
             public void onNext(@NonNull Unit unit) {
                 stopService();
                 System.out.println("btnKill click ");
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+        btnAdminPermission = findViewById(R.id.btnAdminPermission);
+        RxView.clicks(btnAdminPermission).subscribe(new Observer<Unit>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull Unit unit) {
+                if(lockScreenUtil == null){
+                    lockScreenUtil = new LockScreenUtil(getBaseContext(), this.getClass());
+                }
+                lockScreenUtil.lockscreen();
+                System.out.println(" click ");
             }
 
             @Override

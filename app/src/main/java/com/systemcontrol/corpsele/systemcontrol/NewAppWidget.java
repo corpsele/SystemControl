@@ -58,6 +58,7 @@ public class NewAppWidget extends AppWidgetProvider {
     private static int currentLight = 0;
     public static Context mainContext = null;
     private AlarmManager alarmService = null;
+    private LockScreenUtil lockScreenUtil = null;
 
 
     static void updateAppWidget(final Context context, final AppWidgetManager appWidgetManager,
@@ -143,6 +144,10 @@ public class NewAppWidget extends AppWidgetProvider {
         Intent lightDecAction = new Intent("com.action.lightDecAction",null,context,NewAppWidget.class);
         PendingIntent lightDecPendingIntent = PendingIntent.getBroadcast(context, 0, lightDecAction, 0);
         views.setOnClickPendingIntent(R.id.btnVoipDec3, lightDecPendingIntent);
+
+        Intent lockScreenAction = new Intent("com.action.lockScreen",null,context,NewAppWidget.class);
+        PendingIntent lockScreenPendingIntent = PendingIntent.getBroadcast(context, 0, lockScreenAction, 0);
+        views.setOnClickPendingIntent(R.id.btnLockScreen, lockScreenPendingIntent);
 
 //        CountDownTimer countDownTimer = new CountDownTimer(40000, 1000) {
 //            @Override
@@ -460,6 +465,12 @@ getAudioDetail(context);
             ComponentName thisName = new ComponentName(context, NewAppWidget.class);
             //更新widget
             manger.updateAppWidget(thisName, remoteViews);
+        }
+        else if (Objects.equals(intent.getAction(), "com.action.lockScreen")) {
+            if(lockScreenUtil == null){
+                lockScreenUtil = new LockScreenUtil(context, this.getClass());
+            }
+            lockScreenUtil.lockscreen();
         }
 
 

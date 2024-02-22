@@ -26,6 +26,7 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM"
         tools:ignore="ExactAlarm" />
+<!--    <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN"/>-->
 
     <application
         android:allowBackup="true"
@@ -103,7 +104,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".NewAppWidget" android:exported="true">
+        <receiver android:name=".NewAppWidget" android:exported="true" android:permission="android.permission.BIND_DEVICE_ADMIN">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.action.haha" />
@@ -120,13 +121,27 @@
                 <action android:name="com.action.cancelservice" />
                 <action android:name="com.action.lightAddAction" />
                 <action android:name="com.action.lightDecAction" />
+                <action android:name="com.action.lockScreen" />
                 <action android:name="android.intent.action.MANAGE_PACKAGE_STORAGE" />
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/new_app_widget_info" />
         </receiver>
+
+        <!-- 广播接收者 -->
+    <receiver
+      android:name="com.systemcontrol.corpsele.systemcontrol.AdminUtil"
+      android:permission="android.permission.BIND_DEVICE_ADMIN">
+      <meta-data
+        android:name="android.app.device_admin"
+        android:resource="@xml/admin_permission_manager" />
+      <intent-filter>
+        <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+      </intent-filter>
+    </receiver>
 
         <!--            android:foregroundServiceType="phoneCall|mediaPlayback|dataSync|mediaProjection|connectedDevice|location" -->
         <service

@@ -98,6 +98,14 @@
             android:text="减"
             android:textSize="10sp" />
 
+        <Button
+            android:id="@+id/noti_big_btnLockScreen"
+            android:layout_width="60dp"
+            android:layout_height="34dp"
+            android:layout_weight="1"
+            android:text="Lock"
+            android:textSize="10sp" />
+
     </LinearLayout>
 
     <LinearLayout

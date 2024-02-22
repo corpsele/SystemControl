@@ -29,8 +29,10 @@ public class NotiBroadcastReceiver extends BroadcastReceiver {
 
     public static final String actionAlarmAdd = "ActionAlarmAdd";
     public static final String actionAlarmDec = "ActionAlarmDec";
+    public static final String actionLockScreen = "ActionLockScreen";
 
     private static AudioManager mAudioManager;
+    private static LockScreenUtil lockScreenUtil;
 
 
     @Override
@@ -97,6 +99,13 @@ public class NotiBroadcastReceiver extends BroadcastReceiver {
             int current = mAudioManager.getStreamVolume( AudioManager.STREAM_ALARM );
             current--;
             mAudioManager.setStreamVolume(AudioManager.STREAM_ALARM, current, AudioManager.FLAG_SHOW_UI);
+
+        }
+        else if (action.equals(actionLockScreen)){
+            if (lockScreenUtil == null){
+                lockScreenUtil = new LockScreenUtil(context, this.getClass());
+            }
+            lockScreenUtil.lockscreen();
 
         }
 
