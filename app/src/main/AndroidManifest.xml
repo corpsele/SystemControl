@@ -143,6 +143,12 @@
       </intent-filter>
     </receiver>
 
+        <receiver android:name=".NotiBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.media.VOLUME_CHANGED_ACTION" />
+            </intent-filter>
+        </receiver>
+
         <!--            android:foregroundServiceType="phoneCall|mediaPlayback|dataSync|mediaProjection|connectedDevice|location" -->
         <service
             android:name=".MyService"

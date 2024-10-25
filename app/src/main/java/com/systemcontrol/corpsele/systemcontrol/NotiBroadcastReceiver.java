@@ -111,6 +111,11 @@ public class NotiBroadcastReceiver extends BroadcastReceiver {
 
         getAudioDetail(remoteViewsBig, context);
 
+//        RemoteViews remoteViewsWidget = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
+//
+//        ComponentName componentName = new ComponentName(context, NotiBroadcastReceiver.class);
+//        AppWidgetManager.getInstance(context).updateAppWidget(componentName, remoteViewsWidget);
+
         MyService myService = (MyService) context;
         myService.updateNotiControl();
     }

@@ -1,5 +1,7 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
@@ -11,6 +13,7 @@ import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -42,7 +45,7 @@ import java.util.Objects;
 /**
  * Implementation of App Widget functionality.
  */
-public class NewAppWidget extends AppWidgetProvider {
+public class NewAppWidget extends AppWidgetProvider implements VolumeChangeObserver.VolumeChangeListener {
 
     static boolean isTurning = false;
     private static AudioManager mAudioManager;
@@ -59,6 +62,8 @@ public class NewAppWidget extends AppWidgetProvider {
     public static Context mainContext = null;
     private AlarmManager alarmService = null;
     private LockScreenUtil lockScreenUtil = null;
+
+    private VolumeChangeObserver mVolumeChangeObserver;
 
 
     static void updateAppWidget(final Context context, final AppWidgetManager appWidgetManager,
@@ -177,12 +182,50 @@ public class NewAppWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
+
+//        IntentFilter intentFilter = new IntentFilter();
+//        intentFilter.addAction("com.action.haha");
+//        context.registerReceiver(new NotiBroadcastReceiver(), intentFilter);
+//        registerVolumeReceiver(context);
+
+        //实例化对象并设置监听器
+//        mVolumeChangeObserver = new VolumeChangeObserver(context);
+//        mVolumeChangeObserver.setVolumeChangeListener(this);
+//        int initVolume = mVolumeChangeObserver.getCurrentMusicVolume();
+//        Log.e(TAG, "initVolume = " + initVolume);
+//        mVolumeChangeObserver.registerReceiver();
+    }
+
+    public void onVolumeChanged(int volume) {
+        //系统媒体音量改变时的回调
+        Log.e(TAG, "onVolumeChanged()--->volume = " + volume);
+    }
+
+    private void registerVolumeReceiver(Context context) {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(AudioManager.RINGER_MODE_CHANGED_ACTION);
+        context.registerReceiver(new NotiBroadcastReceiver(), intentFilter);
+    }
+
+    private void unregisterVolumeReceiver(Context context) {
+        try {
+            context.unregisterReceiver(new NotiBroadcastReceiver());
+        } catch (IllegalArgumentException e) {
+            // 已经未注册，忽略
+        }
     }
 
     @Override
     public void onEnabled(Context context) {
         mainContext = context;
         // Enter relevant functionality for when the first widget is created
+
+//        IntentFilter intentFilter = new IntentFilter();
+//        intentFilter.addAction("com.action.haha");
+//        context.registerReceiver(new NotiBroadcastReceiver(), intentFilter);
+
+//        registerVolumeReceiver(context);
+//        mVolumeChangeObserver.registerReceiver();
     }
 
     @Override
@@ -191,9 +234,30 @@ public class NewAppWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
         Intent intent=new Intent(context, NewAppWidget.class);
         context.stopService(intent);
+
+//        try{
+//            context.unregisterReceiver(new NotiBroadcastReceiver());
+//        }catch (Exception e){
+//
+//        }
+
+//        unregisterVolumeReceiver(context);
+//        mVolumeChangeObserver.unregisterReceiver();
     }
 
-//    public static void showMessage(View view, String str, int length) {
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+//        try{
+//            context.unregisterReceiver(new NotiBroadcastReceiver());
+//        }catch (Exception e){
+//
+//        }
+
+//        unregisterVolumeReceiver(context);
+//        mVolumeChangeObserver.unregisterReceiver();
+    }
+
+    //    public static void showMessage(View view, String str, int length) {
 //        Snackbar snackbar = Snackbar.make(view, str, length);
 //
 //        View snackbarView = snackbar.getView();

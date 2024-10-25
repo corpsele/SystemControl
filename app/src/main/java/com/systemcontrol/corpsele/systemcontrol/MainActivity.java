@@ -257,6 +257,8 @@ public class MainActivity extends AppCompatActivity {
         notiBroadcastReceiver = new NotiBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter(NotiBroadcastReceiver.actionOpenMain);
 //        intentFilter.addAction(MyBroadcastReceiver.ACTION_2);
+        intentFilter.addAction("android.media.VOLUME_CHANGED_ACTION");
+        intentFilter.addAction("android.media.AudioManager");
         registerReceiver(notiBroadcastReceiver, intentFilter);
     }
 
@@ -450,6 +452,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getAudioDetail() {
+
+
         //通话音量
 
         int max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL);
