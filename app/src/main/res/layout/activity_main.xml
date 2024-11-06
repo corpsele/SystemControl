@@ -234,9 +234,8 @@
     <TextView
         android:id="@+id/textView12"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="450dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="150dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:scrollbarStyle="outsideOverlay"
@@ -245,9 +244,7 @@
         android:text="@string/textview10"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/seekBar5"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <CheckBox
         android:id="@+id/checkBox1"
@@ -263,11 +260,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="48dp"
         android:text="@string/push1"
-        app:layout_constraintBottom_toTopOf="@id/textView12"
         app:layout_constraintStart_toEndOf="@id/checkBox1"
-        app:layout_constraintTop_toTopOf="@id/seekBar5" />
+        app:layout_constraintTop_toBottomOf="@id/seekBar5" />
 
     <Button
         android:id="@+id/buttonPushS"
@@ -322,4 +318,63 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/main_checkboxIsBigNoti"
         app:layout_constraintTop_toBottomOf="@+id/seekBar5" />
+
+    <Button
+        android:id="@+id/btnNeverSleep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="5dp"
+        android:text="永不休眠"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox1" />
+
+    <Button
+        android:id="@+id/btnThirtySleep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:text="30秒休眠"
+        app:layout_constraintStart_toEndOf="@+id/btnNeverSleep"
+        app:layout_constraintTop_toBottomOf="@+id/buttonPushS" />
+
+    <TextView
+        android:id="@+id/textViewTotalTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="17dp"
+        android:text="总大小"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnNeverSleep" />
+
+    <TextView
+        android:id="@+id/tvTotalCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="7dp"
+        android:text="总大小"
+        app:layout_constraintStart_toEndOf="@+id/textViewTotalTip"
+        app:layout_constraintTop_toBottomOf="@+id/btnThirtySleep" />
+
+    <TextView
+        android:id="@+id/textViewAvaliTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="7dp"
+        android:text="可用大小"
+        app:layout_constraintStart_toEndOf="@+id/tvTotalCount"
+        app:layout_constraintTop_toBottomOf="@+id/btnThirtySleep" />
+
+    <TextView
+        android:id="@+id/tvAvaliCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="6dp"
+        android:text="可用大小"
+        app:layout_constraintStart_toEndOf="@+id/textViewAvaliTip"
+        app:layout_constraintTop_toBottomOf="@+id/btnThirtySleep" />
 </androidx.constraintlayout.widget.ConstraintLayout>

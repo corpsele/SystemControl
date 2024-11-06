@@ -9,6 +9,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.admin.DevicePolicyManager;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -28,6 +29,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.os.Environment;
+import android.os.StatFs;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
@@ -39,6 +42,7 @@ import android.widget.CompoundButton;
 import android.widget.RemoteViews;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.hjq.toast.Toaster;
@@ -46,11 +50,13 @@ import com.jakewharton.rxbinding4.view.RxView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,6 +106,10 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox checkBox1;
     private Button btnPush1;
     private Button btnPushS;
+    private Button btnNeverSleep;
+    private Button btnThirtySleep;
+    private TextView tvTotalCount;
+    private TextView tvAvaliCount;
     private boolean hasChecked = false;
 
     private Button btnOpenService;
@@ -698,7 +708,9 @@ public class MainActivity extends AppCompatActivity {
                 if(lockScreenUtil == null){
                     lockScreenUtil = new LockScreenUtil(getBaseContext(), this.getClass());
                 }
-                lockScreenUtil.lockscreen();
+                if(lockScreenUtil.lockscreen() == false){
+                    checkAmin();
+                }
                 System.out.println(" click ");
             }
 
@@ -713,6 +725,57 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.System.canWrite(MainActivity.this)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS,
+                        Uri.parse("package:" + getPackageName()));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivityForResult(intent, 200);
+            } else {
+                // 如果有权限做些什么
+            }
+
+        }
+
+        btnNeverSleep = findViewById(R.id.btnNeverSleep);
+        btnNeverSleep.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                setScreenOffTime(Integer.MAX_VALUE);
+            }
+        });
+
+        btnThirtySleep = findViewById(R.id.btnThirtySleep);
+        btnThirtySleep.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                setScreenOffTime(30000);
+            }
+        });
+
+        String total = formatFileSize(getTotalInternalMemorySize(), false);
+        String available = formatFileSize(getAvailableInternalMemorySize(), false);
+        tvTotalCount = findViewById(R.id.tvTotalCount);
+        tvTotalCount.setText(total);
+        tvAvaliCount = findViewById(R.id.tvAvaliCount);
+        tvAvaliCount.setText(available);
+
+    }
+
+    private void checkAmin(){
+        DevicePolicyManager devicePolicyManager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+        ComponentName componentName = new ComponentName(this, AdminUtil.class);
+
+        if (!devicePolicyManager.isAdminActive(componentName)) {
+            // 请求设备管理员权限
+            Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName);
+            startActivityForResult(intent, 200);
+        } else {
+            Toast.makeText(this, "已获得设备管理权限", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void stopService() {
@@ -736,6 +799,28 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             System.out.println(e);
             Log.e("error", e.getLocalizedMessage());
+        }
+    }
+
+    // 获取当前休眠时间
+    private int getScreenOffTime() {
+        int screenOffTime = 0;
+        try {
+            screenOffTime = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return screenOffTime;
+    }
+
+    // 设置新的休眠时间，单位是毫秒
+    private void setScreenOffTime(int paramInt) {
+        try {
+            Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, paramInt);
+//            Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, Integer.MAX_VALUE);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -849,6 +934,57 @@ public class MainActivity extends AppCompatActivity {
         } else {//4.4-6.0以下
             //无需处理了
         }
+    }
+
+    /**
+     * 获取手机内部总的存储空间
+     *
+     * @return
+     */
+    public static long getTotalInternalMemorySize() {
+        File path = Environment.getDataDirectory();
+        StatFs stat = new StatFs(path.getPath());
+        long blockSize = stat.getBlockSize();
+        long totalBlocks = stat.getBlockCount();
+        return totalBlocks * blockSize;
+    }
+
+    /**
+     * 获取手机内部剩余存储空间
+     *
+     * @return
+     */
+    public static long getAvailableInternalMemorySize() {
+        File path = Environment.getDataDirectory();
+        StatFs stat = new StatFs(path.getPath());
+        long blockSize = stat.getBlockSize();
+        long availableBlocks = stat.getAvailableBlocks();
+        return availableBlocks * blockSize;
+    }
+
+    private static DecimalFormat fileIntegerFormat = new DecimalFormat("#0");
+    private static DecimalFormat fileDecimalFormat = new DecimalFormat("#0.#");
+
+    /**
+     * 单位换算
+     *
+     * @param size 单位为B
+     * @param isInteger 是否返回取整的单位
+     * @return 转换后的单位
+     */
+    public static String formatFileSize(long size, boolean isInteger) {
+        DecimalFormat df = isInteger ? fileIntegerFormat : fileDecimalFormat;
+        String fileSizeString = "0M";
+        if (size < 1024 && size > 0) {
+            fileSizeString = df.format((double) size) + "B";
+        } else if (size < 1024 * 1024) {
+            fileSizeString = df.format((double) size / 1024) + "K";
+        } else if (size < 1024 * 1024 * 1024) {
+            fileSizeString = df.format((double) size / (1024 * 1024)) + "M";
+        } else {
+            fileSizeString = df.format((double) size / (1024 * 1024 * 1024)) + "G";
+        }
+        return fileSizeString;
     }
 
 }

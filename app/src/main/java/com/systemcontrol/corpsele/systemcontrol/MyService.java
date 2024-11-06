@@ -313,6 +313,14 @@ public class MyService extends Service {
          */
         remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnLockScreen, piBtnLockScreen);
 
+        Intent iBtnNeverSleep = new Intent(NotiBroadcastReceiver.actionNeverSleep);
+        PendingIntent piBtnNeverSleep = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnNeverSleep, 0);
+        remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnNeverSleep, piBtnNeverSleep);
+
+        Intent iBtnThirtySleep = new Intent(NotiBroadcastReceiver.actionThirtySleep);
+        PendingIntent piBtnThirtySleep = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnThirtySleep, 0);
+        remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnThirtySleep, piBtnThirtySleep);
+
 
         getAudioDetail(remoteViewsBig);
 
@@ -396,6 +404,8 @@ public class MyService extends Service {
             intentFilter.addAction(NotiBroadcastReceiver.actionVoiceAdd);
             intentFilter.addAction(NotiBroadcastReceiver.actionVoiceDec);
             intentFilter.addAction(NotiBroadcastReceiver.actionLockScreen);
+            intentFilter.addAction(NotiBroadcastReceiver.actionNeverSleep);
+            intentFilter.addAction(NotiBroadcastReceiver.actionThirtySleep);
             registerReceiver(notiBroadcastReceiver, intentFilter);
         }
 

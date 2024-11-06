@@ -8,6 +8,9 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Handler;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
 
@@ -33,12 +36,14 @@ public class LockScreenUtil {
         // 劝说用户开启管理员权限
         intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,"哥们开启我可以一键锁屏，你的按钮就不会经常失灵");
         contextMain.startActivity(intent);
+
+
     }
 
     /**
      * 一键锁屏
      */
-    public void lockscreen() {
+    public boolean lockscreen() {
         ComponentName who = new ComponentName(contextMain, AdminUtil.class);
         if (dpm.isAdminActive(who)) {
             dpm.lockNow();// 锁屏
@@ -47,10 +52,11 @@ public class LockScreenUtil {
             // dpm.wipeData(DevicePolicyManager.WIPE_EXTERNAL_STORAGE);
             // 恢复出厂设置
             // dpm.wipeData(0);
+            return true;
         } else {
             Toast.makeText(contextMain, "还没有打开管理员权限", Toast.LENGTH_SHORT).show();
-            openAdmin();
-            return;
+//            openAdmin();
+            return false;
         }
     }
 }

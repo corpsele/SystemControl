@@ -9,6 +9,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -30,6 +31,8 @@ public class NotiBroadcastReceiver extends BroadcastReceiver {
     public static final String actionAlarmAdd = "ActionAlarmAdd";
     public static final String actionAlarmDec = "ActionAlarmDec";
     public static final String actionLockScreen = "ActionLockScreen";
+    public static final String actionNeverSleep = "ActionNeverSleep";
+    public static final String actionThirtySleep = "actionThirtySleep";
 
     private static AudioManager mAudioManager;
     private static LockScreenUtil lockScreenUtil;
@@ -107,12 +110,38 @@ public class NotiBroadcastReceiver extends BroadcastReceiver {
             }
             lockScreenUtil.lockscreen();
 
+        } else if (action.equals(actionNeverSleep)) {
+            setScreenOffTime(Integer.MAX_VALUE, context);
+        } else if (action.equals(actionThirtySleep)) {
+            setScreenOffTime(30000, context);
         }
 
         getAudioDetail(remoteViewsBig, context);
 
         MyService myService = (MyService) context;
         myService.updateNotiControl();
+    }
+
+    // 获取当前休眠时间
+    private int getScreenOffTime(Context context) {
+        int screenOffTime = 0;
+        try {
+            screenOffTime = Settings.System.getInt(context.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return screenOffTime;
+    }
+
+    // 设置新的休眠时间，单位是毫秒
+    private void setScreenOffTime(int paramInt, Context context) {
+        try {
+            Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, paramInt);
+//            Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, Integer.MAX_VALUE);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void getAudioDetail(RemoteViews remoteViews, Context context){
