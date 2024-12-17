@@ -41,10 +41,12 @@ class AppsActivity : AppCompatActivity() {
             clickListener = { item ->
                 // 处理点击事件
         Toast.makeText(this, "Clicked: $item", Toast.LENGTH_SHORT).show()
+                enablePackage(this, item)
             },
             longClickListener = { item ->
                 // 处理长按事件
         Toast.makeText(this, "Long clicked: $item", Toast.LENGTH_SHORT).show()
+                disablePackage(this, item)
                 true
             }
         )
@@ -101,4 +103,22 @@ class AppsActivity : AppCompatActivity() {
         }
     }
 
+    fun enablePackage(context: Context, packageName: String) {
+        val packageManager: PackageManager = context.packageManager
+        try {
+            // 调用 setApplicationEnabledSetting 方法来禁用应用
+            // COMPONENT_ENABLED_STATE_DISABLED 禁用应用
+            // DONT_KILL_APP 不杀死应用进程
+            packageManager.setApplicationEnabledSetting(
+                packageName,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP
+            )
+        } catch (e: RemoteException) {
+            e.printStackTrace()
+        } catch (e: SecurityException) {
+            e.printStackTrace()
+            // 没有足够的权限去执行这个操作
+        }
+    }
 }
