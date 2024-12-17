@@ -21,12 +21,18 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.USE_EXACT_ALARM"
+    <uses-permission
+        android:name="android.permission.USE_EXACT_ALARM"
         tools:ignore="ExactAlarm" />
-<!--    <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN"/>-->
+     <!-- 添加QUERY_ALL_PACKAGES权限 -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.DELETE_PACKAGES"
+        tools:ignore="ProtectedPermissions" />
+<!--    <uses-permission android:name="android.permission.pack"-->
 
     <application
         android:allowBackup="true"
@@ -38,10 +44,12 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:remove="android:appComponentFactory">
-<!--        <uses-library-->
-<!--            android:name="com.google.android.wearable"-->
-<!--            android:required="false" />-->
-
+        <activity
+            android:name=".AppsActivity"
+            android:exported="false" />
+        <!-- <uses-library -->
+        <!-- android:name="com.google.android.wearable" -->
+        <!-- android:required="false" /> -->
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld
                app to run.
@@ -52,14 +60,14 @@
 
         <activity
             android:name=".MainActivity3"
+            android:exported="true"
             android:label="@string/title_activity_main3"
-            android:launchMode="standard" android:exported="true">
-
-        </activity>
+            android:launchMode="standard"></activity>
         <activity
             android:name=".MainActivity2"
+            android:exported="true"
             android:label="@string/title_activity_main2"
-            android:launchMode="standard" android:exported="true">
+            android:launchMode="standard">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -84,19 +92,25 @@
                 android:resource="@xml/accessibility_service_config" />
         </service> <!-- android:appComponentFactory="androidx"> -->
         <!-- <activity android:name=".DKPlayerActivity"></activity> -->
-        <activity android:name=".PlayerActivity"  android:exported="true"/>
+        <activity
+            android:name=".PlayerActivity"
+            android:exported="true" />
         <activity
             android:name=".Main2Activity"
-            android:launchMode="standard" android:exported="true"/>
+            android:exported="true"
+            android:launchMode="standard" />
         <activity
             android:name=".MainActivityK1"
-            android:launchMode="standard" android:exported="true"/>
+            android:exported="true"
+            android:launchMode="standard" />
         <activity
             android:name=".Main3Activity"
-            android:launchMode="standard" android:exported="true"/>
+            android:exported="true"
+            android:launchMode="standard" />
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask" android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -104,7 +118,10 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".NewAppWidget" android:exported="true" android:permission="android.permission.BIND_DEVICE_ADMIN">
+        <receiver
+            android:name=".NewAppWidget"
+            android:exported="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.action.haha" />
@@ -123,32 +140,28 @@
                 <action android:name="com.action.lightDecAction" />
                 <action android:name="com.action.lockScreen" />
                 <action android:name="android.intent.action.MANAGE_PACKAGE_STORAGE" />
-                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED"/>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/new_app_widget_info" />
-        </receiver>
+        </receiver> <!-- 广播接收者 -->
+        <receiver
+            android:name=".AdminUtil"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/admin_permission_manager" />
 
-        <!-- 广播接收者 -->
-    <receiver
-      android:name="com.systemcontrol.corpsele.systemcontrol.AdminUtil"
-      android:permission="android.permission.BIND_DEVICE_ADMIN">
-      <meta-data
-        android:name="android.app.device_admin"
-        android:resource="@xml/admin_permission_manager" />
-      <intent-filter>
-        <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-      </intent-filter>
-    </receiver>
-
-        <!--            android:foregroundServiceType="phoneCall|mediaPlayback|dataSync|mediaProjection|connectedDevice|location" -->
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver> <!-- android:foregroundServiceType="phoneCall|mediaPlayback|dataSync|mediaProjection|connectedDevice|location" -->
         <service
             android:name=".MyService"
             android:enabled="true"
-            android:exported="true"
-        />
+            android:exported="true" />
     </application>
 
 </manifest>
