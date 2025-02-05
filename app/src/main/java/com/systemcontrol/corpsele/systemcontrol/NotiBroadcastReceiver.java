@@ -280,6 +280,7 @@ public class NotiBroadcastReceiver extends BroadcastReceiver {
 
         currentLight = systemLight;
 
-        remoteViews.setTextViewText(R.id.noti_big_tvBrightCurrent, String.valueOf(currentLight));
+        remoteViews.setTextViewText(R.id.noti_big_tvBrightCurrent, String.valueOf(systemLight));
+        remoteViews.setTextViewText(R.id.noti_big_tvBrightMax, String.valueOf(maxSystemLight));
     }
 }
