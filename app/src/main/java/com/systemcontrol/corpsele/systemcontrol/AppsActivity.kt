@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.io.DataOutputStream
 
 class AppsActivity : AppCompatActivity() {
         private lateinit var rvMain: RecyclerView
@@ -69,6 +70,7 @@ class AppsActivity : AppCompatActivity() {
         val apps = pm.getInstalledApplications(PackageManager.GET_META_DATA)
 
         for (app in apps) {
+            val icon = app.loadIcon(pm)
             val appData = AppDatas("", "")
             appData.appName = app.loadLabel(pm) as String
             appData.packageName = app.packageName
@@ -84,7 +86,7 @@ class AppsActivity : AppCompatActivity() {
         }
     }
 
-    fun disablePackage(context: Context, packageName: String) {
+    private fun disablePackage(context: Context, packageName: String) {
         val packageManager: PackageManager = context.packageManager
         try {
             // 调用 setApplicationEnabledSetting 方法来禁用应用
@@ -103,7 +105,7 @@ class AppsActivity : AppCompatActivity() {
         }
     }
 
-    fun enablePackage(context: Context, packageName: String) {
+    private fun enablePackage(context: Context, packageName: String) {
         val packageManager: PackageManager = context.packageManager
         try {
             // 调用 setApplicationEnabledSetting 方法来禁用应用
@@ -121,4 +123,20 @@ class AppsActivity : AppCompatActivity() {
             // 没有足够的权限去执行这个操作
         }
     }
+
+    private fun disableComponent(componentName: String) {
+        try {
+            val command = "pm disable $componentName"
+            val process = Runtime.getRuntime().exec("su") // 获取root权限
+            val dos = DataOutputStream(process.outputStream)
+            dos.writeBytes(command + "\n")
+            dos.flush()
+            dos.writeBytes("exit\n")
+            dos.flush()
+            process.waitFor()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 }

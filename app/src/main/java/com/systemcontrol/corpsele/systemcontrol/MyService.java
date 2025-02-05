@@ -53,6 +53,8 @@ public class MyService extends Service {
 
     private static final int NOTIFICATION_CODE = 20078;
 
+    private int currentLight = 0;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -60,24 +62,24 @@ public class MyService extends Service {
     }
 
 
-    private void showNotification(){
+    private void showNotification() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         //创建NotificationChannel
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(notificationId, notificationName, NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
         }
-        startForeground(1,getNotification());
+        startForeground(1, getNotification());
     }
 
-    private void showNotification(String title, String content){
+    private void showNotification(String title, String content) {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         //创建NotificationChannel
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(notificationId1, notificationName1, NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
         }
-        startForeground(2,getNotification(title, content));
+        startForeground(2, getNotification(title, content));
     }
 
     private Notification getNotification() {
@@ -129,22 +131,22 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        try{
+        try {
             Log.e("onStartCommand", "intent = " + intent);
             String identify = "";
-            if(intent == null){
-                if(intent.getStringExtra("identify") == null){
+            if (intent == null) {
+                if (intent.getStringExtra("identify") == null) {
                     identify = "showNotification";
-                }else{
+                } else {
                     identify = intent.getStringExtra("identify");
                 }
-                if (identify != null && identify.length() > 0){
-                    if(identify.contains("showNotification")){
+                if (identify != null && identify.length() > 0) {
+                    if (identify.contains("showNotification")) {
                         Toast.makeText(this, "推送成功", Toast.LENGTH_LONG).show();
                         String title = intent.getStringExtra("notificationTitle");
                         String content = intent.getStringExtra("notificationContent");
-                        showNotification(title,content);
-                    }else if(identify.contains("alwaysNotification")){
+                        showNotification(title, content);
+                    } else if (identify.contains("alwaysNotification")) {
                         boolean isNotiBigContent = intent.getBooleanExtra("isNotiBigCotent", false);
 //                Notification notification = OpenNotificationsUtil.createNotification(this, "服务常驻通知", "APP正在运行中...", 0);
 //                startForeground(OpenNotificationsUtil.OPEN_SERVICE_NOTIFICATION_ID, notification);//显示常驻通知
@@ -155,12 +157,12 @@ public class MyService extends Service {
 //                return super.onStartCommand(intent, flags, startId);
                 }
 
-            }else{
+            } else {
                 initNotiManager(DataManager.getInstance().getNotiBigContent());
                 initReceiver();
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e("crash error", e.getLocalizedMessage());
             Toast.makeText(this, "服务异常 " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
 //            initNotiManager(DataManager.getInstance().getNotiBigContent());
@@ -179,18 +181,18 @@ public class MyService extends Service {
 //            }
             android.os.Process.killProcess(android.os.Process.myPid());
             return super.onStartCommand(intent, flags, startId);
-        }finally {
+        } finally {
 
         }
 
 
         Toast.makeText(this, "服务启动了 ", Toast.LENGTH_SHORT).show();
-        RemoteViews rv = new RemoteViews( this.getPackageName(), R.layout.new_app_widget);
+        RemoteViews rv = new RemoteViews(this.getPackageName(), R.layout.new_app_widget);
 
         getAudioDetail(rv);
 
-        ComponentName cn = new ComponentName( this , NewAppWidget.class );
-        AppWidgetManager am = AppWidgetManager.getInstance(this );
+        ComponentName cn = new ComponentName(this, NewAppWidget.class);
+        AppWidgetManager am = AppWidgetManager.getInstance(this);
         am.updateAppWidget(cn, rv);
 
         Intent intent1 = new Intent(this, NewAppWidget.class);
@@ -204,7 +206,7 @@ public class MyService extends Service {
 //        return START_STICKY_COMPATIBILITY;
     }
 
-    private void restartApp(){
+    private void restartApp() {
         // 重启app
         Intent intentMain = new Intent(getApplicationContext(), MainActivity.class);
         //PendingIntent restartIntent = PendingIntent.getActivity(application.getApplicationContext(), 0, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -217,7 +219,7 @@ public class MyService extends Service {
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 
-    private void initNotiManager(boolean isBig){
+    private void initNotiManager(boolean isBig) {
         notificationManager = (NotificationManager)
                 getSystemService(Context.NOTIFICATION_SERVICE);
         RemoteViews remoteViewsNormal = new RemoteViews(this.getPackageName(), R.layout.notification_normal);
@@ -321,12 +323,20 @@ public class MyService extends Service {
         PendingIntent piBtnThirtySleep = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnThirtySleep, 0);
         remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnThirtySleep, piBtnThirtySleep);
 
+        //bright add
+        Intent iBtnBrightAdd = new Intent(NotiBroadcastReceiver.actionBrightAdd);
+        PendingIntent piBtnBrightAdd = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnBrightAdd, 0);
+        remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnBrightAdd, piBtnBrightAdd);
+
+        Intent iBtnBrightDec = new Intent(NotiBroadcastReceiver.actionBrightDec);
+        PendingIntent piBtnBrightDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnBrightDec, 0);
+        remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnBrightDec, piBtnBrightDec);
 
         getAudioDetail(remoteViewsBig);
 
         NotificationCompat.Builder builder = null;
         boolean isNotiBigContent = DataManager.getInstance().getNotiBigContent();
-        if (isNotiBigContent){
+        if (isNotiBigContent) {
             builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                     .setOnlyAlertOnce(true)
                     .setWhen(System.currentTimeMillis())
@@ -338,7 +348,7 @@ public class MyService extends Service {
                     .setStyle(new NotificationCompat.BigTextStyle())
 //                .setCustomHeadsUpContentView(remoteViewsBig)
                     .setCustomContentView(remoteViewsBig);
-        }else{
+        } else {
             builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                     .setOnlyAlertOnce(true)
                     .setWhen(System.currentTimeMillis())
@@ -384,12 +394,12 @@ public class MyService extends Service {
 
     }
 
-    public void updateNotiControl(){
+    public void updateNotiControl() {
         initNotiManager(DataManager.getInstance().getNotiBigContent());
     }
 
-    private void initReceiver(){
-        if(notiBroadcastReceiver == null){
+    private void initReceiver() {
+        if (notiBroadcastReceiver == null) {
             notiBroadcastReceiver = new NotiBroadcastReceiver();
             IntentFilter intentFilter = new IntentFilter(NotiBroadcastReceiver.actionOpenMain);
             intentFilter.addAction(NotiBroadcastReceiver.actionGetSystemAudio);
@@ -406,6 +416,8 @@ public class MyService extends Service {
             intentFilter.addAction(NotiBroadcastReceiver.actionLockScreen);
             intentFilter.addAction(NotiBroadcastReceiver.actionNeverSleep);
             intentFilter.addAction(NotiBroadcastReceiver.actionThirtySleep);
+            intentFilter.addAction(NotiBroadcastReceiver.actionBrightAdd);
+            intentFilter.addAction(NotiBroadcastReceiver.actionBrightDec);
             registerReceiver(notiBroadcastReceiver, intentFilter);
         }
 
@@ -434,15 +446,15 @@ public class MyService extends Service {
 //        unregisterReceiver(notiBroadcastReceiver);
     }
 
-    private void getAudioDetail(RemoteViews remoteViews){
-        if (mAudioManager == null){
+    private void getAudioDetail(RemoteViews remoteViews) {
+        if (mAudioManager == null) {
             mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         }
 
         //通话音量
 
-        int max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_VOICE_CALL );
-        int current = mAudioManager.getStreamVolume( AudioManager.STREAM_VOICE_CALL );
+        int max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL);
+        int current = mAudioManager.getStreamVolume(AudioManager.STREAM_VOICE_CALL);
         String currentVoice = String.valueOf(current);
         String maxVoice = String.valueOf(max);
         remoteViews.setTextViewText(R.id.noti_big_tvVoiceMax, maxVoice);
@@ -450,11 +462,10 @@ public class MyService extends Service {
         Log.d("VIOCE_CALL", "max : " + max + " current : " + current);
 
 
-
         //系统音量
 
-        max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_SYSTEM );
-        current = mAudioManager.getStreamVolume( AudioManager.STREAM_SYSTEM );
+        max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM);
+        current = mAudioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
         String currentSystem = String.valueOf(current);
         String maxSystem = String.valueOf(max);
         remoteViews.setTextViewText(R.id.noti_big_tvSystemCurrent, currentSystem);
@@ -465,8 +476,8 @@ public class MyService extends Service {
 
 //铃声音量
 
-        max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_RING );
-        current = mAudioManager.getStreamVolume( AudioManager.STREAM_RING );
+        max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_RING);
+        current = mAudioManager.getStreamVolume(AudioManager.STREAM_RING);
         String currentRing = String.valueOf(current);
         String maxRing = String.valueOf(max);
         remoteViews.setTextViewText(R.id.noti_big_tvRingCurrent, currentRing);
@@ -474,8 +485,8 @@ public class MyService extends Service {
 
 //音乐音量
 
-        max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
-        current = mAudioManager.getStreamVolume( AudioManager.STREAM_MUSIC );
+        max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        current = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         String currentMusic = String.valueOf(current);
         String maxMusic = String.valueOf(max);
         remoteViews.setTextViewText(R.id.noti_big_tvMusicCurrent, currentMusic);
@@ -483,11 +494,10 @@ public class MyService extends Service {
         Log.d("Music", "max : " + max + " current : " + current);
 
 
-
 //提示声音音量
 
-        max = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_ALARM );
-        current = mAudioManager.getStreamVolume( AudioManager.STREAM_ALARM );
+        max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM);
+        current = mAudioManager.getStreamVolume(AudioManager.STREAM_ALARM);
         String currentAlarm = String.valueOf(current);
         String maxAlarm = String.valueOf(max);
         remoteViews.setTextViewText(R.id.noti_big_tvAlarmCurrent, currentAlarm);
@@ -495,4 +505,5 @@ public class MyService extends Service {
 
 
     }
+
 }

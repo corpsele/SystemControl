@@ -80,7 +80,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import io.reactivex.rxjava3.core.*;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NotiBroadcastReceiver.NotiBigInterface {
     private AudioManager mAudioManager;
 
     private SeekBar mSeekBar1;
@@ -987,4 +987,17 @@ public class MainActivity extends AppCompatActivity {
         return fileSizeString;
     }
 
+    @Override
+    public void setBrightCurrentText(String content) {
+        if (content != null){
+
+        }
+    }
+
+    @Override
+    public void setBrightMaxText(String content) {
+        if (content != null){
+
+        }
+    }
 }

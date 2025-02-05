@@ -48,10 +48,10 @@ public class Main2Activity extends AppCompatActivity {
         int i = 0;
         while (i < listCount) {
             i++;
-            if (i == 5){
-              list.add("所有应用列表");
-            }else {
-              list.add(String.valueOf(i));
+            if (i == 5) {
+                list.add("所有应用列表");
+            } else {
+                list.add(String.valueOf(i));
             }
 
         }
@@ -109,7 +109,7 @@ public class Main2Activity extends AppCompatActivity {
 
     }
 
-    private void pushAppsActivity(){
+    private void pushAppsActivity() {
         Intent intent = new Intent(Main2Activity.this, AppsActivity.class);
         intent.putExtra("", "");
         startActivityForResult(intent, 200);
@@ -156,4 +156,5 @@ public class Main2Activity extends AppCompatActivity {
         }
 
     }
+
 }

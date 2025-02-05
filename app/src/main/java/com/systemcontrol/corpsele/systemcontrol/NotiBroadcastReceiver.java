@@ -6,11 +6,15 @@ import android.app.Notification;
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RemoteViews;
 
 public class NotiBroadcastReceiver extends BroadcastReceiver {
@@ -33,10 +37,24 @@ public class NotiBroadcastReceiver extends BroadcastReceiver {
     public static final String actionLockScreen = "ActionLockScreen";
     public static final String actionNeverSleep = "ActionNeverSleep";
     public static final String actionThirtySleep = "actionThirtySleep";
+    public static final String actionBrightAdd = "ActionBrightAdd";
+    public static final String actionBrightDec = "ActionBrightDec";
 
     private static AudioManager mAudioManager;
     private static LockScreenUtil lockScreenUtil;
 
+    private static int currentLight = 0;
+
+    private NotiBigInterface notiBigInterface;
+
+    public interface NotiBigInterface {
+        public void setBrightCurrentText(String content);
+        public void setBrightMaxText(String content);
+    }
+
+    public void setNotiBigInterfaceListener(NotiBigInterface notiBigInterface) {
+        this.notiBigInterface = notiBigInterface;
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -114,9 +132,30 @@ public class NotiBroadcastReceiver extends BroadcastReceiver {
             setScreenOffTime(Integer.MAX_VALUE, context);
         } else if (action.equals(actionThirtySleep)) {
             setScreenOffTime(30000, context);
+        } else if (action.equals(actionBrightAdd)) {
+            if (currentLight < 200 ){
+                currentLight+=10;
+            }else{
+                currentLight = 200;
+            }
+            ContentResolver contentResolver = context.getContentResolver();
+            Settings.System.putInt(contentResolver,
+                    Settings.System.SCREEN_BRIGHTNESS, currentLight);
+
+        } else if (action.equals(actionBrightDec)) {
+            if (currentLight > 0 ){
+                currentLight-=10;
+            }else{
+                currentLight = 0;
+            }
+            ContentResolver contentResolver = context.getContentResolver();
+            Settings.System.putInt(contentResolver,
+                    Settings.System.SCREEN_BRIGHTNESS, currentLight);
         }
 
+
         getAudioDetail(remoteViewsBig, context);
+        getSystemLight(context, remoteViewsBig);
 
         MyService myService = (MyService) context;
         myService.updateNotiControl();
@@ -204,5 +243,43 @@ public class NotiBroadcastReceiver extends BroadcastReceiver {
         remoteViews.setTextViewText(R.id.noti_big_tvAlarmMax, maxAlarm);
 
 
+    }
+
+    public static void SetSystemLight(int lightnumber, Context context, RemoteViews remoteViews){
+
+
+    }
+
+    private static void getSystemLight(Context context, RemoteViews remoteViews){
+        if (!Settings.System.canWrite(context)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+            intent.setData(Uri.parse("package:" + context.getPackageName()));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } else {
+            // 申请权限后做的操作
+
+
+        }
+
+        ContentResolver contentResolver = context.getContentResolver();
+        int defVal = 125;//没有拿到值时返回的默认值
+        int systemLight = Settings.System.getInt(contentResolver,
+                Settings.System.SCREEN_BRIGHTNESS, defVal);
+        //获得亮度最大值
+        int maxSystemLight = 0;
+        try {
+            maxSystemLight = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+        int brightnessSettingMaximumId = context.getResources().getIdentifier("config_screenBrightnessSettingMaximum", "integer", "android");
+        int brightnessSettingMaximum = context.getResources().getInteger(brightnessSettingMaximumId);
+        int brightnessSettingMinimumId = context.getResources().getIdentifier("config_screenBrightnessSettingMinimum", "integer", "android");
+        int brightnessSettingMinimum = context.getResources().getInteger(brightnessSettingMinimumId);
+
+        currentLight = systemLight;
+
+        remoteViews.setTextViewText(R.id.noti_big_tvBrightCurrent, String.valueOf(currentLight));
     }
 }

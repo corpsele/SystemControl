@@ -4,7 +4,8 @@
     package="com.systemcontrol.corpsele.systemcontrol"
     android:installLocation="preferExternal"
     >
-    <!--    android:sharedUserId="android.uid.system"-->
+<!--    android:sharedUserId="android.uid.system"-->
+<!--    >-->
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
