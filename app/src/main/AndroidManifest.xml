@@ -152,7 +152,8 @@
         </receiver> <!-- 广播接收者 -->
         <receiver
             android:name=".AdminUtil"
-            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            android:permission="android.permission.BIND_DEVICE_ADMIN"
+            android:exported="true">
             <meta-data
                 android:name="android.app.device_admin"
                 android:resource="@xml/admin_permission_manager" />

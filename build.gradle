@@ -4,7 +4,8 @@ ext {
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 //apply plugin: 'com.android.application'
 buildscript {
-    ext.kotlin_version="1.6.20"
+//    ext.kotlin_version= '1.6.21'
+    ext.kotlin_version= '2.0.0'
     repositories {
 //        maven {
 //            allowInsecureProtocol = true
@@ -31,7 +32,7 @@ buildscript {
             url "https://jitpack.io"
         }
         google()
-        jcenter()
+//        jcenter()
 //        maven{url 'http://maven.aliyun.com/nexus/content/groups/public/'}
 //        google()
 //        jcenter()
@@ -41,7 +42,7 @@ buildscript {
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath 'com.android.tools.build:gradle:8.8.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -77,7 +78,7 @@ allprojects {
             url "https://jitpack.io"
         }
         google()
-        jcenter()
+//        jcenter()
 //        maven{url 'http://maven.aliyun.com/nexus/content/groups/public/'}
 //        google()
 //        jcenter()

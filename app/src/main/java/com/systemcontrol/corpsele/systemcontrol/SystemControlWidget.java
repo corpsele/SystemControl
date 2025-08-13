@@ -10,11 +10,9 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.provider.Settings;
+import android.view.View;
 import android.widget.RemoteViews;
-import android.media.AudioManager.*;
 import android.util.*;
-
-import com.hjq.toast.Toaster;
 
 /**
  * Implementation of App Widget functionality.
@@ -56,13 +54,13 @@ public class SystemControlWidget extends AppWidgetProvider {
         views.setPendingIntentTemplate(R.id.btnShow, pendingIntent);
 
         if (SystemControlWidgetConfigureActivity.getCheckBox1State()){
-            views.setViewVisibility(R.id.tvWidget1, 1);
-            views.setViewVisibility(R.id.progressBar1, 1);
-            views.setViewVisibility(R.id.tvSystemNum, 1);
+            views.setViewVisibility(R.id.tvWidget1, View.VISIBLE);
+            views.setViewVisibility(R.id.progressSBar1, View.VISIBLE);
+            views.setViewVisibility(R.id.tvSystemNum, View.VISIBLE);
         }else{
-            views.setViewVisibility(R.id.tvWidget1, 0);
-            views.setViewVisibility(R.id.progressBar1, 0);
-            views.setViewVisibility(R.id.tvSystemNum, 0);
+            views.setViewVisibility(R.id.tvWidget1, View.INVISIBLE);
+            views.setViewVisibility(R.id.progressSBar1, View.INVISIBLE);
+            views.setViewVisibility(R.id.tvSystemNum, View.INVISIBLE);
         }
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -102,7 +100,7 @@ public class SystemControlWidget extends AppWidgetProvider {
         current = mAudioManager.getStreamVolume( AudioManager.STREAM_SYSTEM );
         String strSystem = String.valueOf(current) + "/" + String.valueOf(max);
         views.setTextViewText(R.id.tvSystemNum, strSystem);
-        views.setProgressBar(R.id.progressBar1, max, current, false);
+        views.setProgressBar(R.id.progressSBar1, max, current, false);
         Log.d("System", "max : " + max + " current : " + current);
 
 
@@ -138,7 +136,7 @@ public class SystemControlWidget extends AppWidgetProvider {
         // 因为在绑定的时候，是将同一个id绑定在一起的，所以哪个控件点击，发送的intent中data中的id就是哪个控件的id
         intent.setData(Uri.parse("id:" + resID));
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,intent,0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,intent, PendingIntent.FLAG_IMMUTABLE);
         return pendingIntent;
     }
 
@@ -205,10 +203,13 @@ public class SystemControlWidget extends AppWidgetProvider {
             if (data!=null){
                 resId = Integer.parseInt(data.getSchemeSpecificPart());
             }
-            switch (resId){
-                case R.id.progressBar1:
-//                    remoteViews.setImageViewResource(R.id.img, R.drawable.logo);
-                    break;
+//            switch (resId){
+//                case R.id.progressSBar1:
+////                    remoteViews.setImageViewResource(R.id.img, R.drawable.logo);
+//                    break;
+//            }
+            if (resId == R.id.progressSBar1) {
+                //                    remoteViews.setImageViewResource(R.id.img, R.drawable.logo);
             }
             //获得appwidget管理实例，用于管理appwidget以便进行更新操作
             AppWidgetManager manger = AppWidgetManager.getInstance(context);
