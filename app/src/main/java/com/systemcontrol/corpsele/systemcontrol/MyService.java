@@ -1,5 +1,7 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
+
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -227,7 +229,12 @@ public class MyService extends Service {
 
         //get Audio
         Intent iBtnGetAudio = new Intent(NotiBroadcastReceiver.actionGetSystemAudio);
-        PendingIntent piBtnGetAudio = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnGetAudio, 0);
+        PendingIntent piBtnGetAudio;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+             piBtnGetAudio = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnGetAudio, FLAG_IMMUTABLE);
+        }else{
+             piBtnGetAudio = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnGetAudio, 0);
+        }
         /*
          * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
          */
@@ -235,14 +242,14 @@ public class MyService extends Service {
 
         //music
         Intent iBtnMusicAdd = new Intent(NotiBroadcastReceiver.actionMusicAdd);
-        PendingIntent piBtnMusicAdd = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnMusicAdd, 0);
+        PendingIntent piBtnMusicAdd = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnMusicAdd, FLAG_IMMUTABLE);
         /*
          * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
          */
         remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnMusicAdd, piBtnMusicAdd);
 
         Intent iBtnMusicDec = new Intent(NotiBroadcastReceiver.actionMusicDec);
-        PendingIntent piBtnMusicDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnMusicDec, 0);
+        PendingIntent piBtnMusicDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnMusicDec, FLAG_IMMUTABLE);
         /*
          * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
          */
@@ -250,14 +257,14 @@ public class MyService extends Service {
 
         //system
         Intent iBtnSystemAdd = new Intent(NotiBroadcastReceiver.actionSystemAdd);
-        PendingIntent piBtnSystemAdd = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnSystemAdd, 0);
+        PendingIntent piBtnSystemAdd = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnSystemAdd, FLAG_IMMUTABLE);
         /*
          * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
          */
         remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnSystemAdd, piBtnSystemAdd);
 
         Intent iBtnSystemDec = new Intent(NotiBroadcastReceiver.actionSystemDec);
-        PendingIntent piBtnSystemDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnSystemDec, 0);
+        PendingIntent piBtnSystemDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnSystemDec, FLAG_IMMUTABLE);
         /*
          * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
          */
@@ -265,14 +272,14 @@ public class MyService extends Service {
 
         //ring
         Intent iBtnRingAdd = new Intent(NotiBroadcastReceiver.actionRingAdd);
-        PendingIntent piBtnRingAdd = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnRingAdd, 0);
+        PendingIntent piBtnRingAdd = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnRingAdd, FLAG_IMMUTABLE);
         /*
          * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
          */
         remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnRingAdd, piBtnRingAdd);
 
         Intent iBtnRingDec = new Intent(NotiBroadcastReceiver.actionRingDec);
-        PendingIntent piBtnRingDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnRingDec, 0);
+        PendingIntent piBtnRingDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnRingDec, FLAG_IMMUTABLE);
         /*
          * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
          */
@@ -280,14 +287,14 @@ public class MyService extends Service {
 
         //voice
         Intent iBtnVoiceAdd = new Intent(NotiBroadcastReceiver.actionVoiceAdd);
-        PendingIntent piBtnVoiceAdd = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnVoiceAdd, 0);
+        PendingIntent piBtnVoiceAdd = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnVoiceAdd, FLAG_IMMUTABLE);
         /*
          * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
          */
         remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnVoiceAdd, piBtnVoiceAdd);
 
         Intent iBtnVoiceDec = new Intent(NotiBroadcastReceiver.actionVoiceDec);
-        PendingIntent piBtnVoiceDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnVoiceDec, 0);
+        PendingIntent piBtnVoiceDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnVoiceDec, FLAG_IMMUTABLE);
         /*
          * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
          */
@@ -295,41 +302,41 @@ public class MyService extends Service {
 
         //alarm
         Intent iBtnAlarmAdd = new Intent(NotiBroadcastReceiver.actionAlarmAdd);
-        PendingIntent piBtnAlarmAdd = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnAlarmAdd, 0);
+        PendingIntent piBtnAlarmAdd = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnAlarmAdd, FLAG_IMMUTABLE);
         /*
          * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
          */
         remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnAlarmAdd, piBtnAlarmAdd);
 
         Intent iBtnAlarmDec = new Intent(NotiBroadcastReceiver.actionAlarmDec);
-        PendingIntent piBtnAlarmDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnAlarmDec, 0);
+        PendingIntent piBtnAlarmDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnAlarmDec, FLAG_IMMUTABLE);
         /*
          * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
          */
         remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnAlarmDec, piBtnAlarmDec);
 
         Intent iBtnLockScreen = new Intent(NotiBroadcastReceiver.actionLockScreen);
-        PendingIntent piBtnLockScreen = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnLockScreen, 0);
+        PendingIntent piBtnLockScreen = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnLockScreen, FLAG_IMMUTABLE);
         /*
          * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
          */
         remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnLockScreen, piBtnLockScreen);
 
         Intent iBtnNeverSleep = new Intent(NotiBroadcastReceiver.actionNeverSleep);
-        PendingIntent piBtnNeverSleep = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnNeverSleep, 0);
+        PendingIntent piBtnNeverSleep = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnNeverSleep, FLAG_IMMUTABLE);
         remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnNeverSleep, piBtnNeverSleep);
 
         Intent iBtnThirtySleep = new Intent(NotiBroadcastReceiver.actionThirtySleep);
-        PendingIntent piBtnThirtySleep = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnThirtySleep, 0);
+        PendingIntent piBtnThirtySleep = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnThirtySleep, FLAG_IMMUTABLE);
         remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnThirtySleep, piBtnThirtySleep);
 
         //bright add
         Intent iBtnBrightAdd = new Intent(NotiBroadcastReceiver.actionBrightAdd);
-        PendingIntent piBtnBrightAdd = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnBrightAdd, 0);
+        PendingIntent piBtnBrightAdd = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnBrightAdd, FLAG_IMMUTABLE);
         remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnBrightAdd, piBtnBrightAdd);
 
         Intent iBtnBrightDec = new Intent(NotiBroadcastReceiver.actionBrightDec);
-        PendingIntent piBtnBrightDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnBrightDec, 0);
+        PendingIntent piBtnBrightDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnBrightDec, FLAG_IMMUTABLE);
         remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnBrightDec, piBtnBrightDec);
 
         getAudioDetail(remoteViewsBig);
@@ -372,7 +379,7 @@ public class MyService extends Service {
         Intent intent = new Intent(this, MainActivity.class);
 //        intent.putExtra(Constants.EXTRA.NOTIFICATION_FROM, Constants.NotificationType.FROM_NOTIFICATION);
 //        intent.putExtra(Constants.EXTRA.NOTIFICATION_TYPE, NOTIFICATION_CODE);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, NOTIFICATION_CODE, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, NOTIFICATION_CODE, intent, FLAG_IMMUTABLE);
         builder.setContentIntent(pendingIntent);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
