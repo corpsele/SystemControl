@@ -339,6 +339,10 @@ public class MyService extends Service {
         PendingIntent piBtnBrightDec = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnBrightDec, FLAG_IMMUTABLE);
         remoteViewsBig.setOnClickPendingIntent(R.id.noti_big_btnBrightDec, piBtnBrightDec);
 
+        Intent iBtnCleanMemory = new Intent(NotiBroadcastReceiver.actionCleanMemory);
+        PendingIntent piBtnCleanMemory = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnCleanMemory, FLAG_IMMUTABLE);
+        remoteViewsBig.setOnClickPendingIntent(R.id.newwidget_clean, piBtnCleanMemory);
+
         getAudioDetail(remoteViewsBig);
 
         NotificationCompat.Builder builder = null;
@@ -425,6 +429,7 @@ public class MyService extends Service {
             intentFilter.addAction(NotiBroadcastReceiver.actionThirtySleep);
             intentFilter.addAction(NotiBroadcastReceiver.actionBrightAdd);
             intentFilter.addAction(NotiBroadcastReceiver.actionBrightDec);
+            intentFilter.addAction(NotiBroadcastReceiver.actionCleanMemory);
             registerReceiver(notiBroadcastReceiver, intentFilter);
         }
 

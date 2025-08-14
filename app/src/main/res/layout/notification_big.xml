@@ -213,6 +213,13 @@
             android:text="减"
             android:textSize="10sp" />
 
+        <Button
+            android:id="@+id/newwidget_clean"
+            android:layout_width="60dp"
+            android:layout_height="34dp"
+            android:layout_weight="1"
+            android:text="clean" />
+
     </LinearLayout>
 
     <LinearLayout

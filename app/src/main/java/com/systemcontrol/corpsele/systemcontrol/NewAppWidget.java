@@ -1,5 +1,8 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
+import static android.content.ComponentCallbacks2.TRIM_MEMORY_MODERATE;
+
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
@@ -60,6 +63,8 @@ public class NewAppWidget extends AppWidgetProvider {
     private AlarmManager alarmService = null;
     private LockScreenUtil lockScreenUtil = null;
 
+    private MemoryCleaner memoryCleaner = null;
+
 
     static void updateAppWidget(final Context context, final AppWidgetManager appWidgetManager,
                                 final int appWidgetId) {
@@ -90,11 +95,11 @@ public class NewAppWidget extends AppWidgetProvider {
        打开service
          */
         Intent serviceIntent = new Intent(context, MyService.class);
-        PendingIntent servicePendingIntent = PendingIntent.getService(context, 0, serviceIntent, 0);
+        PendingIntent servicePendingIntent = PendingIntent.getService(context, 0, serviceIntent, FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.appwidget_service_btn, servicePendingIntent);
 
         Intent sIntent = new Intent("com.action.service", null,context,NewAppWidget.class);
-        PendingIntent sPendingIntent = PendingIntent.getBroadcast(context,0,sIntent,0);
+        PendingIntent sPendingIntent = PendingIntent.getBroadcast(context,0,sIntent,FLAG_IMMUTABLE);
 //        views.setOnClickPendingIntent(R.id.count_down, sPendingIntent);
 
         /*
@@ -102,52 +107,56 @@ public class NewAppWidget extends AppWidgetProvider {
          */
 //        Intent anIntent = new Intent("com.action.haha");
         Intent iIntent = new Intent("com.action.haha",null,context,NewAppWidget.class);
-        PendingIntent anPendingIntent = PendingIntent.getBroadcast(context, 0, iIntent, 0);
+        PendingIntent anPendingIntent = PendingIntent.getBroadcast(context, 0, iIntent, FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.appwidget_brocast_btn, anPendingIntent);
 
         Intent musicAddIntent = new Intent("com.action.musicAddAction",null,context,NewAppWidget.class);
-        PendingIntent musicAddPendingIntent = PendingIntent.getBroadcast(context, 0, musicAddIntent, 0);
+        PendingIntent musicAddPendingIntent = PendingIntent.getBroadcast(context, 0, musicAddIntent, FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.btnMusicAdd, musicAddPendingIntent);
 
         Intent musicDecIntent = new Intent("com.action.musicDecAction",null,context,NewAppWidget.class);
-        PendingIntent musicDecPendingIntent = PendingIntent.getBroadcast(context, 0, musicDecIntent, 0);
+        PendingIntent musicDecPendingIntent = PendingIntent.getBroadcast(context, 0, musicDecIntent, FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.btnMusicDec, musicDecPendingIntent);
 
         Intent systemAddIntent = new Intent("com.action.systemAddAction",null,context,NewAppWidget.class);
-        PendingIntent systemAddPendingIntent = PendingIntent.getBroadcast(context, 0, systemAddIntent, 0);
+        PendingIntent systemAddPendingIntent = PendingIntent.getBroadcast(context, 0, systemAddIntent, FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.btnSystemAdd, systemAddPendingIntent);
 
         Intent systemDecIntent = new Intent("com.action.systemDecAction",null,context,NewAppWidget.class);
-        PendingIntent systemDecPendingIntent = PendingIntent.getBroadcast(context, 0, systemDecIntent, 0);
+        PendingIntent systemDecPendingIntent = PendingIntent.getBroadcast(context, 0, systemDecIntent, FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.btnSystemDec, systemDecPendingIntent);
 
         Intent voipAddIntent = new Intent("com.action.voipAddAction",null,context,NewAppWidget.class);
-        PendingIntent voipAddPendingIntent = PendingIntent.getBroadcast(context, 0, voipAddIntent, 0);
+        PendingIntent voipAddPendingIntent = PendingIntent.getBroadcast(context, 0, voipAddIntent, FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.btnVoipAdd, voipAddPendingIntent);
 
         Intent voipDecIntent = new Intent("com.action.voipDecAction",null,context,NewAppWidget.class);
-        PendingIntent voipDecPendingIntent = PendingIntent.getBroadcast(context, 0, voipDecIntent, 0);
+        PendingIntent voipDecPendingIntent = PendingIntent.getBroadcast(context, 0, voipDecIntent, FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.btnVoipDec, voipDecPendingIntent);
 
         Intent smsAddIntent = new Intent("com.action.smsAddAction",null,context,NewAppWidget.class);
-        PendingIntent smsAddPendingIntent = PendingIntent.getBroadcast(context, 0, smsAddIntent, 0);
+        PendingIntent smsAddPendingIntent = PendingIntent.getBroadcast(context, 0, smsAddIntent, FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.btnVoipAdd2, smsAddPendingIntent);
 
         Intent smsDecIntent = new Intent("com.action.smsDecAction",null,context,NewAppWidget.class);
-        PendingIntent smsDecPendingIntent = PendingIntent.getBroadcast(context, 0, smsDecIntent, 0);
+        PendingIntent smsDecPendingIntent = PendingIntent.getBroadcast(context, 0, smsDecIntent, FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.btnVoipDec2, smsDecPendingIntent);
 
         Intent lightAddAction = new Intent("com.action.lightAddAction",null,context,NewAppWidget.class);
-        PendingIntent lightAddPendingIntent = PendingIntent.getBroadcast(context, 0, lightAddAction, 0);
+        PendingIntent lightAddPendingIntent = PendingIntent.getBroadcast(context, 0, lightAddAction, FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.btnVoipAdd3, lightAddPendingIntent);
 
         Intent lightDecAction = new Intent("com.action.lightDecAction",null,context,NewAppWidget.class);
-        PendingIntent lightDecPendingIntent = PendingIntent.getBroadcast(context, 0, lightDecAction, 0);
+        PendingIntent lightDecPendingIntent = PendingIntent.getBroadcast(context, 0, lightDecAction, FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.btnVoipDec3, lightDecPendingIntent);
 
         Intent lockScreenAction = new Intent("com.action.lockScreen",null,context,NewAppWidget.class);
-        PendingIntent lockScreenPendingIntent = PendingIntent.getBroadcast(context, 0, lockScreenAction, 0);
+        PendingIntent lockScreenPendingIntent = PendingIntent.getBroadcast(context, 0, lockScreenAction, FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.btnLockScreen, lockScreenPendingIntent);
+
+        Intent cleanAction = new Intent("com.action.cleanMemory", null, context, NewAppWidget.class);
+        PendingIntent cleanPendingIntent = PendingIntent.getBroadcast(context, 0, cleanAction, FLAG_IMMUTABLE);
+        views.setOnClickPendingIntent(R.id.newwidget_clean, cleanPendingIntent);
 
 //        CountDownTimer countDownTimer = new CountDownTimer(40000, 1000) {
 //            @Override
@@ -263,7 +272,7 @@ public class NewAppWidget extends AppWidgetProvider {
             manger.updateAppWidget(thisName, remoteViews);
         }else if(Objects.equals(intent.getAction(), "com.action.service")){
             Intent intent1=new Intent(context ,MyService.class );
-            PendingIntent refreshIntent=PendingIntent.getService(context, 0 , intent1,  0 );
+            PendingIntent refreshIntent=PendingIntent.getService(context, 0 , intent1,  FLAG_IMMUTABLE);
             AlarmManager alarm=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             alarm.setRepeating(AlarmManager.RTC, 0 ,  1000 , refreshIntent);
 //            context.startService(intent1);
@@ -278,7 +287,7 @@ public class NewAppWidget extends AppWidgetProvider {
         else if (Objects.equals(intent.getAction(), "com.action.cancelservice")){
             try{
                 Intent intent1=new Intent(context ,MyService.class );
-                PendingIntent refreshIntent=PendingIntent.getService(context, 0 , intent1,  0 );
+                PendingIntent refreshIntent=PendingIntent.getService(context, 0 , intent1,  FLAG_IMMUTABLE);
                 AlarmManager alarm=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
                 alarm.cancel(refreshIntent);
             }catch(Exception e){
@@ -472,9 +481,20 @@ getAudioDetail(context);
             }
             lockScreenUtil.lockscreen();
         }
+        else if(Objects.equals(intent.getAction(), "com.action.cleanMemory")){
+            Toaster.show("clean memory");
+            if (memoryCleaner == null){
+                memoryCleaner = new MemoryCleaner(context);
+            }
+            memoryCleaner.cleanBackgroundProcesses();
+            memoryCleaner.triggerGarbageCollection();
+            memoryCleaner.onTrimMemory(TRIM_MEMORY_MODERATE);
+        }
 
 
     }
+
+
 
     public void getAllActivity(Context context) {
         PackageManager packageManager = context.getPackageManager();

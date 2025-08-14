@@ -1,5 +1,6 @@
 package com.systemcontrol.corpsele.systemcontrol;
 
+import static android.content.ComponentCallbacks2.TRIM_MEMORY_MODERATE;
 import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.app.Notification;
@@ -16,6 +17,8 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RemoteViews;
+
+import com.hjq.toast.Toaster;
 
 public class NotiBroadcastReceiver extends BroadcastReceiver {
     public static final String actionOpenMain = "OpenMainActivity";
@@ -39,9 +42,12 @@ public class NotiBroadcastReceiver extends BroadcastReceiver {
     public static final String actionThirtySleep = "actionThirtySleep";
     public static final String actionBrightAdd = "ActionBrightAdd";
     public static final String actionBrightDec = "ActionBrightDec";
+    public static final String actionCleanMemory = "ActionCleanMemory";
 
     private static AudioManager mAudioManager;
     private static LockScreenUtil lockScreenUtil;
+
+    private MemoryCleaner memoryCleaner = null;
 
     private static int currentLight = 0;
 
@@ -151,6 +157,15 @@ public class NotiBroadcastReceiver extends BroadcastReceiver {
             ContentResolver contentResolver = context.getContentResolver();
             Settings.System.putInt(contentResolver,
                     Settings.System.SCREEN_BRIGHTNESS, currentLight);
+        }
+        else if(action.equals(actionCleanMemory)){
+            Toaster.show("clean memory");
+            if (memoryCleaner == null){
+                memoryCleaner = new MemoryCleaner(context);
+            }
+            memoryCleaner.cleanBackgroundProcesses();
+            memoryCleaner.triggerGarbageCollection();
+            memoryCleaner.onTrimMemory(TRIM_MEMORY_MODERATE);
         }
 
 
