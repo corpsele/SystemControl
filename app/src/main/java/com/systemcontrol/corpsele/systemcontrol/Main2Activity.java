@@ -99,6 +99,9 @@ public class Main2Activity extends AppCompatActivity {
                             case 4:
                                 pushAppsActivity();
                                 break;
+                            case 5:
+                                pushTimerSchedule();
+                                break;
                             default:
                                 break;
                         }
@@ -107,6 +110,12 @@ public class Main2Activity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void pushTimerSchedule(){
+        Intent intent = new Intent(Main2Activity.this, TimerSchedule.class);
+        intent.putExtra("", "");
+        startActivity(intent);
     }
 
     private void pushAppsActivity() {

@@ -31,6 +31,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.os.Environment;
 import android.os.StatFs;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
@@ -163,6 +164,8 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
 //        initNotiManager();
 
 //        initReceiver();
+
+        initMoreBackgroundServer();
     }
 
     private void initUI(){
@@ -216,6 +219,37 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
 
             }
         });
+    }
+
+    private void initMoreBackgroundServer() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+        }
+
+        // 设置定时任务
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, NewAppWidget.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        // 设置循环任务，间隔 15 分钟（Android 14 最小间隔）
+        if (alarmManager != null) {
+//            alarmManager.setRepeating(
+//                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
+//                    SystemClock.elapsedRealtime(),
+//                    15 * 60 * 1000, // 15 分钟
+//                    pendingIntent
+//            );
+            alarmManager.setRepeating(
+                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    SystemClock.elapsedRealtime(),
+                    60, // 15 分钟
+                    pendingIntent
+            );
+        }
     }
 
     private void initNotiManager(){

@@ -32,6 +32,8 @@ import android.widget.FrameLayout;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+
 import com.hjq.toast.Toaster;
 
 import java.io.File;
@@ -490,7 +492,10 @@ getAudioDetail(context);
             memoryCleaner.triggerGarbageCollection();
             memoryCleaner.onTrimMemory(TRIM_MEMORY_MODERATE);
         }
-
+        if (GlobalUtil.isEnableRepeatService) {
+            Intent serviceIntent = new Intent(context, MyService.class);
+            ContextCompat.startForegroundService(context, serviceIntent);
+        }
 
     }
 

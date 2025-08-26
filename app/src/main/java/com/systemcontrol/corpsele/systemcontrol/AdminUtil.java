@@ -21,3 +21,7 @@ public class AdminUtil extends DeviceAdminReceiver {
     }
 
 }
+
+class GlobalUtil {
+    public static boolean isEnableRepeatService = false;
+}

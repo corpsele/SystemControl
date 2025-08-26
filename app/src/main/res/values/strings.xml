@@ -52,4 +52,6 @@
     <string name="title_activity_main3">MainActivity3</string>
     <string name="widget_string_system_light">亮度</string>
     <string name="btnPushNotification">推送通知</string>
+    <string name="checkbox_thursday">Thursday</string>
+    <string name="timer_schedule_cycle_title_text">Time Schedule Cycle</string>
 </resources>

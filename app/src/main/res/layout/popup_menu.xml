@@ -3,17 +3,13 @@
     <item
         android:id="@+id/menu_item1"
         android:title="disenable timer schedule"
-        android:icon="@drawable/common_google_signin_btn_icon_light_normal" />
+        android:icon="@drawable/lock" />
     <item
         android:id="@+id/menu_item2"
         android:title="enable timer schedule"
-        android:icon="@drawable/common_google_signin_btn_icon_dark_normal" />
+        android:icon="@drawable/unlock" />
     <item
         android:id="@+id/menu_item3"
         android:title="set weekend"
-        android:icon="@drawable/exo_notification_small_icon" />
-    <item
-        android:id="@+id/menu_item4"
-        android:title="set worktime"
-        android:icon="@drawable/exo_notification_small_icon" />
+        android:icon="@drawable/common_full_open_on_phone" />
 </menu>

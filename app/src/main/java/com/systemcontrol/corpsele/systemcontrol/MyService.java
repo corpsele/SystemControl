@@ -189,6 +189,7 @@ public class MyService extends Service {
 
 
         Toast.makeText(this, "服务启动了 ", Toast.LENGTH_SHORT).show();
+        Log.d("MyService", "服务启动了");
         RemoteViews rv = new RemoteViews(this.getPackageName(), R.layout.new_app_widget);
 
         getAudioDetail(rv);
@@ -204,7 +205,8 @@ public class MyService extends Service {
         int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), NewAppWidget.class));
         intent1.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
         sendBroadcast(intent1);
-        return super.onStartCommand(intent, flags, startId);
+//        return super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
 //        return START_STICKY_COMPATIBILITY;
     }
 
