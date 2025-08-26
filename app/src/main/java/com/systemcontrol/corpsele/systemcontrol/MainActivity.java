@@ -36,10 +36,12 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.PopupMenu;
 import android.widget.RemoteViews;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -219,6 +221,60 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
 
             }
         });
+
+        Button btnMainMenu = findViewById(R.id.btnMainMenu);
+        btnMainMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopupMenu(v);
+            }
+        });
+    }
+
+    private void showPopupMenu(View anchorView) {
+        // 1. 创建 PopupMenu 实例
+        PopupMenu popupMenu = new PopupMenu(this, anchorView);
+        popupMenu.setGravity(Gravity.END); // 设置菜单显示位置
+
+        // 2. 加载菜单资源
+        popupMenu.getMenuInflater().inflate(R.menu.menu_item_main, popupMenu.getMenu());
+
+        // 3. 强制显示图标（通过反射）
+        try {
+            Object menuHelper = popupMenu.getClass().getDeclaredField("mPopup").get(popupMenu);
+            Class<?> classPopupHelper = Class.forName("com.android.internal.view.menu.MenuPopupHelper");
+            Method setForceShowIcon = classPopupHelper.getMethod("setForceShowIcon", boolean.class);
+            setForceShowIcon.invoke(menuHelper, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // 4. 设置菜单项点击事件
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.main_menu_item1) {
+                Toast.makeText(this, "disenable timer schedule", Toast.LENGTH_SHORT).show();
+                GlobalUtil.isEnableRepeatService = false;
+                return true;
+            } else if (id == R.id.main_menu_item2) {
+                Toast.makeText(this, "enable timer schedule", Toast.LENGTH_SHORT).show();
+                GlobalUtil.isEnableRepeatService = true;
+                return true;
+            } else if (id == R.id.main_menu_item3) {
+                Toast.makeText(this, "set weekend", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (id == R.id.main_menu_item4) {
+                Toast.makeText(this, "set worktime", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (id == R.id.main_menu_item5) {
+                Toast.makeText(this, "item", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            return false;
+        });
+
+        // 5. 显示菜单
+        popupMenu.show();
     }
 
     private void initMoreBackgroundServer() {

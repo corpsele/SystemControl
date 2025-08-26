@@ -377,4 +377,13 @@
         android:text="可用大小"
         app:layout_constraintStart_toEndOf="@+id/textViewAvaliTip"
         app:layout_constraintTop_toBottomOf="@+id/btnThirtySleep" />
+
+    <Button
+        android:id="@+id/btnMainMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="menu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 </androidx.constraintlayout.widget.ConstraintLayout>

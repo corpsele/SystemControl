@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/main_menu_item1"
+        android:title="disenable timer schedule"
+        android:icon="@drawable/dkplayer_shape_status_view_btn" />
+    <item
+        android:id="@+id/main_menu_item2"
+        android:title="enable timer schedule"
+        android:icon="@drawable/video_volume_icon" />
+    <item
+        android:id="@+id/main_menu_item3"
+        android:title="set weekend"
+        android:icon="@drawable/exo_icon_rewind" />
+    <item
+        android:id="@+id/main_menu_item4"
+        android:title="set worktime"
+        android:icon="@drawable/exo_icon_fastforward" />
+    <item
+        android:id="@+id/main_menu_item5"
+        android:title="item"
+        android:icon="@drawable/exo_icon_next"/>
+</menu>
