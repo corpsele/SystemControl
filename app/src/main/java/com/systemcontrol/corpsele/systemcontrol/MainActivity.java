@@ -60,6 +60,7 @@ import java.lang.reflect.Method;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -229,6 +230,38 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
                 showPopupMenu(v);
             }
         });
+
+        String currentDateTime = GlobalUtil.getCurrentDateTimeInChina();
+        Log.d("CurrentDateTime", currentDateTime); // 输出示例：2025年08月26日 星期二 10:25:10
+        Toast.makeText(this, currentDateTime, Toast.LENGTH_SHORT).show();
+
+        long timestamp = System.currentTimeMillis();
+        Log.d("Timestamp", String.valueOf(timestamp)); // 输出当前时间戳
+
+        String currentDateTime1 = DateTimeUtils.getCurrentDateTime();
+        Log.d("DateTime", "当前时间: " + currentDateTime1);
+
+        String futureDate = DateTimeUtils.addDaysToDate(7);
+        Log.d("DateTime", "7天后: " + futureDate);
+
+        String dayOfWeek = DateTimeUtils.getCurrentDayOfWeek();
+        Log.d("DateTime", "今天是: " + dayOfWeek);
+
+        LocalDate date1 = LocalDate.of(2025, 8, 1);
+        LocalDate date2 = LocalDate.of(2025, 8, 26);
+        long daysBetween = DateTimeUtils.daysBetweenDates(date1, date2);
+        Log.d("DateTime", "相差天数: " + daysBetween);
+
+        String currentDateTime2 = DateTimeUtilsLegacy.getCurrentDateTime();
+        Log.d("DateTime", "当前时间: " + currentDateTime2);
+
+        String futureDate1 = DateTimeUtilsLegacy.addDaysToDate(7);
+        Log.d("DateTime", "7天后: " + futureDate1);
+
+        String dayOfWeek1 = DateTimeUtilsLegacy.getCurrentDayOfWeek();
+        Log.d("DateTime", "今天是: " + dayOfWeek1);
+
+
     }
 
     private void showPopupMenu(View anchorView) {
