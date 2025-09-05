@@ -128,7 +128,7 @@ public class MyService extends Service {
             startForeground(NOTIFICATION_CODE, notificationControl);
         }
 
-
+        GlobalUtil.isMainServiceRunning = true;
     }
 
     @Override
@@ -458,6 +458,7 @@ public class MyService extends Service {
 //        }
 
 //        unregisterReceiver(notiBroadcastReceiver);
+        GlobalUtil.isMainServiceRunning = false;
     }
 
     private void getAudioDetail(RemoteViews remoteViews) {

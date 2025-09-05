@@ -295,12 +295,25 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
                 return true;
             } else if (id == R.id.main_menu_item3) {
                 Toast.makeText(this, "set weekend", Toast.LENGTH_SHORT).show();
+                mAudioManager.setStreamVolume(AudioManager.STREAM_RING, 5, AudioManager.FLAG_SHOW_UI);
+                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 5, AudioManager.FLAG_SHOW_UI);
+                getAudioDetail();
                 return true;
             } else if (id == R.id.main_menu_item4) {
                 Toast.makeText(this, "set worktime", Toast.LENGTH_SHORT).show();
+                mAudioManager.setStreamVolume(AudioManager.STREAM_RING, 1, AudioManager.FLAG_SHOW_UI);
+                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 1, AudioManager.FLAG_SHOW_UI);
+                getAudioDetail();
                 return true;
             } else if (id == R.id.main_menu_item5) {
-                Toast.makeText(this, "item", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "set volume 1", Toast.LENGTH_SHORT).show();
+                mAudioManager.setStreamVolume(AudioManager.STREAM_RING, 1, AudioManager.FLAG_SHOW_UI);
+                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 1, AudioManager.FLAG_SHOW_UI);
+                getAudioDetail();
+                return true;
+            } else if(id == R.id.main_menu_item6){
+                Toast.makeText(this, "get volume", Toast.LENGTH_SHORT).show();
+                getAudioDetail();
                 return true;
             }
             return false;
@@ -366,7 +379,7 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
         Intent intent = new Intent(this, MainActivity.class);
 //        intent.putExtra(Constants.EXTRA.NOTIFICATION_FROM, Constants.NotificationType.FROM_NOTIFICATION);
 //        intent.putExtra(Constants.EXTRA.NOTIFICATION_TYPE, NOTIFICATION_CODE);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, NOTIFICATION_CODE, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, NOTIFICATION_CODE, intent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         builder.setContentIntent(pendingIntent);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

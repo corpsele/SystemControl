@@ -18,6 +18,9 @@
         android:icon="@drawable/exo_icon_fastforward" />
     <item
         android:id="@+id/main_menu_item5"
-        android:title="item"
-        android:icon="@drawable/exo_icon_next"/>
+        android:icon="@drawable/exo_icon_next"
+        android:title="set volume 1" />
+    <item
+        android:id="@+id/main_menu_item6"
+        android:title="get volume" />
 </menu>
