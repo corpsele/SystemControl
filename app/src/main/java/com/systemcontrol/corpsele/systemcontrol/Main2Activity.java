@@ -85,7 +85,7 @@ public class Main2Activity extends AppCompatActivity {
                         System.out.println(position);
                         switch (position) {
                             case 0:
-                                gotoDKVideoPlayer();
+//                                gotoDKVideoPlayer();
                                 break;
                             case 1:
                                 pushOtherActivity();
