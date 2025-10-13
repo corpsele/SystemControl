@@ -235,7 +235,7 @@ public class MyService extends Service {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
              piBtnGetAudio = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnGetAudio, FLAG_IMMUTABLE);
         }else{
-             piBtnGetAudio = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnGetAudio, 0);
+             piBtnGetAudio = PendingIntent.getBroadcast(getBaseContext(), 0, iBtnGetAudio, PendingIntent.FLAG_IMMUTABLE);
         }
         /*
          * 对于自定义布局文件中的控件通过RemoteViews类的对象进行事件处理
