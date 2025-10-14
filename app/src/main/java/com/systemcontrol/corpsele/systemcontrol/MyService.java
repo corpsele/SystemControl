@@ -18,7 +18,9 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -28,6 +30,14 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.hjq.toast.Toaster;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Administrator on 2017/12/11.
@@ -56,6 +66,33 @@ public class MyService extends Service {
     private static final int NOTIFICATION_CODE = 20078;
 
     private int currentLight = 0;
+
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable updateTimeRunnable = new Runnable() {
+        @Override
+        public void run() {
+            // 获取当前时间并格式化
+            String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+//            textView.setText("当前时间: " + currentTime);
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+            String currentLocalTime = LocalTime.now().format(dtf);
+            String otherLocalTime = LocalTime.of(9, 17, 0).format(dtf);
+
+            if (currentLocalTime.equals(otherLocalTime)) {
+//                Log.d("localtime", "after currentLocalTime");
+                Log.d("localtime", "currentLocalTime == otherLocalTime");
+            }
+//            else if(currentLocalTime.isBefore(otherLocalTime)){
+//                Log.d("localtime", "before currentLocalTime");
+//            }
+//            else{
+//                Log.d("localtime", "same localtime");
+//            }
+
+            // 每秒重复执行
+            handler.postDelayed(this, 1000);
+        }
+    };
 
     @Nullable
     @Override
@@ -129,6 +166,9 @@ public class MyService extends Service {
         }
 
         GlobalUtil.isMainServiceRunning = true;
+
+        // 启动定时任务（第一次延迟1秒）
+        handler.postDelayed(updateTimeRunnable, 1000);
     }
 
     @Override
@@ -405,6 +445,8 @@ public class MyService extends Service {
         //推送通知
         notificationManager.notify(NOTIFICATION_CODE, builder.build());
 
+
+
     }
 
     public void updateNotiControl() {
@@ -459,6 +501,9 @@ public class MyService extends Service {
 
 //        unregisterReceiver(notiBroadcastReceiver);
         GlobalUtil.isMainServiceRunning = false;
+
+        // 避免内存泄漏，停止任务
+        handler.removeCallbacks(updateTimeRunnable);
     }
 
     private void getAudioDetail(RemoteViews remoteViews) {
