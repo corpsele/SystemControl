@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
             @Override
             public void run() {
 
-                requestAPI();
+//                requestAPI();
                 requestAllAppPackage();
             }
         });
