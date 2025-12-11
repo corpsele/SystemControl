@@ -47,6 +47,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chaquo.python.PyObject;
+import com.chaquo.python.Python;
+import com.chaquo.python.android.AndroidPlatform;
 import com.google.gson.Gson;
 import com.hjq.toast.Toaster;
 import com.jakewharton.rxbinding4.view.RxView;
@@ -83,6 +86,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import io.reactivex.rxjava3.core.*;
+
 
 public class MainActivity extends AppCompatActivity implements NotiBroadcastReceiver.NotiBigInterface {
     private AudioManager mAudioManager;
@@ -148,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
             OpenNotificationsUtil.openNotificationSettingsForApp(this);
         }
 
-        if (!checkFloatPermission(this)){
+        if (!checkFloatPermission(this)) {
             requestSettingCanDrawOverlays();
         }
 
@@ -169,9 +173,21 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
 //        initReceiver();
 
         initMoreBackgroundServer();
+
+        if (!Python.isStarted()) {
+            Python.start(new AndroidPlatform(this));
+        }
+        Python python = Python.getInstance();
+        PyObject pyObject = python.getModule("hello");
+        PyObject pyobjResult = pyObject.callAttr("greet", "Android");
+        // 调用python内建函数help()，输出了帮助信息
+        python.getBuiltins().get("help").call();
+        String strResult = pyobjResult.toString();
+        textView12.append("\n" + strResult);
+        textView12.setText(textView12.getText() + "\n" + strResult);
     }
 
-    private void initUI(){
+    private void initUI() {
         btnOpenService = findViewById(R.id.main_btnOpenService);
         checkBoxIsNotiBig = findViewById(R.id.main_checkboxIsBigNoti);
         RxView.clicks(btnOpenService).subscribe(new Observer<Unit>() {
@@ -183,9 +199,9 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
             @Override
             public void onNext(@NonNull Unit unit) {
                 System.out.println("btnOpenService click ");
-                Intent intent1=new Intent(getBaseContext() ,MyService.class );
-                intent1.putExtra("identify","alwaysNotification");
-                intent1.putExtra("isNotiBigCotent",isNotiBigContent);
+                Intent intent1 = new Intent(getBaseContext(), MyService.class);
+                intent1.putExtra("identify", "alwaysNotification");
+                intent1.putExtra("isNotiBigCotent", isNotiBigContent);
                 startService(intent1);
             }
 
@@ -311,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
                 mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 1, AudioManager.FLAG_SHOW_UI);
                 getAudioDetail();
                 return true;
-            } else if(id == R.id.main_menu_item6){
+            } else if (id == R.id.main_menu_item6) {
                 Toast.makeText(this, "get volume", Toast.LENGTH_SHORT).show();
                 getAudioDetail();
                 return true;
@@ -354,7 +370,7 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
         }
     }
 
-    private void initNotiManager(){
+    private void initNotiManager() {
         notificationManager = (NotificationManager)
                 getSystemService(Context.NOTIFICATION_SERVICE);
         RemoteViews remoteViewsNormal = new RemoteViews(this.getPackageName(), R.layout.notification_normal);
@@ -399,7 +415,7 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
 
     }
 
-    private void initReceiver(){
+    private void initReceiver() {
         notiBroadcastReceiver = new NotiBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter(NotiBroadcastReceiver.actionOpenMain);
 //        intentFilter.addAction(MyBroadcastReceiver.ACTION_2);
@@ -553,7 +569,8 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                    textView12.setText(e.getLocalizedMessage());
+                    String result = textView12.getText() + "\n" + e.getLocalizedMessage();
+                    textView12.setText(result);
                     e.printStackTrace();
                 }
 
@@ -561,8 +578,8 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     String responseResult = response.body().string();
                     ResponseBody responseBody = response.body();
-
-                    textView12.setText(response.message() + "\n" + responseResult);
+                    String msg = textView12.getText() + "\n" + response.message() + "\n" + responseResult;
+                    textView12.setText(msg);
                     Gson gson1 = new Gson();
 //                    Type type = new TypeToken<Result>() {}.getType();
 //                    Result result = gson1.fromJson(responseResult, Result.class);
@@ -579,11 +596,11 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
     private void requestAllAppPackage() {
         PackageManager pm = getPackageManager();
         List<PackageInfo> pis = pm.getInstalledPackages(PackageManager.GET_ACTIVITIES);
-        for (PackageInfo pi : pis){
+        for (PackageInfo pi : pis) {
             System.out.println("pi = " + pi.applicationInfo.packageName);
-            if (isSystemApp(pi)){
+            if (isSystemApp(pi)) {
                 System.out.println(pi.packageName + " is " + "系统应用");
-            }else{
+            } else {
                 System.out.println(pi.packageName + " is " + "非系统应用");
             }
         }
@@ -841,10 +858,10 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
 
             @Override
             public void onNext(@NonNull Unit unit) {
-                if(lockScreenUtil == null){
+                if (lockScreenUtil == null) {
                     lockScreenUtil = new LockScreenUtil(getBaseContext(), this.getClass());
                 }
-                if(lockScreenUtil.lockscreen() == false){
+                if (lockScreenUtil.lockscreen() == false) {
                     checkAmin();
                 }
                 System.out.println(" click ");
@@ -861,7 +878,7 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
             }
         });
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.System.canWrite(MainActivity.this)) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS,
                         Uri.parse("package:" + getPackageName()));
@@ -900,7 +917,7 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
 
     }
 
-    private void checkAmin(){
+    private void checkAmin() {
         DevicePolicyManager devicePolicyManager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
         ComponentName componentName = new ComponentName(this, AdminUtil.class);
 
@@ -1104,7 +1121,7 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
     /**
      * 单位换算
      *
-     * @param size 单位为B
+     * @param size      单位为B
      * @param isInteger 是否返回取整的单位
      * @return 转换后的单位
      */
@@ -1125,14 +1142,14 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
 
     @Override
     public void setBrightCurrentText(String content) {
-        if (content != null){
+        if (content != null) {
 
         }
     }
 
     @Override
     public void setBrightMaxText(String content) {
-        if (content != null){
+        if (content != null) {
 
         }
     }

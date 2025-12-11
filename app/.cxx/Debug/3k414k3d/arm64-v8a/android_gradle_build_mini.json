@@ -1,0 +1,29 @@
+{
+  "buildFiles": [
+    "/Volumes/Seagate015_4T/projects/SystemControl/app/src/main/cpp/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Volumes/Seagate015_4T/mapapps/Link/androidsdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Volumes/Seagate015_4T/projects/SystemControl/app/.cxx/Debug/3k414k3d/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Volumes/Seagate015_4T/mapapps/Link/androidsdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Volumes/Seagate015_4T/projects/SystemControl/app/.cxx/Debug/3k414k3d/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "mnnllmapp::@6890427a1f51a3e7e1df": {
+      "artifactName": "mnnllmapp",
+      "abi": "arm64-v8a",
+      "output": "/Volumes/Seagate015_4T/projects/SystemControl/app/build/intermediates/cxx/Debug/3k414k3d/obj/arm64-v8a/libmnnllmapp.so",
+      "runtimeFiles": [
+        "/Volumes/project/android/build_64/lib/libMNN.so"
+      ]
+    }
+  }
+}

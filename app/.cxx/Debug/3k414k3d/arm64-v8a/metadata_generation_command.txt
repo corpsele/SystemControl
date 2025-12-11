@@ -1,0 +1,18 @@
+                        -H/Volumes/Seagate015_4T/projects/SystemControl/app/src/main/cpp
+-DCMAKE_SYSTEM_NAME=Android
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+-DCMAKE_SYSTEM_VERSION=28
+-DANDROID_PLATFORM=android-28
+-DANDROID_ABI=arm64-v8a
+-DCMAKE_ANDROID_ARCH_ABI=arm64-v8a
+-DANDROID_NDK=/Volumes/Seagate015_4T/mapapps/Link/androidsdk/ndk/27.0.12077973
+-DCMAKE_ANDROID_NDK=/Volumes/Seagate015_4T/mapapps/Link/androidsdk/ndk/27.0.12077973
+-DCMAKE_TOOLCHAIN_FILE=/Volumes/Seagate015_4T/mapapps/Link/androidsdk/ndk/27.0.12077973/build/cmake/android.toolchain.cmake
+-DCMAKE_MAKE_PROGRAM=/Volumes/Seagate015_4T/mapapps/Link/androidsdk/cmake/3.22.1/bin/ninja
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/Volumes/Seagate015_4T/projects/SystemControl/app/build/intermediates/cxx/Debug/3k414k3d/obj/arm64-v8a
+-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/Volumes/Seagate015_4T/projects/SystemControl/app/build/intermediates/cxx/Debug/3k414k3d/obj/arm64-v8a
+-DCMAKE_BUILD_TYPE=Debug
+-B/Volumes/Seagate015_4T/projects/SystemControl/app/.cxx/Debug/3k414k3d/arm64-v8a
+-GNinja
+                        Build command args: []
+                        Version: 2

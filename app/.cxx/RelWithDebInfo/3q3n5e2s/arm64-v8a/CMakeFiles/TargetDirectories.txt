@@ -1,0 +1,3 @@
+/Volumes/Seagate015_4T/projects/SystemControl/app/.cxx/RelWithDebInfo/3q3n5e2s/arm64-v8a/CMakeFiles/mnnllmapp.dir
+/Volumes/Seagate015_4T/projects/SystemControl/app/.cxx/RelWithDebInfo/3q3n5e2s/arm64-v8a/CMakeFiles/edit_cache.dir
+/Volumes/Seagate015_4T/projects/SystemControl/app/.cxx/RelWithDebInfo/3q3n5e2s/arm64-v8a/CMakeFiles/rebuild_cache.dir

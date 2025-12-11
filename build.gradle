@@ -1,11 +1,8 @@
-ext {
-    buildToolsVersion = '28.0.0'
-    compileSdkVersion = 28
-}// Top-level build file where you can add configuration options common to all sub-projects/modules.
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
 //apply plugin: 'com.android.application'
 buildscript {
 //    ext.kotlin_version= '1.6.21'
-    ext.kotlin_version= '2.0.0'
+    ext.kotlin_version = '2.0.0'
     repositories {
 //        maven {
 //            allowInsecureProtocol = true
@@ -31,6 +28,10 @@ buildscript {
             allowInsecureProtocol = true
             url "https://jitpack.io"
         }
+        maven {
+            allowInsecureProtocol = true
+            url "https://chaquo.com/maven"
+        }
         google()
 //        jcenter()
 //        maven{url 'http://maven.aliyun.com/nexus/content/groups/public/'}
@@ -44,13 +45,21 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:8.8.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        // 导入Chaquopy框架的包
+        classpath "com.chaquo.python:gradle:17.0.0"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-
+//        id 'com.chaquo.python' version '12.0.0' apply false
     }
 }
-
+//plugins {
+//    id 'com.chaquo.python' version '12.0.0' apply false
+//}
+ext {
+    buildToolsVersion = '28.0.0'
+    compileSdkVersion = 28
+}
 allprojects {
     repositories {
 //        maven {
@@ -77,6 +86,10 @@ allprojects {
             allowInsecureProtocol = true
             url "https://jitpack.io"
         }
+        maven {
+            allowInsecureProtocol = true
+            url "https://chaquo.com/maven"
+        }
         google()
 //        jcenter()
 //        maven{url 'http://maven.aliyun.com/nexus/content/groups/public/'}
@@ -87,6 +100,7 @@ allprojects {
 //        }
     }
 }
+
 
 //task clean(type: Delete) {
 //    delete rootProject.buildDir
