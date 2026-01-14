@@ -9,3 +9,6 @@
 .externalNativeBuild
 /d
 .idea/
+app/libs/*
+app/Libs/
+*.aar
