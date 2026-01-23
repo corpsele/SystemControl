@@ -200,6 +200,14 @@ android {
         jvmTarget = JavaVersion.VERSION_17
     }
 
+//    viewBinding {
+//        enable = true
+//    }
+
+    buildFeatures {
+        dataBinding true
+    }
+
 }
 
 repositories {
@@ -257,10 +265,12 @@ dependencies {
     implementation 'androidx.wear:wear:1.2.0'
     implementation 'com.google.android.material:material:1.10.0'
     implementation 'com.android.car.ui:car-ui-lib:2.6.0'
+    implementation 'androidx.activity:activity:1.8.0'
+    implementation "androidx.fragment:fragment:1.6.1"
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    implementation('com.squareup.okhttp3:okhttp:4.8.0')
+    implementation('com.squareup.okhttp3:okhttp:4.12.0')
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.ihongqiqu:android-utils:1.0.2'
     implementation 'androidx.recyclerview:recyclerview:1.3.0'
@@ -286,14 +296,29 @@ dependencies {
     compileOnly 'com.google.android.wearable:wearable:2.9.0'
     implementation 'com.github.lzyzsd:jsbridge:1.0.4'
     implementation 'com.github.getActivity:Toaster:12.6'
+    implementation 'com.blankj:utilcodex:1.31.1'
+//    implementation 'com.github.goldze:MVVMHabit:4.0.0'
 //    implementation project(":dsbridge")
 
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.6.2' // 或更新版本
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.6.2'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+
+    implementation 'org.conscrypt:conscrypt-android:2.5.2'
+    implementation 'com.ldoublem.loadingview:loadingviewlib:1.0'
+    implementation 'com.github.bumptech.glide:glide:5.0.5'
+    implementation 'com.github.bumptech.glide:gifdecoder:5.0.5'
+    implementation 'com.wang.avi:library:2.1.3'
 
     //必选，内部默认使用系统mediaplayer进行解码
 //    implementation 'com.github.dueeeke.dkplayer:dkplayer-java:3.1.4'
 //    # 可选，使用exoplayer进行解码（推荐）
 //    implementation 'com.github.dueeeke.dkplayer:player-exo:3.1.4'
-    implementation(name:'CLSDK-release', ext:'aar')
+//    implementation(name:'CLSDK-debug', ext:'aar')
+    implementation project(":CLSDK")
 //    # 可选，使用ijkplayer进行解码
 //    implementation 'com.github.dueeeke.dkplayer:player-ijk:3.1.4'
     configurations.all {

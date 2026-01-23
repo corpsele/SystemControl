@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Adapter;
 
 import com.ihongqiqu.util.JSONUtils;
+import com.systemcontrol.corpsele.systemcontrol.mvvm.activity.SearchActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,14 @@ public class Main2Activity extends AppCompatActivity {
             i++;
             if (i == 5) {
                 list.add("所有应用列表");
-            } else {
+            }
+            else if (i == 6) {
+                list.add("定时任务");
+            }
+            else if (i == 7) {
+                list.add("ollama");
+            }
+            else {
                 list.add(String.valueOf(i));
             }
 
@@ -102,6 +110,9 @@ public class Main2Activity extends AppCompatActivity {
                             case 5:
                                 pushTimerSchedule();
                                 break;
+                            case 6:
+                                pushOllamaActivity();
+                                break;
                             default:
                                 break;
                         }
@@ -139,6 +150,11 @@ public class Main2Activity extends AppCompatActivity {
 
     private void pushMainActivity3() {
         Intent intent = new Intent(Main2Activity.this, MainActivity3.class);
+        startActivity(intent);
+    }
+
+    private void pushOllamaActivity() {
+        Intent intent = new Intent(Main2Activity.this, SearchActivity.class);
         startActivity(intent);
     }
 
