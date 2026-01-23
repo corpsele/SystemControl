@@ -20,7 +20,7 @@
         <EditText
             android:id="@+id/et_input"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:hint="请输入关键词"
             android:text="@={viewModel.inputText}" />
 
@@ -43,19 +43,26 @@
             app:layout_constraintTop_toBottomOf="@id/et_apikey" />
         <!-- 结果显示区域 1：使用自定义 Adapter -->
         <!-- 注意：这里防止空指针，resultData 可能为空时表达式处理 -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
         <TextView
             android:id="@+id/tv_strReply"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:background="#F0F0F0"
             android:padding="10dp"
             android:textSize="18sp"
             android:textStyle="bold"
             android:scrollbars="vertical"
-            android:fadeScrollbars="true"
+            android:fadeScrollbars="false"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            android:clickable="true"
             app:layout_constraintTop_toBottomOf="@id/btn_search"
             app:strReply="@{viewModel.searchResults != null ? viewModel.searchResults.strReply : `等待ai回答`}" />
+        </ScrollView>
         <!-- 结果显示区域 2：普通绑定 -->
 <!--        <TextView-->
 <!--            android:id="@+id/tv_keyWords"-->

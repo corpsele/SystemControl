@@ -76,7 +76,8 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         textViewResult = findViewById(R.id.tv_strReply);
-        textViewResult.setMovementMethod(new ScrollingMovementMethod());
+        textViewResult.setMovementMethod(ScrollingMovementMethod.getInstance());
+
 
 //        if (loadingIndicatorView == null) {
 //
