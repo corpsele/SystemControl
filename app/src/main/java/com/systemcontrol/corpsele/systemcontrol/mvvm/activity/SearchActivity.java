@@ -3,6 +3,7 @@ package com.systemcontrol.corpsele.systemcontrol.mvvm.activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -64,6 +65,7 @@ public class SearchActivity extends AppCompatActivity {
         // 显示
         if (loadingDialog == null) {
             loadingDialog = new LoadingDialog(this);
+
         }
 
         if (circularRing == null) {
@@ -72,6 +74,9 @@ public class SearchActivity extends AppCompatActivity {
             circularRing.setViewColor(Color.BLUE);
 
         }
+
+        textViewResult = findViewById(R.id.tv_strReply);
+        textViewResult.setMovementMethod(new ScrollingMovementMethod());
 
 //        if (loadingIndicatorView == null) {
 //
@@ -123,6 +128,18 @@ public class SearchActivity extends AppCompatActivity {
                     loadingDialog.dismiss();
 //                    circularRing.stopAnim();
                 }
+            }
+        });
+
+        loadingDialog.btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (searchViewModel.getClients().getValue() != null){
+                    searchViewModel.getClients().getValue().forEach(okHttpClient -> {
+                        okHttpClient.dispatcher().cancelAll();
+                    });
+                }
+
             }
         });
 

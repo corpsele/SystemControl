@@ -47,6 +47,7 @@ public class TlsDebugInterceptor implements Interceptor {
         String content = response.body().string();
         LogUtils.i("----------Start----------------");
         LogUtils.i("| "+request.toString());
+        LogUtils.i("| "+request.url());
         String method=request.method();
         if("POST".equals(method)){
             LogUtils.i("request:\n" + this.bodyToString(request));
