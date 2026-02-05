@@ -49,7 +49,7 @@ public class SearchRepository {
         return instance;
     }
 
-    public void sendOllamaRequest(String apkKey, String keyWords, SearchCallBack searchCallBack) throws IOException {
+    public void sendBigModelRequest(String apkKey, String keyWords, SearchCallBack searchCallBack) throws IOException {
         executor.execute(() -> {
             try {
                 Thread.sleep(500);
@@ -132,6 +132,108 @@ public class SearchRepository {
                                    Exception e = new Exception("response为空");
                                    searchCallBack.onError(e);
                                }
+                            });
+                        }
+
+                    }
+                });
+
+
+            } catch (Exception e) {
+                if (searchCallBack != null) {
+                    searchCallBack.onError(e);
+                }
+
+            } finally {
+
+            }
+        });
+
+    }
+
+    public void sendOllamaRequest(String apkKey, String keyWords, SearchCallBack searchCallBack) throws IOException {
+        executor.execute(() -> {
+            try {
+                Thread.sleep(500);
+                client = Android9OkHttpClient.getUnsafeOkHttpClient();
+
+                if (searchCallBack != null) {
+                    searchCallBack.onClientInit(client);
+                }
+//                OkHttpClient client = new OkHttpClient().newBuilder().build();
+//        请用中文说出，iphone se2 开发调试没有connet via network
+                MediaType mediaType = MediaType.parse("application/json");
+                RequestBody body = RequestBody.create(mediaType, "{\n    \"model\": \"qwen3-vl:235b-cloud\",\n    \"messages\": [\n        {\n            \"role\": \"user\",\n            \"content\": \"" + keyWords + "\"\n        }\n    ],\n    \"stream\": false\n}");
+//                RequestBody body = RequestBody.create(mediaType, "{\n    \"model\": \"GLM-4.7-Flash\",\n    \"messages\": [\n       {\n         \"role\": \"system\",       \"content\": \"你是一个得力的助手\"\n        },\n        {\n            \"role\": \"user\",\n            \"content\": \"" + keyWords + "\"\n        }\n    ],\n    \"stream\": false,\n     \"temperature\": 1.0,\n     \"max_tokens\": 4096\n}");
+
+                Request request = new Request.Builder()
+                        .url("https://ollama.com/api/chat")
+                        .method("POST", body)
+                        .addHeader("Authorization", "Bearer " + apkKey)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+//                Request request = new Request.Builder()
+//                        .url("https://open.bigmodel.cn/api/paas/v4/chat/completions")
+//                        .method("POST", body)
+//                        .addHeader("Authorization", "Bearer " + apkKey)
+//                        .addHeader("Content-Type", "application/json")
+//                        .tag(SearchActivity.class)
+//                        .build();
+
+
+                Buffer buffer = new Buffer();
+                request.body().writeTo(buffer);
+                String strJson = buffer.readUtf8();
+                LogUtils.i(strJson);
+
+//                Response response = client.newCall(request);
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            if (searchCallBack != null) {
+                                searchCallBack.onError(e);
+                            }
+
+                        });
+                    }
+
+                    @Override
+                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                        if (response.body() != null) {
+                            String responseJson = response.body().string();
+                            Gson gson = new Gson();
+//                Type type = new TypeToken<Map<String, Object>>(){}.getType();
+//                Map<String, Object> bodyJson = gson.fromJson(responseJson, type);
+                            JsonObject bodyJson = gson.fromJson(responseJson, JsonObject.class);
+                            String strMessage;
+                            String strCode = "";
+                            if (response.code() != 200) {
+                                JsonObject errorJson = bodyJson.get("error").getAsJsonObject();
+                                strCode = errorJson.get("code").getAsString();
+                                strMessage = errorJson.get("message").getAsString();
+                            } else {
+                                JsonObject successObject = bodyJson.get("message").getAsJsonObject();
+//                                JsonObject successJson = successArray.get(0).getAsJsonObject();
+//                                JsonObject messageJson = successJson.get("message").getAsJsonObject();
+                                strMessage = successObject.get("content").getAsString();
+                            }
+
+                            final Search result = new Search(keyWords, responseJson);
+                            // 切换回主线程回调 (LiveData通常在主线程观察，但这里手动回调最好切回主线程)
+                            new Handler(Looper.getMainLooper()).post(() -> {
+                                if (searchCallBack != null) {
+
+                                    searchCallBack.onSearchSuccess(result, strMessage);
+                                }
+                            });
+                        }else{
+                            new Handler(Looper.getMainLooper()).post(() -> {
+                                if (searchCallBack != null) {
+                                    Exception e = new Exception("response为空");
+                                    searchCallBack.onError(e);
+                                }
                             });
                         }
 

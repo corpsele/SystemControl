@@ -54,4 +54,11 @@
     <string name="btnPushNotification">推送通知</string>
     <string name="checkbox_thursday">Thursday</string>
     <string name="timer_schedule_cycle_title_text">Time Schedule Cycle</string>
+
+    <string-array name="select_models">
+        <item>BigModel(GLM-4.7-Flash)</item>
+        <item>Ollama(qwen3-vl:235b-cloud)</item>
+    </string-array>
+
+    <string name="search_spinner_prompt">请选择</string>
 </resources>

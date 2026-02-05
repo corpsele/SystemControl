@@ -23,6 +23,7 @@ public class SearchViewModel extends ViewModel {
     // 输入框的内容 (双向绑定)
     public MutableLiveData<String> inputText = new MutableLiveData<>("");
 
+    public MutableLiveData<Integer> selectModelIndex = new MutableLiveData<>(0);
     public MutableLiveData<String> apiKey = new MutableLiveData<>("");
     // 结果数据 (用于单向绑定给 UI)
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
@@ -45,49 +46,109 @@ public class SearchViewModel extends ViewModel {
             if (query == null) query = "";
             String key = apiKey.getValue();
             if (key == null) key = "";
+            Integer selectIndex = selectModelIndex.getValue();
 
-            // 调用 Repository，并传入 Callback 实现回调逻辑
-            SearchRepository.getInstance().sendOllamaRequest(key, query, new SearchCallBack() {
-                @Override
-                public void onSearchSuccess(Object search, Object response) {
-                    LogUtils.d("-=-=--=-=--=-==- search = " + search.toString());
-                    LogUtils.d(response.toString());
-                    Search tmpSearch = new Search(((Search)search).getKeyWords(), (String)response);
-                    searchResults.setValue(tmpSearch);
-                    isLoading.postValue(false);
-                }
+            if (selectIndex == null || selectIndex == 0){
+// 调用 Repository，并传入 Callback 实现回调逻辑
+                SearchRepository.getInstance().sendBigModelRequest(key, query, new SearchCallBack() {
+                    @Override
+                    public void onSearchSuccess(Object search, Object response) {
+                        LogUtils.d("-=-=--=-=--=-==- search = " + search.toString());
+                        LogUtils.d(response.toString());
+                        Search tmpSearch = new Search(((Search)search).getKeyWords(), (String)response);
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            searchResults.setValue(tmpSearch);
+                        });
 
-                @Override
-                public void onClientInit(Object object) {
-                    if (object != null && object.getClass() == OkHttpClient.class) {
-                        OkHttpClient client = (OkHttpClient) object;
-                        if (clients.getValue() == null || clients.getValue().isEmpty()) {
-                            ArrayList<OkHttpClient> tmpClient = new ArrayList<>();
-                            tmpClient.add(client);
-                            new Handler(Looper.getMainLooper()).post(() -> {
-                                clients.setValue(tmpClient);
-                            });
-
-                        }else{
-                            ArrayList<OkHttpClient> tmpClient = clients.getValue();
-                            tmpClient.add(client);
-                            new Handler(Looper.getMainLooper()).post(() -> {
-                                clients.postValue(tmpClient);
-                            });
-
-                        }
+                        isLoading.postValue(false);
                     }
 
-                }
+                    @Override
+                    public void onClientInit(Object object) {
+                        if (object != null && object.getClass() == OkHttpClient.class) {
+                            OkHttpClient client = (OkHttpClient) object;
+                            if (clients.getValue() == null || clients.getValue().isEmpty()) {
+                                ArrayList<OkHttpClient> tmpClient = new ArrayList<>();
+                                tmpClient.add(client);
+                                new Handler(Looper.getMainLooper()).post(() -> {
+                                    clients.setValue(tmpClient);
+                                });
 
-                @Override
-                public void onError(Exception e) {
-                    LogUtils.e(e.toString());
+                            }else{
+                                ArrayList<OkHttpClient> tmpClient = clients.getValue();
+                                tmpClient.add(client);
+                                new Handler(Looper.getMainLooper()).post(() -> {
+                                    clients.postValue(tmpClient);
+                                });
+
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        LogUtils.e(e.toString());
 //                    searchResults.setValue(new Search("", ""));
-                    searchResults.setValue(null);
-                    isLoading.postValue(false);
-                }
-            });
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            searchResults.setValue(null);
+                        });
+
+                        isLoading.postValue(false);
+                    }
+                });
+            }else if(selectIndex == 1) {
+                // 调用 Repository，并传入 Callback 实现回调逻辑
+                SearchRepository.getInstance().sendOllamaRequest(key, query, new SearchCallBack() {
+                    @Override
+                    public void onSearchSuccess(Object search, Object response) {
+                        LogUtils.d("-=-=--=-=--=-==- search = " + search.toString());
+                        LogUtils.d(response.toString());
+                        Search tmpSearch = new Search(((Search)search).getKeyWords(), (String)response);
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            searchResults.setValue(tmpSearch);
+                        });
+
+                        isLoading.postValue(false);
+                    }
+
+                    @Override
+                    public void onClientInit(Object object) {
+                        if (object != null && object.getClass() == OkHttpClient.class) {
+                            OkHttpClient client = (OkHttpClient) object;
+                            if (clients.getValue() == null || clients.getValue().isEmpty()) {
+                                ArrayList<OkHttpClient> tmpClient = new ArrayList<>();
+                                tmpClient.add(client);
+                                new Handler(Looper.getMainLooper()).post(() -> {
+                                    clients.setValue(tmpClient);
+                                });
+
+                            }else{
+                                ArrayList<OkHttpClient> tmpClient = clients.getValue();
+                                tmpClient.add(client);
+                                new Handler(Looper.getMainLooper()).post(() -> {
+                                    clients.postValue(tmpClient);
+                                });
+
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        LogUtils.e(e.toString());
+//                    searchResults.setValue(new Search("", ""));
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            searchResults.setValue(null);
+                        });
+
+                        isLoading.postValue(false);
+                    }
+                });
+            }
+
+
 
 //            searchRepository.sendOllamaRequest(search, new SearchCallBack() {
 //                @Override

@@ -8,7 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.systemcontrol.corpsele.systemcontrol.generated.callback.OnClickListener;
+//import com.systemcontrol.corpsele.systemcontrol.generated.callback.OnClickListener;
 
 public class LoadingDialog extends Dialog {
     public Button btnCancel;

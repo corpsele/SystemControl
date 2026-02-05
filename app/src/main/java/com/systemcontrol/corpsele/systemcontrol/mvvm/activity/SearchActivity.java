@@ -6,9 +6,14 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,16 +26,22 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.ihongqiqu.util.LogUtils;
 import com.systemcontrol.corpsele.systemcontrol.LoadingDialog;
 import com.systemcontrol.corpsele.systemcontrol.R;
 import com.systemcontrol.corpsele.systemcontrol.TLSCheck;
 import com.systemcontrol.corpsele.systemcontrol.mvvm.adapter.SearchAdapter;
 import com.systemcontrol.corpsele.systemcontrol.databinding.ActivitySearchBinding;
+import com.systemcontrol.corpsele.systemcontrol.mvvm.adapter.SpinnerBindingAdapter;
 import com.systemcontrol.corpsele.systemcontrol.mvvm.viewmodel.SearchViewModel;
 
 import org.conscrypt.Conscrypt;
+import org.jetbrains.anko.Logging;
 
 import java.security.Security;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.ldoublem.loadingviewlib.view.LVCircularRing;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -38,6 +49,8 @@ public class SearchActivity extends AppCompatActivity {
     private SearchViewModel searchViewModel;
     private SearchAdapter searchAdapter;
     private TextView textViewResult;
+
+    private Spinner spSelectModel;
     private LoadingDialog loadingDialog;
 
     private LVCircularRing circularRing;
@@ -79,6 +92,29 @@ public class SearchActivity extends AppCompatActivity {
         textViewResult.setMovementMethod(ScrollingMovementMethod.getInstance());
 
 
+
+        spSelectModel = findViewById(R.id.spSelectAI);
+        ArrayAdapter spinnerAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(com.blankj.utilcode.R.layout.support_simple_spinner_dropdown_item);
+        spSelectModel.setAdapter(spinnerAdapter);
+        SpinnerAdapter sa = spSelectModel.getAdapter();
+        LogUtils.d(" =========== spselectmodel count = "+sa.getCount());
+        spSelectModel.setSelected(true);
+        spSelectModel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                LogUtils.d("========== selectmodel = " + position);
+                searchViewModel.selectModelIndex.postValue(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
 //        if (loadingIndicatorView == null) {
 //
 //            loadingIndicatorView = (AVLoadingIndicatorView) findViewById(R.id.avi_custom_loading);
@@ -108,9 +144,21 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+    // 注意：方法签名必须和 BindingAdapter 接口中的定义一致 (接收 String)
+    public void onItemSelected(String item, AdapterView<?> parent, View view, int position, long id) {
+        // 处理选择后的业务逻辑
+        Toast.makeText(this, "选中了: " + item, Toast.LENGTH_SHORT).show();
+        searchViewModel.selectModelIndex.postValue(position);
+        // 比如更新界面上面的 TextView
+        // 注意：这里为了演示简单直接用 findViewById，实际推荐也可以用 Binding 或 LiveData
+//        TextView tvResult = findViewById(R.id.tv_result);
+//        tvResult.setText("选择结果: " + city);
+    }
+
     private void initViewModel() {
         // 1. 初始化 DataBinding
         ActivitySearchBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
+        binding.setActivity(this);
 //        ActivitySearchBinding binding = ActivitySearchBinding.inflate(LayoutInflater.from(this));
         // 2. 初始化 ViewModel
         searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
