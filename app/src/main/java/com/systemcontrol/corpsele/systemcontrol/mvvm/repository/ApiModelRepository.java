@@ -28,7 +28,7 @@ public class ApiModelRepository {
     }
     public void insert(String title, String description, String url, String apiKey) {
         // 核心点：在 Repository 中调用工厂创建对象
-        ApiModel apiModel = ApiModelFactory.createNote(title, description, url, apiKey);
+        ApiModel apiModel = ApiModelFactory.createApiModel(title, description, url, apiKey);
         executorService.execute(() -> apiModelDao.insert(apiModel));
     }
     public void delete(ApiModel apiModel) {

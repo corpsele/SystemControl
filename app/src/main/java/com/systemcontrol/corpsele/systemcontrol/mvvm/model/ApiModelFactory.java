@@ -5,7 +5,7 @@ package com.systemcontrol.corpsele.systemcontrol.mvvm.model;
  * 封装初始化逻辑，例如数据清洗和自动计算优先级
  */
 public class ApiModelFactory {
-    public static ApiModel createNote(String title, String description, String apiKey, String url) {
+    public static ApiModel createApiModel(String title, String description, String apiKey, String url) {
         // 1. 数据清洗
         String cleanTitle = title.trim();
         if (cleanTitle.isEmpty()) {
