@@ -48,9 +48,14 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:remove="android:appComponentFactory">
         <activity
+            android:name=".mvvm.activity.ApiModelActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvvm.activity.AddApiKeyActivity"
+            android:exported="false" />
+        <activity
             android:name=".mvvm.activity.SearchActivity"
-            android:exported="false"
-            />
+            android:exported="false" />
         <activity
             android:name=".AppsActivity"
             android:exported="false" /> <!-- <uses-library -->
@@ -88,7 +93,7 @@
             android:enabled="true"
             android:exported="true"
             android:label="MoreBackgroundService"
-            android:permission="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"></service>
+            android:permission="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
         <service
             android:name=".MyAccessibilityService"
             android:enabled="true"
@@ -196,7 +201,7 @@
         <receiver
             android:name=".MoreAlarmReceiver"
             android:exported="true"
-            android:permission="android.permission.BIND_DEVICE_ADMIN"></receiver>
+            android:permission="android.permission.BIND_DEVICE_ADMIN" />
     </application>
 
 </manifest>

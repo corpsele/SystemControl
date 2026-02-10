@@ -6,6 +6,16 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'com.chaquo.python'
+//apply plugin: 'kotlin-kapt'
+
+//plugins {
+//    id 'com.android.application'
+//    id 'kotlin-android'
+//    id 'kotlin-parcelize'
+//    id 'com.chaquo.python'
+//    id 'kotlin-kapt'
+//    alias(libs.plugins.compose.compiler) apply false
+//}
 ext.anko_version = '0.10.5'
 
 android {
@@ -208,6 +218,13 @@ android {
         dataBinding true
     }
 
+//    buildFeatures {
+//        compose true
+//    }
+//
+//    composeOptions {
+//        kotlinCompilerExtensionVersion '2.0.0'
+//    }
 }
 
 repositories {
@@ -244,6 +261,7 @@ repositories {
     }
     google()
     jcenter()
+    mavenCentral()
     flatDir {
         dirs '../aar'
         dirs 'libs'
@@ -259,7 +277,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
 //    implementation 'androidx.appcompat:appcompat:1.5.1'
 //    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.annotation:annotation:1.9.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.wear:wear:1.2.0'
@@ -289,7 +306,7 @@ dependencies {
     implementation 'org.conscrypt:conscrypt-android:2.4.0'
     implementation 'com.google.android.gms:play-services-base:18.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
     implementation "org.jetbrains.anko:anko-sdk25:$anko_version"
     implementation "org.jetbrains.anko:anko-sdk25-coroutines:$anko_version"
     implementation "org.jetbrains.anko:anko-appcompat-v7:$anko_version"
@@ -299,6 +316,11 @@ dependencies {
     implementation 'com.blankj:utilcodex:1.31.1'
 //    implementation 'com.github.goldze:MVVMHabit:4.0.0'
 //    implementation project(":dsbridge")
+
+    def room_version = "2.6.1"
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version" // 可选，支持协程
+    annotationProcessor "androidx.room:room-compiler:$room_version"
 
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.6.2' // 或更新版本
     implementation 'androidx.lifecycle:lifecycle-livedata:2.6.2'
@@ -312,6 +334,13 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:5.0.5'
     implementation 'com.github.bumptech.glide:gifdecoder:5.0.5'
     implementation 'com.wang.avi:library:2.1.3'
+
+    // Room 数据库
+//    def room_version = "2.6.1"
+//    implementation "androidx.room:room-runtime:$room_version"
+//    implementation "androidx.room:room-ktx:$room_version" // 可选，支持协程
+//    kapt "androidx.room:room-compiler:$room_version"
+
 
     //必选，内部默认使用系统mediaplayer进行解码
 //    implementation 'com.github.dueeeke.dkplayer:dkplayer-java:3.1.4'

@@ -1,13 +1,18 @@
 package com.systemcontrol.corpsele.systemcontrol.mvvm.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -15,6 +20,10 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -28,11 +37,13 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.ihongqiqu.util.LogUtils;
 import com.systemcontrol.corpsele.systemcontrol.LoadingDialog;
+import com.systemcontrol.corpsele.systemcontrol.Main2Activity;
 import com.systemcontrol.corpsele.systemcontrol.R;
 import com.systemcontrol.corpsele.systemcontrol.TLSCheck;
 import com.systemcontrol.corpsele.systemcontrol.mvvm.adapter.SearchAdapter;
 import com.systemcontrol.corpsele.systemcontrol.databinding.ActivitySearchBinding;
 import com.systemcontrol.corpsele.systemcontrol.mvvm.adapter.SpinnerBindingAdapter;
+import com.systemcontrol.corpsele.systemcontrol.mvvm.model.ApiModel;
 import com.systemcontrol.corpsele.systemcontrol.mvvm.viewmodel.SearchViewModel;
 
 import org.conscrypt.Conscrypt;
@@ -49,6 +60,7 @@ public class SearchActivity extends AppCompatActivity {
     private SearchViewModel searchViewModel;
     private SearchAdapter searchAdapter;
     private TextView textViewResult;
+    private EditText etApiKey;
 
     private Spinner spSelectModel;
     private LoadingDialog loadingDialog;
@@ -91,7 +103,7 @@ public class SearchActivity extends AppCompatActivity {
         textViewResult = findViewById(R.id.tv_strReply);
         textViewResult.setMovementMethod(ScrollingMovementMethod.getInstance());
 
-
+        etApiKey = findViewById(R.id.et_apikey);
 
         spSelectModel = findViewById(R.id.spSelectAI);
         ArrayAdapter spinnerAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item);
@@ -144,6 +156,15 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+    public void onEditApiKeyClick(View view) {
+        LogUtils.i("onEditApiKeyClick");
+
+        Intent intent = new Intent(SearchActivity.this, ApiModelActivity.class);
+        intent.putExtra("any", "any");
+//        startActivity(intent);
+        activityLaunch.launch(intent);
+    }
+
     // 注意：方法签名必须和 BindingAdapter 接口中的定义一致 (接收 String)
     public void onItemSelected(String item, AdapterView<?> parent, View view, int position, long id) {
         // 处理选择后的业务逻辑
@@ -154,6 +175,35 @@ public class SearchActivity extends AppCompatActivity {
 //        TextView tvResult = findViewById(R.id.tv_result);
 //        tvResult.setText("选择结果: " + city);
     }
+
+    // 1. 注册 ActivityResultLauncher，替代 startActivityForResult
+    private ActivityResultLauncher<Intent> activityLaunch = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            String backData = data.getStringExtra("key_result");
+                            long time = data.getLongExtra("key_time", 0L);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                ApiModel apiModel = data.getSerializableExtra("apiModel", ApiModel.class);
+                                if (apiModel != null && apiModel.getApiKey() != null) {
+                                    searchViewModel.apiKey.postValue(apiModel.getApiKey());
+                                }
+
+                            }
+
+                        }
+                    } else {
+                        // RESULT_CANCELED 或用户直接按返回键
+
+                    }
+                }
+            }
+    );
+
 
     private void initViewModel() {
         // 1. 初始化 DataBinding

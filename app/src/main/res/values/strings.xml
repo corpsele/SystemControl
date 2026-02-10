@@ -61,4 +61,5 @@
     </string-array>
 
     <string name="search_spinner_prompt">请选择</string>
+    <string name="btn_add_apikey">添加ApiKey</string>
 </resources>

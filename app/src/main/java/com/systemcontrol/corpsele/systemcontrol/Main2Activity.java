@@ -56,7 +56,7 @@ public class Main2Activity extends AppCompatActivity {
                 list.add("定时任务");
             }
             else if (i == 7) {
-                list.add("ollama");
+                list.add("Api Model");
             }
             else {
                 list.add(String.valueOf(i));
