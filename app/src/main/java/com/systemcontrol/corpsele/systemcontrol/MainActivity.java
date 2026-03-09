@@ -457,13 +457,13 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
 //        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 //        appWidgetManager.updateAppWidget(new ComponentName(this.getPackageName(), NewAppWidget.class.getName()), remoteViews);
 
-        Intent intent = new Intent(this, NewAppWidget.class);
-        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+//        Intent intent = new Intent(this, NewAppWidget.class);
+//        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
 // since it seems the onUpdate() is only fired on that:
-        int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), NewAppWidget.class));
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-        sendBroadcast(intent);
+//        int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), NewAppWidget.class));
+//        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+//        sendBroadcast(intent);
 
 //        AppWidgetManager manger = AppWidgetManager.getInstance(tmp);
 //        // 相当于获得所有本程序创建的appwidget
@@ -478,13 +478,13 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
         if (requestCode == OpenNotificationsUtil.OPEN_APP_NOTIFICATION) {
             //1.创建普通消息通知
             //OpenNotificationsUtil.createNotification(this, "普通消息通知", "欢迎来到APP！", 0);
-
+            // 返回首页触发了显示通知
             //2.启动前台服务，创建服务常驻通知
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                startForegroundService(new Intent(this, MyService.class));
-            } else {
-                startService(new Intent(this, MyService.class));
-            }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+//                startForegroundService(new Intent(this, MyService.class));
+//            } else {
+//                startService(new Intent(this, MyService.class));
+//            }
         }
     }
 
