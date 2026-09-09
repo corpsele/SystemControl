@@ -20,7 +20,8 @@ public class NotificationBig extends Activity {
 
         Intent button1I = new Intent("ActionMusicAdd");
 
-        PendingIntent button1PI = PendingIntent.getBroadcast(this, 0, button1I, 0);
+//        PendingIntent button1PI = PendingIntent.getBroadcast(this, 0, button1I, 0);
+        PendingIntent button1PI = PendingIntent.getBroadcast(this, 0, button1I, PendingIntent.FLAG_IMMUTABLE);
 
         RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notification_big);
         /*

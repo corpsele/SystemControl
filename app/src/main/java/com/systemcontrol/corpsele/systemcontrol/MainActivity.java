@@ -18,6 +18,8 @@ import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Binder;
@@ -88,6 +90,9 @@ import okhttp3.ResponseBody;
 import io.reactivex.rxjava3.core.*;
 import com.example.clsdk.AndroidUtils.*;
 
+// Android 12+ 主题管理
+import android.app.UiModeManager;
+
 public class MainActivity extends AppCompatActivity implements NotiBroadcastReceiver.NotiBigInterface {
     private AudioManager mAudioManager;
 
@@ -139,6 +144,8 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
 
     private static final int NOTIFICATION_CODE = 20078;
 
+    private static final String TAG = "ThemeChange";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,6 +192,9 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
         String strResult = pyobjResult.toString();
         textView12.append("\n" + strResult);
         textView12.setText(textView12.getText() + "\n" + strResult);
+
+        // 打印当前主题状态
+        logCurrentTheme();
     }
 
     private void initUI() {
@@ -1151,6 +1161,49 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
     public void setBrightMaxText(String content) {
         if (content != null) {
 
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // 监听深色模式变化
+        int nightMode = newConfig.uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        switch (nightMode) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                Log.d(TAG, "系统切换到：深色模式");
+                onDarkModeChanged(true);
+                break;
+            case Configuration.UI_MODE_NIGHT_NO:
+                Log.d(TAG, "系统切换到：浅色模式");
+                onDarkModeChanged(false);
+                break;
+        }
+    }
+
+    private void onDarkModeChanged(boolean isDark) {
+        // 在这里处理你的业务逻辑
+        RemoteViews remoteViewsBig = new RemoteViews(this.getPackageName(), R.layout.notification_big);
+        if (isDark) {
+            remoteViewsBig.setTextColor(R.id.noti_big_tvAlarmTitle, Color.WHITE);
+        } else {
+            remoteViewsBig.setTextColor(R.id.noti_big_tvAlarmTitle, Color.BLACK);
+
+        }
+     }
+
+    private void logCurrentTheme() {
+        RemoteViews remoteViewsBig = new RemoteViews(this.getPackageName(), R.layout.notification_big);
+
+        int currentNightMode = getResources().getConfiguration().uiMode
+                & Configuration.UI_MODE_NIGHT_MASK;
+        if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+            Log.d(TAG, "当前是深色模式");
+            remoteViewsBig.setTextColor(R.id.noti_big_tvAlarmTitle, Color.WHITE);
+        } else {
+            Log.d(TAG, "当前是浅色模式");
+            remoteViewsBig.setTextColor(R.id.noti_big_tvAlarmTitle, Color.BLACK);
         }
     }
 }
