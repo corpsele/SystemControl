@@ -1173,10 +1173,12 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
         switch (nightMode) {
             case Configuration.UI_MODE_NIGHT_YES:
                 Log.d(TAG, "系统切换到：深色模式");
+                Utils.currentTheme = 3000;
                 onDarkModeChanged(true);
                 break;
             case Configuration.UI_MODE_NIGHT_NO:
                 Log.d(TAG, "系统切换到：浅色模式");
+                Utils.currentTheme = 2000;
                 onDarkModeChanged(false);
                 break;
         }
@@ -1185,9 +1187,13 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
     private void onDarkModeChanged(boolean isDark) {
         // 在这里处理你的业务逻辑
         RemoteViews remoteViewsBig = new RemoteViews(this.getPackageName(), R.layout.notification_big);
+
         if (isDark) {
+            Log.d(TAG, "当前是深色模式");
             remoteViewsBig.setTextColor(R.id.noti_big_tvAlarmTitle, Color.WHITE);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvMusicTitle, Color.WHITE);
         } else {
+            Log.d(TAG, "当前是浅色模式");
             remoteViewsBig.setTextColor(R.id.noti_big_tvAlarmTitle, Color.BLACK);
 
         }
@@ -1200,9 +1206,11 @@ public class MainActivity extends AppCompatActivity implements NotiBroadcastRece
                 & Configuration.UI_MODE_NIGHT_MASK;
         if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
             Log.d(TAG, "当前是深色模式");
+            Utils.currentTheme = 3000;
             remoteViewsBig.setTextColor(R.id.noti_big_tvAlarmTitle, Color.WHITE);
         } else {
             Log.d(TAG, "当前是浅色模式");
+            Utils.currentTheme = 2000;
             remoteViewsBig.setTextColor(R.id.noti_big_tvAlarmTitle, Color.BLACK);
         }
     }

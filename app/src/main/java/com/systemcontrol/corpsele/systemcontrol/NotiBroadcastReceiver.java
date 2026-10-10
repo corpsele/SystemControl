@@ -10,6 +10,7 @@ import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.provider.Settings;
@@ -66,6 +67,41 @@ public class NotiBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         RemoteViews remoteViewsBig = new RemoteViews(context.getPackageName(), R.layout.notification_big);
+        if (Utils.currentTheme == 3000) {
+            remoteViewsBig.setTextColor(R.id.noti_big_tvMusicTitle, Color.WHITE);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvMusicCurrent, Color.WHITE);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvMusicMax, Color.WHITE);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvAlarmTitle, Color.WHITE);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvAlarmCurrent, Color.WHITE);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvAlarmMax, Color.WHITE);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvSystemTitle, Color.WHITE);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvSystemCurrent, Color.WHITE);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvSystemMax, Color.WHITE);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvRingTitle, Color.WHITE);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvRingCurrent, Color.WHITE);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvRingMax, Color.WHITE);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvVoiceTitle, Color.WHITE);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvVoiceCurrent, Color.WHITE);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvVoiceMax, Color.WHITE);
+
+        } else {
+            remoteViewsBig.setTextColor(R.id.noti_big_tvMusicTitle, Color.BLACK);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvMusicCurrent, Color.BLACK);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvMusicMax, Color.BLACK);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvAlarmTitle, Color.BLACK);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvAlarmCurrent, Color.BLACK);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvAlarmMax, Color.BLACK);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvSystemTitle, Color.BLACK);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvSystemCurrent, Color.BLACK);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvSystemMax, Color.BLACK);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvRingTitle, Color.BLACK);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvRingCurrent, Color.BLACK);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvRingMax, Color.BLACK);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvVoiceTitle, Color.BLACK);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvVoiceCurrent, Color.BLACK);
+            remoteViewsBig.setTextColor(R.id.noti_big_tvVoiceMax, Color.BLACK);
+
+        }
         getAudioDetail(remoteViewsBig, context);
         if (action.equals(actionMusicAdd)){
             int current = mAudioManager.getStreamVolume( AudioManager.STREAM_MUSIC );

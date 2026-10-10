@@ -12,3 +12,5 @@
 app/libs/*
 app/Libs/
 *.aar
+.kotlin/
+.gradle/
